@@ -1,0 +1,191 @@
+{
+    "dataset": {
+        "path": "data/raw/landslide_training.csv",
+        "type": "DEMO / PIPELINE VALIDATION DATA",
+        "rows": 18,
+        "features": [
+            "rainfall_24h",
+            "rainfall_3d",
+            "rainfall_7d",
+            "slope",
+            "elevation",
+            "historical_landslide",
+            "distance_to_landslide",
+            "soil_risk"
+        ],
+        "target": "risk",
+        "classes": [
+            "Low",
+            "Watch",
+            "High",
+            "Critical"
+        ],
+        "class_distribution": {
+            "Critical": 6,
+            "Low": 4,
+            "Watch": 4,
+            "High": 4
+        },
+        "limitation": "Performance is measured on an 18-row synthetic demonstration dataset. These metrics serve strictly to validate software pipeline mechanics, data ingestion, and multi-class output schemas. The dataset is statistically insufficient for real-world predictive validation or operational deployment."
+    },
+    "primary_model": {
+        "name": "Random Forest",
+        "holdout_metrics": {
+            "accuracy": 1.0,
+            "macro_precision": 1.0,
+            "macro_recall": 1.0,
+            "macro_f1": 1.0,
+            "weighted_precision": 1.0,
+            "weighted_recall": 1.0,
+            "weighted_f1": 1.0,
+            "high_recall": 1.0,
+            "critical_recall": 1.0,
+            "high_f1": 1.0,
+            "critical_f1": 1.0,
+            "per_class": {
+                "Low": {
+                    "precision": 1.0,
+                    "recall": 1.0,
+                    "f1_score": 1.0
+                },
+                "Watch": {
+                    "precision": 1.0,
+                    "recall": 1.0,
+                    "f1_score": 1.0
+                },
+                "High": {
+                    "precision": 1.0,
+                    "recall": 1.0,
+                    "f1_score": 1.0
+                },
+                "Critical": {
+                    "precision": 1.0,
+                    "recall": 1.0,
+                    "f1_score": 1.0
+                }
+            },
+            "confusion_matrix_raw": [
+                [
+                    1,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    1,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    2
+                ]
+            ],
+            "confusion_matrix": {
+                "Low": {
+                    "Low": 1,
+                    "Watch": 0,
+                    "High": 0,
+                    "Critical": 0
+                },
+                "Watch": {
+                    "Low": 0,
+                    "Watch": 1,
+                    "High": 0,
+                    "Critical": 0
+                },
+                "High": {
+                    "Low": 0,
+                    "Watch": 0,
+                    "High": 1,
+                    "Critical": 0
+                },
+                "Critical": {
+                    "Low": 0,
+                    "Watch": 0,
+                    "High": 0,
+                    "Critical": 2
+                }
+            },
+            "class_order": [
+                "Low",
+                "Watch",
+                "High",
+                "Critical"
+            ]
+        },
+        "cross_validation": {
+            "status": "COMPLETED",
+            "n_splits": 3,
+            "folds": [
+                {
+                    "fold": 1,
+                    "train_size": 12,
+                    "val_size": 6,
+                    "accuracy": 1.0,
+                    "macro_f1": 1.0,
+                    "critical_recall": 1.0,
+                    "high_recall": 1.0
+                },
+                {
+                    "fold": 2,
+                    "train_size": 12,
+                    "val_size": 6,
+                    "accuracy": 1.0,
+                    "macro_f1": 1.0,
+                    "critical_recall": 1.0,
+                    "high_recall": 1.0
+                },
+                {
+                    "fold": 3,
+                    "train_size": 12,
+                    "val_size": 6,
+                    "accuracy": 0.8333333333333334,
+                    "macro_f1": 0.8333333333333333,
+                    "critical_recall": 1.0,
+                    "high_recall": 0.5
+                }
+            ],
+            "mean_accuracy": 0.9444444444444445,
+            "std_accuracy": 0.0785674201318386,
+            "mean_macro_f1": 0.9444444444444443,
+            "std_macro_f1": 0.07856742013183865,
+            "mean_critical_recall": 1.0,
+            "std_critical_recall": 0.0,
+            "mean_high_recall": 0.8333333333333334,
+            "std_high_recall": 0.23570226039551584
+        }
+    },
+    "model_comparison": {
+        "Random Forest": {
+            "accuracy": 1.0,
+            "macro_f1": 1.0,
+            "weighted_f1": 1.0,
+            "high_recall": 1.0,
+            "critical_recall": 1.0,
+            "cv_mean_macro_f1": 0.9444444444444443,
+            "cv_std_macro_f1": 0.07856742013183865,
+            "cv_mean_critical_recall": 1.0
+        },
+        "Logistic Regression": {
+            "accuracy": 0.8,
+            "macro_f1": 0.6666666666666666,
+            "weighted_f1": 0.7333333333333333,
+            "high_recall": 1.0,
+            "critical_recall": 1.0,
+            "cv_mean_macro_f1": 0.8166666666666668,
+            "cv_std_macro_f1": 0.17373884190124325,
+            "cv_mean_critical_recall": 1.0
+        }
+    },
+    "saved_model_verified": true
+}
