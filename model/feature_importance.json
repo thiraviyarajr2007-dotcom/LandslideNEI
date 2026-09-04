@@ -1,0 +1,14 @@
+{
+    "model_type": "RandomForestClassifier",
+    "method": "Gini / Mean Impurity Reduction",
+    "features": {
+        "rainfall_7d": 0.1721,
+        "rainfall_3d": 0.151,
+        "rainfall_24h": 0.1453,
+        "elevation": 0.1447,
+        "distance_to_landslide": 0.1377,
+        "slope": 0.1362,
+        "soil_risk": 0.0991,
+        "historical_landslide": 0.014
+    }
+}
