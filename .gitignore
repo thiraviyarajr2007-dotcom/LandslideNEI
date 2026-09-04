@@ -26,3 +26,7 @@ Thumbs.db
 *.log
 tmp/
 temp/
+
+# Data directories
+data/raw/
+data/processed/
