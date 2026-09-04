@@ -1,0 +1,21 @@
+{
+    "features": [
+        "rainfall_24h",
+        "rainfall_3d",
+        "rainfall_7d",
+        "slope",
+        "elevation",
+        "historical_landslide",
+        "distance_to_landslide",
+        "soil_risk"
+    ],
+    "target": "risk",
+    "model": "Random Forest",
+    "accuracy": 1.0,
+    "classes": [
+        "Critical",
+        "High",
+        "Low",
+        "Watch"
+    ]
+}

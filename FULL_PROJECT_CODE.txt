@@ -1,0 +1,170 @@
+================================================================================
+                    LANDSLIDE AI PROJECT - FULL SOURCE CODE
+================================================================================
+
+================================================================================
+1. PROJECT STRUCTURE
+================================================================================
+
+landslide-ai/ (c:\SIH Landslide\)
+│
+├── api/                           # API service endpoints (FastAPI)
+│
+├── input/                         # Input documents
+│   ├── pdf/                       # Place raw landslide report PDF files here
+│   │   └── sample_report.pdf      # Sample test PDF
+│   └── txt/                       # Place raw text files here
+│
+├── model/                         # Saved / cached model checkpoints
+│
+├── output/                        # Processed outputs
+│   └── text/                      # Converted text extracted from PDFs
+│       └── sample_report.txt      # Converted sample output
+│
+├── scripts/                       # Execution scripts
+│   ├── pdf_to_text.py             # Script to extract text from PDFs (PyMuPDF)
+│   └── test_model.py              # Script to test GLiNER2 entity extraction
+│
+├── requirements.txt               # Project Python dependencies
+└── FULL_PROJECT_CODE.txt          # This complete codebase reference file
+
+
+================================================================================
+2. DEPENDENCIES (requirements.txt)
+================================================================================
+File: requirements.txt
+Path: c:\SIH Landslide\requirements.txt
+--------------------------------------------------------------------------------
+gliner2
+pymupdf
+pandas
+fastapi
+uvicorn
+python-multipart
+torch
+transformers
+peft
+sentencepiece
+protobuf
+scipy
+accelerate
+
+
+================================================================================
+3. SCRIPT: TEST GLINER2 MODEL (scripts/test_model.py)
+================================================================================
+File: test_model.py
+Path: c:\SIH Landslide\scripts\test_model.py
+Description: Tests GLiNER2 zero-shot NER extraction on sample landslide text.
+--------------------------------------------------------------------------------
+import sys
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+from gliner2 import GLiNER2
+
+print("Loading model...")
+
+model = GLiNER2.from_pretrained(
+    "fastino/gliner2-multi-v1"
+)
+
+print("Model loaded!")
+
+text = """
+A landslide occurred near Cherrapunji
+in East Khasi Hills, Meghalaya on
+12 July 2022.
+
+The region received 182 mm rainfall.
+The slope angle was 38 degrees.
+The elevation was approximately 850 metres.
+"""
+
+result = model.extract_entities(
+    text,
+    [
+        "landslide location",
+        "district",
+        "state",
+        "date",
+        "rainfall",
+        "slope angle",
+        "elevation"
+    ]
+)
+
+print(result)
+
+
+================================================================================
+4. SCRIPT: PDF TO TEXT EXTRACTION (scripts/pdf_to_text.py)
+================================================================================
+File: pdf_to_text.py
+Path: c:\SIH Landslide\scripts\pdf_to_text.py
+Description: Converts all PDF files in input/pdf/ into structured text in output/text/.
+--------------------------------------------------------------------------------
+import fitz
+import os
+
+INPUT = "input/pdf"
+OUTPUT = "output/text"
+
+os.makedirs(OUTPUT, exist_ok=True)
+
+for filename in os.listdir(INPUT):
+
+    if not filename.lower().endswith(".pdf"):
+        continue
+
+    pdf_path = os.path.join(INPUT, filename)
+
+    document = fitz.open(pdf_path)
+
+    text = ""
+
+    for page_number, page in enumerate(document, start=1):
+
+        page_text = page.get_text()
+
+        text += f"\n--- PAGE {page_number} ---\n"
+        text += page_text
+
+    output_name = filename.replace(".pdf", ".txt")
+
+    output_path = os.path.join(
+        OUTPUT,
+        output_name
+    )
+
+    with open(
+        output_path,
+        "w",
+        encoding="utf-8"
+    ) as file:
+
+        file.write(text)
+
+    document.close()
+
+    print("Completed:", filename)
+
+
+================================================================================
+5. SETUP & EXECUTION COMMANDS (PowerShell)
+================================================================================
+# 1. Create and activate virtual environment:
+python -m venv venv
+.\venv\Scripts\activate
+
+# 2. Install dependencies:
+pip install -r requirements.txt
+
+# 3. Test entity extraction with GLiNER2:
+python scripts\test_model.py
+
+# 4. Convert all PDFs to Text:
+python scripts\pdf_to_text.py
+================================================================================

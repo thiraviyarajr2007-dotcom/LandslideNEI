@@ -1,0 +1,13 @@
+gliner2
+pymupdf
+pandas
+fastapi
+uvicorn
+python-multipart
+torch
+transformers
+peft
+sentencepiece
+protobuf
+scipy
+accelerate
