@@ -11,3 +11,6 @@ sentencepiece
 protobuf
 scipy
 accelerate
+scikit-learn
+joblib
+pytest
