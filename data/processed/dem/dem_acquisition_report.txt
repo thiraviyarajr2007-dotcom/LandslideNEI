@@ -1,0 +1,31 @@
+Copernicus GLO-30 DEM Acquisition Report
+=========================================
+Source: Copernicus DEM public COG bucket (AWS Open Data), sourced from COP-DEM_GLO-30-DGED
+Dataset: Copernicus DEM GLO-30 Public / COP-DEM_GLO-30-DGED
+Resolution: 30 m nominal; 10 arc-second COG grid
+Acquisition date: 2026-09-05
+Files downloaded: 41
+CRS: EPSG:4326
+DEM extent [left, bottom, right, top]: [87.99986111111112, 21.000138888888888, 97.99986111111112, 30.000138888888888]
+Elevation units: metres
+
+Coverage
+--------
+Total samples: 4016
+Covered by DEM: 4016
+Outside DEM: 0
+
+State coverage
+--------------
+AR: total=1446, covered=1446, outside=0
+AS: total=504, covered=504, outside=0
+MN: total=262, covered=262, outside=0
+ML: total=1014, covered=1014, outside=0
+MZ: total=708, covered=708, outside=0
+NL: total=16, covered=16, outside=0
+SK: total=42, covered=42, outside=0
+TR: total=24, covered=24, outside=0
+
+Validation status: PASS
+Terrain extraction performed: no
+Model training performed: no

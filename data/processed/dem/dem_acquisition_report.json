@@ -1,0 +1,1075 @@
+{
+  "source": "Copernicus DEM public COG bucket (AWS Open Data), sourced from COP-DEM_GLO-30-DGED",
+  "source_url": "https://copernicus-dem-30m.s3.amazonaws.com/",
+  "documentation_url": "https://copernicus-dem-30m.s3.amazonaws.com/readme.html",
+  "dataset_name": "Copernicus DEM GLO-30 Public / COP-DEM_GLO-30-DGED",
+  "resolution": "30 m nominal; 10 arc-second COG grid",
+  "acquisition_method": "Downloaded exact required 1-degree COG objects over HTTPS from the public Copernicus DEM S3 bucket",
+  "download_date": "2026-09-05",
+  "downloaded_file_count": 41,
+  "downloaded_files": [
+    "Copernicus_DSM_COG_10_N21_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N22_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N22_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N23_00_E091_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N23_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N23_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N23_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N24_00_E091_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N24_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N24_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N24_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E089_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E090_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E091_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N25_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E089_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E090_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E091_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N26_00_E095_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E088_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E091_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E095_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E096_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N27_00_E097_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E092_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E093_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E095_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E096_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N28_00_E097_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N29_00_E094_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N29_00_E095_00_DEM_DEM.tif",
+    "Copernicus_DSM_COG_10_N29_00_E096_00_DEM_DEM.tif"
+  ],
+  "tile_grid_ids": [
+    "Copernicus_DSM_COG_10_N21_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N22_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N22_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N23_00_E091_00_DEM",
+    "Copernicus_DSM_COG_10_N23_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N23_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N23_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N24_00_E091_00_DEM",
+    "Copernicus_DSM_COG_10_N24_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N24_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N24_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E089_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E090_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E091_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N25_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E089_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E090_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E091_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N26_00_E095_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E088_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E091_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E095_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E096_00_DEM",
+    "Copernicus_DSM_COG_10_N27_00_E097_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E092_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E093_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E095_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E096_00_DEM",
+    "Copernicus_DSM_COG_10_N28_00_E097_00_DEM",
+    "Copernicus_DSM_COG_10_N29_00_E094_00_DEM",
+    "Copernicus_DSM_COG_10_N29_00_E095_00_DEM",
+    "Copernicus_DSM_COG_10_N29_00_E096_00_DEM"
+  ],
+  "crs": [
+    "EPSG:4326"
+  ],
+  "raster_dimensions": [
+    [
+      3600,
+      3600
+    ]
+  ],
+  "pixel_resolution": [
+    [
+      0.0002777777777777778,
+      0.0002777777777777778
+    ]
+  ],
+  "dem_spatial_extent": [
+    87.99986111111112,
+    21.000138888888888,
+    97.99986111111112,
+    30.000138888888888
+  ],
+  "nodata_values": [
+    null
+  ],
+  "elevation_units": "metres",
+  "raster_validation": [
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N21_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        21.000138888888888,
+        92.99986111111112,
+        22.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -15.326663970947266,
+      "maximum_elevation_m": 1210.7115478515625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N22_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        22.000138888888888,
+        92.99986111111112,
+        23.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -0.3525641858577728,
+      "maximum_elevation_m": 1684.0618896484375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N22_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        22.000138888888888,
+        93.99986111111112,
+        23.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 153.2926025390625,
+      "maximum_elevation_m": 2754.739013671875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N23_00_E091_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        90.99986111111112,
+        23.000138888888888,
+        91.99986111111112,
+        24.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -12.004838943481445,
+      "maximum_elevation_m": 514.7330932617188,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N23_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        23.000138888888888,
+        92.99986111111112,
+        24.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 25.425695419311523,
+      "maximum_elevation_m": 1906.4912109375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N23_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        23.000138888888888,
+        93.99986111111112,
+        24.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 124.93425750732422,
+      "maximum_elevation_m": 2697.451904296875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N23_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        23.000138888888888,
+        94.99986111111112,
+        24.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 94.0,
+      "maximum_elevation_m": 1696.951171875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N24_00_E091_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        90.99986111111112,
+        24.000138888888888,
+        91.99986111111112,
+        25.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -8.572132110595703,
+      "maximum_elevation_m": 435.69000244140625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N24_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        24.000138888888888,
+        92.99986111111112,
+        25.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -1.68533456325531,
+      "maximum_elevation_m": 1257.1356201171875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N24_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        24.000138888888888,
+        93.99986111111112,
+        25.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 16.0,
+      "maximum_elevation_m": 2332.17626953125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N24_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        24.000138888888888,
+        94.99986111111112,
+        25.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 106.0,
+      "maximum_elevation_m": 2266.99365234375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E089_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        88.99986111111112,
+        25.000138888888888,
+        89.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 5.840744495391846,
+      "maximum_elevation_m": 173.44985961914062,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E090_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        89.99986111111112,
+        25.000138888888888,
+        90.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -4.321589469909668,
+      "maximum_elevation_m": 1418.94580078125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E091_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        90.99986111111112,
+        25.000138888888888,
+        91.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": -4.4333176612854,
+      "maximum_elevation_m": 1962.313720703125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        25.000138888888888,
+        92.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 4.434358596801758,
+      "maximum_elevation_m": 1711.79296875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        25.000138888888888,
+        93.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 59.0034065246582,
+      "maximum_elevation_m": 2838.24072265625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N25_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        25.000138888888888,
+        94.99986111111112,
+        26.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 128.0,
+      "maximum_elevation_m": 3122.1767578125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E089_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        88.99986111111112,
+        26.000138888888888,
+        89.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 19.393287658691406,
+      "maximum_elevation_m": 4067.209228515625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E090_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        89.99986111111112,
+        26.000138888888888,
+        90.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 19.05263328552246,
+      "maximum_elevation_m": 2714.475341796875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E091_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        90.99986111111112,
+        26.000138888888888,
+        91.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 31.72255516052246,
+      "maximum_elevation_m": 2585.625244140625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        26.000138888888888,
+        92.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 40.72297668457031,
+      "maximum_elevation_m": 2239.0263671875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        26.000138888888888,
+        93.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 58.617855072021484,
+      "maximum_elevation_m": 1370.27099609375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        26.000138888888888,
+        94.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 74.36083984375,
+      "maximum_elevation_m": 2693.908447265625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N26_00_E095_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        94.99986111111112,
+        26.000138888888888,
+        95.99986111111112,
+        27.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 99.5,
+      "maximum_elevation_m": 3469.53125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E088_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        87.99986111111112,
+        27.000138888888888,
+        88.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 183.0,
+      "maximum_elevation_m": 8564.2939453125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E091_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        90.99986111111112,
+        27.000138888888888,
+        91.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 236.98243713378906,
+      "maximum_elevation_m": 6294.17822265625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        27.000138888888888,
+        92.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 109.0,
+      "maximum_elevation_m": 7029.01953125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        27.000138888888888,
+        93.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 81.3340835571289,
+      "maximum_elevation_m": 3889.073486328125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        27.000138888888888,
+        94.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 68.15476989746094,
+      "maximum_elevation_m": 2865.08984375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E095_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        94.99986111111112,
+        27.000138888888888,
+        95.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 74.5,
+      "maximum_elevation_m": 2250.06396484375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E096_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        95.99986111111112,
+        27.000138888888888,
+        96.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 150.0,
+      "maximum_elevation_m": 4514.7587890625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E097_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        96.99986111111112,
+        27.000138888888888,
+        97.99986111111112,
+        28.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 311.77581787109375,
+      "maximum_elevation_m": 4808.1708984375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E092_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        91.99986111111112,
+        28.000138888888888,
+        92.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 2100.6982421875,
+      "maximum_elevation_m": 6853.92822265625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E093_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        92.99986111111112,
+        28.000138888888888,
+        93.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 413.1284484863281,
+      "maximum_elevation_m": 6138.23095703125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        28.000138888888888,
+        94.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 201.0,
+      "maximum_elevation_m": 5030.33740234375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E095_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        94.99986111111112,
+        28.000138888888888,
+        95.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 131.0,
+      "maximum_elevation_m": 4315.5185546875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E096_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        95.99986111111112,
+        28.000138888888888,
+        96.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 239.75033569335938,
+      "maximum_elevation_m": 5317.39453125,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N28_00_E097_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        96.99986111111112,
+        28.000138888888888,
+        97.99986111111112,
+        29.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 1079.0,
+      "maximum_elevation_m": 5905.4384765625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N29_00_E094_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        93.99986111111112,
+        29.000138888888888,
+        94.99986111111112,
+        30.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 420.29864501953125,
+      "maximum_elevation_m": 7144.13818359375,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N29_00_E095_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        94.99986111111112,
+        29.000138888888888,
+        95.99986111111112,
+        30.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 501.41790771484375,
+      "maximum_elevation_m": 7354.8857421875,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    },
+    {
+      "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N29_00_E096_00_DEM_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "pixel_resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "bounds": [
+        95.99986111111112,
+        29.000138888888888,
+        96.99986111111112,
+        30.000138888888888
+      ],
+      "nodata": null,
+      "dtype": "float32",
+      "minimum_elevation_m": 1812.124267578125,
+      "maximum_elevation_m": 6817.0087890625,
+      "valid_pixels": 12960000,
+      "nodata_pixels": 0
+    }
+  ],
+  "coverage_statistics": {
+    "total": 4016,
+    "covered": 4016,
+    "outside": 0,
+    "by_state": {
+      "AR": {
+        "total": 1446,
+        "covered": 1446,
+        "outside": 0
+      },
+      "AS": {
+        "total": 504,
+        "covered": 504,
+        "outside": 0
+      },
+      "MN": {
+        "total": 262,
+        "covered": 262,
+        "outside": 0
+      },
+      "ML": {
+        "total": 1014,
+        "covered": 1014,
+        "outside": 0
+      },
+      "MZ": {
+        "total": 708,
+        "covered": 708,
+        "outside": 0
+      },
+      "NL": {
+        "total": 16,
+        "covered": 16,
+        "outside": 0
+      },
+      "SK": {
+        "total": 42,
+        "covered": 42,
+        "outside": 0
+      },
+      "TR": {
+        "total": 24,
+        "covered": 24,
+        "outside": 0
+      }
+    }
+  },
+  "validation_status": "PASS",
+  "terrain_extraction_performed": false,
+  "model_training_performed": false
+}
