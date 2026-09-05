@@ -1,0 +1,1393 @@
+राष्ट्र ीय
+ सुदू र
+ संवेदन
+ क ें द्र
+/
+ National Remote Sensing Centre 
+भारतीय
+ अंतररक्ष
+ अनुसंधान
+ संगठन
+ / 
+Indian Space Research Organisation
+अंतररक्ष
+ ववभाग
+ /
+ Department of Space
+हैदराबाद
+ /
+ Hyderabad
+-
+500037
+February 
+2023
+Landslide Atlas of India
+भारत
+ के
+ भूस्खलन
+ एटलस
+(Mapping, Monitoring and R&D studies using Remote Sensing data)
+(
+सुदू र
+ संवेदन
+ आधाररत
+ मानवित्रण
+, 
+वनगरानी
+ और
+ अनुसंधान
+ एवं
+ ववकास
+)
+Landslide Atlas of India
+भारत
+ के
+ भूस्खलन
+ एटलस
+(Mapping, Monitoring and R&D studies using Remote Sensing data)
+(
+सुदू र
+ संवेदन
+ आधाररत
+ मानवित्रण
+, 
+वनगरानी
+ और
+ अनुसंधान
+ एवं
+ ववकास
+)
+nrsc
+राष्ट्र ीय
+ सुदू र
+ संवेदन
+ क ें द्र
+/
+ National Remote Sensing Centre 
+भारतीय
+ अंतररक्ष
+ अनुसंधान
+ संगठन
+ / 
+Indian Space Research Organisation
+अंतररक्ष
+ ववभाग
+ /
+ Department of Space
+हैदराबाद
+ /
+ Hyderabad
+-
+500037
+February 
+2023
+Copyright © 2023
+National Remote Sensing Centre, ISRO
+Published by
+National Remote Sensing Centre, ISRO
+Department of Space, Government of India
+Hyderabad – 500 037, Telangana, India 
+https://www.nrsc.gov.in
+Printed By 
+National Remote Sensing Centre, ISRO Hyderabad, India.
+Photos
+Front Cover page: High-resolution Image of landslide crown area of the Puthumala landslide taken from UAV.
+Back Cover Page: Field photographs of landslides from different parts of Uttarakhand.
+Production
+NRSC has played a key role in the DMS programme of ISRO in providing space-based support to various landslide
+disasters since 2005 in a programmatic manner. NRSC has prepared landslide hazard zonation (LHZ) map and Atlas for
+the first time in India on 1:25000 scale in the year 2001. Damage assessment for major landslide disasters was carried
+out using satellite data and aerial images and value-added products are provided to stake holders. NRSC has
+completed Seasonal Landslide Inventory Mapping Project (SLIM) for India for the post-monsoon of 2014 and 2017.
+Reproduction
+The publication may be produced in whole or in part and in any form of educational or non-profit purposes without
+permission from the copyright holder, provided the acknowledgement and citation (mentioned below) of the source is
+made in all type of publication, which include research articles, journal papers, conference proceeding, books, book
+chapter, scientific reports, dissertation, etc. NRSC would appreciate receiving a copy of any publication that uses this
+publication as a source. No use of this publication may be made for resale or for any other commercial purposes The
+view and interpretation in this publication are those of the author(s). They are not attributable to NRSC and do not
+imply the expression of any opinion concerning the legal status of any country, territory, city or area of its authorities
+or concerning the delimitation of its frontiers or boundaries or the endorsement of any product. The administrative
+boundaries presented in this publication are only for scientific study and not for statutory purpose.
+Citation 
+Nirmala Jain, Priyom Roy, Tapas Ranjan Martha, Punit Jalan and Aishwarya Nanda (2023). Landslide Atlas of India
+(Mapping, Monitoring and R&D studies using Remote Sensing data). NRSC special publication. NRSC/ISRO. Document
+number: NRSC-RSA-GSG-GMED-FEB 2023-TR-0002167-V1.0
+Printed at Printing Facility, PPEG, NRSC
+
+1 Security Classification Official
+2 Distribution General
+3 Report / Document 
+version (a)   Issue  no. 01 (b) Revision & Date   27.02.2023
+4 Report / Document Type Technical report
+5 Document Control 
+Number NRSC-RSA-GSG-GMED-FEB 2023-TR-0002167-V1.0
+6 Title Landslide atlas of India (Mapping, Monitoring and R&D studies using Remote Sensing 
+data)
+7 Particulars of collation 
+Pages
+76
+Figures
+55
+Tables
+04
+References
+16
+8 Author(s) Nirmala Jain, Priyom Roy , Tapas Ranjan Martha, Punit Jalan and Aishwarya Nanda 
+9 Affiliation of authors Geohazards and Mineral Exploration Division, Geosciences Group, RSAA, NRSC/ISRO
+10 Scrutiny mechanism
+Compiled by                                         Reviewed by                   Approved and Controlled 
+Nirmala Jain S/E 'SE'                           Dr. I. C. Das                      Dr. K Vinod Kumar
+Priyom Roy S/E 'SE'                            Group Head, GSG            Deputy Director (RSAA)
+11 Originating unit National Remote Sensing Centre, Hyderabad-500037
+12 Sponsor(s)/ Name and 
+Address Indian Space Research Organisation
+13 Date of  Initiation 01 November 2022
+14 Date of Publication 27 February 2023
+15
+Abstract: This Atlas provides the details of landslide present in Landslide provinces of India including damage
+assessment of specific landslide locations. Geospatial landslide inventory database consisting of ~80,000
+landslides in India mapped by NRSC/ISRO under its DMS programme during the 1998-2022 period is reported
+here. The database covers landslide vulnerable regions in 17 states and 02 UTs of India in the Himalayas and
+Western Ghats. The database includes three types of landslide inventory – seasonal, event-based and route-wise
+for the 1998-2022 period. Seasonal inventory contains pan-India landslide database corresponding to the 2014
+and 2017 rainy season in India. Event-based inventory contains details of some of the major triggering events such
+as Kedarnath and Kerala disasters, and Sikkim earthquake as well as few large valley blocking landslides. Route-
+wise inventory contains details of landslides along selected routes of tourist and pilgrimage importance. Satellite
+data of high to very high resolution such as IRS-1D PAN+LISS-III, Resourcesat-1, 2 and 2A LISS-IV Mx, Cartosat-1
+and 2S, data from International satellites (Sentinel-1&2, Pleiades and WorldView) and Aerial images were used in
+the mapping of landslides. Some of the mapped landslides were validated in the field using mobile App and news
+reports. The database were used to rank 147 districts in 17 states and 02 UTs of India for their exposure to
+landslides in terms of key socio-economic parameters. Lastly advanced techniques in landslide detection,
+modeling and prediction are also explained.
+Keywords: Landslides, Remote Sensing, Landslide Provinces in India, Landslide Inventory
+
+Message
+Shri S. Somanath
+Chairman ISRO, Secretary DOS
+India is prone to many natural disasters like flood, landslide, cyclone, forest fire, earthquake, drought
+etc. Satellites provide synoptic observations of natural disasters at regular intervals that help in
+management of disasters. In order to better understand the risks due to such disasters, it is also
+necessary to integrate satellite and field-based observations and to work towards risk reduction
+principles. Satellite communication and navigation systems also play an important role in disaster
+management with improved technological options.
+Disaster Management Support (DMS) Programme of ISRO, comprehensively
+addresses various aspects of natural disasters in the country, using space-based inputs. ISRO
+disseminates relevant information in the interactive geospatial domain through various portals like
+Bhuvan, National Database for Emergency Management and MOSDAC for the administrators to
+better understand the impact and for improved decision support.
+ISRO provides satellite-based near real-time information support to Central
+Ministries / Departments and State Ministries / Departments, prior to and after major natural
+disasters. Under the DMS programme, ISRO has been actively working in landslide disaster response
+and mitigation. Satellite imagery and damage analysis have been provided for major landslide
+disasters in recent times in Kedarnath, Kerala, Chamoli and Assam.
+The “Landslide Atlas of India” created by National Remote Sensing Centre,
+Hyderabad is another value addition in the field of landslide response and research. It illustrates the
+overall landslide scenario in India and also puts forward key research outcomes in the field of
+landslide hazard. I congratulate team NRSC for this effort and hope this atlas will be beneficial to
+disaster responders and researchers.
+Bengaluru
+Feb 27, 2023
+(S. Somanath)
+i
+ii
+NRSC has played a pivotal role in the DMS programme of ISRO in providing space-based support to various
+natural disasters since 2005 in a programmatic manner. Many projects, both operational and R&D nature, are
+executed by NRSC as a part of the ISRO’s DMS programme.
+In the field of landslide studies, NRSC has prepared a landslide hazard zonation (LHZ) map on
+1:25,000 scale in the year 2001 for the first time in India using GIS and AHP techniques. Damage assessment for
+major landslide disasters was carried out using satellite data and aerial images and value-added products are
+provided to stakeholders. NRSC has completed Seasonal Landslide Inventory Mapping Project (SLIM) for India
+for the post-monsoon season of 2014 and 2017. Pan-India rainfall-triggered landslide databases are available
+for the first time in the country as a result of this project. NDMA has assigned the responsibility of rapid
+landslide mapping using satellite data to NRSC through office memorandum no. 6-66/2013-Mit-II/4531, dated
+18 Jan 2017. New research activities were taken up by NRSC, particularly, understanding the kinematics of
+landslides using PSInSAR technique that will be a new paradigm for landslide early warning in near future.
+The “Landslide Atlas of India” created by NRSC showcases the recent responses and
+developments in the landslide disaster in the country using space data and geospatial models. The state-wise
+landslide maps show the geospatial distribution of landslides. Few representative large landslides from the
+Himalaya and Western ghats have been showcased using high-resolution satellite imagery. I congratulate the
+team for compiling this atlas and hope it will prove to be beneficial to researchers and experts of landslides.
+Hyderabad
+Feb 27, 2023
+(Prakash Chauhan)
+Dr. Prakash Chauhan
+Director, NRSC
+FOREWORD
+iii
+iv
+PREFACE
+Landslides are controlled and triggered by geological, topographical and hydrological factors. Studying landslide
+hazard using satellite data has an inherent advantage since it occurs mostly in remote and inaccessible
+mountains. NRSC has developed expertise in addressing various aspects of landslide hazard using both optical
+and SAR satellite images.
+NRSC has created a pan India database of ~80,000 landslides those occurred during last two
+decades using satellite data. This database contains both seasonal landslides and event-based landslides. These
+data were created as polygons in GIS, and contains several attribute information relevant for management of
+landslide disaster. This pan India database of landslides helped to understand the critical lithology, geological
+structure and rainfall responsible for occurrence of landslides. This database also helped to understand the
+district-wise landslide exposure in India. Other than the landslide database, various technological advancements
+such as debris flow modeling using UAV, landslide volume estimation, landslide mobile app and landslide
+kinematics using InSAR were also developed by NRSC.
+The “Landslide Atlas of India” prepared by NRSC is a rich collection of landslide inventory which will
+help user departments in prioritisation of developmental activities in tectonically and ecologically sensitive
+mountainous areas in India. I congratulate the team for preparing this atlas.
+Hyderabad
+Feb 27, 2023
+(K Vinod Kumar)
+Dr. K.Vinod Kumar
+Dy. Director
+Remote Sensing Applications (RSA)
+NRSC
+v
+vi
+ACKNOWLEDGEMENTS
+The “Landslide Atlas of India” is a consolidation of work carried out by NRSC related to
+landslide disasters under the Disaster Management Support (DMS) programme of ISRO.
+We sincerely thank Shri S Somanath, Secretary DOS and Chairman ISRO, Dr. Prakash
+Chauhan, Director NRSC for their encouragement and support to this work. We thank Dr.
+Shantanu Bhatawdekar, Scientific Secretary ISRO and Director EDPO, Dr. K Vinod Kumar, DD
+(RSA) NRSC, Dr. John Mathew, Associate Director EDPO and Dr. K H V Durga Rao, Group
+Director, DMSG NRSC for their active support to this study.
+Satellite data are the main requirement for this work carried out by NRSC. Hence, we thank
+Dr. N Aparna, Group Head NDC, NRSC and her team for providing the IRS satellite data. We
+also thank Copernicus, USGS, International Charter Space and Major Disasters for providing
+satellite data for emergency response to landslide disaster events in India. We also thank
+Shri M. Arulraj and Bhuvan team for their support in the web-based cataloguing of
+landslides. We thank our colleagues in Geosciences Group, NRSC and knowledge partner
+institutions (GSI, NDMA, SDMAs, NIDM, CBRI, WIHG, NRSC-RRSCs, NRSC-ASDMA, IIRS, SAC,
+NESAC, CRRI, DGRE, IITs, ITC-Netherlands, State remote sensing centres etc.) in India who
+have contributed to this work.
+Dr.  Iswar Chandra Das
+Group Head, Geosciences Group
+vii
+viii
+nrscLandslide Atlas of India
+1. Message i
+2. Foreword iii
+3. Preface v
+4. Acknowledgements vii
+5. List of Figures 1
+6. List of Tables 5
+7. Introduction and Background 7
+8. Landslide Disaster in India 8
+9. Landslide Classification 9
+10. Rapid Response to  Landslide Disaster  using EO Data 11
+11. Landslide Inventory of India 17
+12. Landslide Susceptibility Mapping and Districts-wise  Landslide Risk Exposure 55
+13. Research & Development Studies in Landslides Studies 63
+14. References 71
+15. Bibliography of landslide studies done by NRSC 73
+Table of Contents 
+
+National Remote Sensing Centre, ISRO, Hyderabad 1
+Figure 1. Block diagram of features of landslide: earth flow type.
+Figure 2. Landslides from different parts of India.
+Figure 3. Landslide damage to New Haflong Railway Station Dima Hasao District of Assam (15-16 May
+2022).
+Figure 4. Damage caused by the Raunthi Gad landslide. Synoptic view of the affected region as seen from
+Resourcesat-2A LISS IV image (08 February 2021) shown in FCC.
+Figure 5. Damage caused by the Raunthi Gad landslide. Field observations.
+Figure 6. Geomorphological changes leading to the disaster around Kedarnath, Uttarakhand (2013).
+Figure 7. Blockage of road (highlighted with circles) adjacent to the Tista river due to landslides triggered
+by Sikkim Earthquake, 2011.
+Figure 8. Parts of the road destroyed by landslides triggered due to the earthquake near Chungthang area
+in north Sikkim.
+Figure 9. Landslide damage in Okhimath town. GeoEye-1 images showing buildings that were damaged
+(yellow outlines) by landslides.
+Figure 10. Landslides inventory of India.
+Figure 11. Landslides mapped using high-resolution satellite data in Jammu & Kashmir and Ladakh, which
+occurred between 2014 to 2017.
+Figure 12. Paryote landslides near Paryote village in Doda district, Jammu and Kashmir.
+Figure 13. Landslides mapped using high-resolution satellite data in Himachal Pradesh which were
+occurred between 1998 to 2017.
+Figure 14. Kotropi landslides, Mandi district, Himachal Pradesh.
+Figure 15. Landslides mapped using high-resolution satellite data in Uttarakhand, which occurred between
+1998 to 2022.
+Figure 16. Landslides around Kedarnath, Uttarakhand.
+Figure 17. Landslides mapped using high-resolution satellite data in Haryana, which occurred in 2017.
+Figure 18. Panchkula landslides, Haryana.
+Figure 19. Landslides mapped using high-resolution satellite data in Sikkim, which occurred between 2011
+to 2022.
+Figure 20. Mantam landslide, Sikkim.
+List of figures
+nrscLandslide Atlas of India
+Figure 21. Landslides mapped using high-resolution satellite data in West Bengal, which occurred between
+2011 to 2017.
+Figure 22. Landslide near Kurseong village, West Bengal.
+Figure 23. Landslides mapped using high-resolution satellite data in Arunachal Pradesh, which occurred
+between 2014 to 2021.
+Figure 24. Landslide from West Siang, Arunachal Pradesh.
+Figure 25. Landslides mapped using high-resolution satellite data in Assam, which occurred between 2014
+to 2022.
+Figure 26. Landslide from Dima Hasao District, Assam.
+Figure 27. Landslides mapped using high-resolution satellite data in Nagaland, which occurred between
+2014 to 2018.
+Figure 28. Landslide from Kikruma in Phek district, Nagaland.
+Figure 29. Landslides mapped using high-resolution satellite data in Manipur, which occurred between
+2014 to 2022.
+Figure 30. Landslide near Tupul Railway Station, Noney, Manipur.
+Figure 31. Landslides mapped using high-resolution satellite data in Mizoram, which occurred between
+2014 to 2018.
+Figure 32. Landslide from Aizwal, Mizoram.
+Figure 33. Landslides mapped using high-resolution satellite data in Tripura, which occurred between 2014
+to 2018.
+Figure 34. Landslide from Dhalai, Tripura.
+Figure 35. Landslides mapped using high-resolution satellite data in Meghalaya, which occurred between
+2014 to 2017.
+Figure 36 Landslide from East Khasi Hills, Meghalaya.
+Figure 37. Landslides mapped using high-resolution satellite data in Maharashtra, which occurred between
+2014 to 2021.
+Figure 38. Landslide from Taliye Village, Mahad district, Maharashtra.
+Figure 39. Landslides mapped using high-resolution satellite data in Karnataka, which occurred between
+2014 to 2018.
+Figure 40. Landslide from Kodagu and Dakshina Kannada districts, Karnataka.
+Figure 41. Landslides mapped using high-resolution satellite data in Kerala, which occurred between 2014
+to 2021.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+2
+Figure 42. Landslide from Puthumala, Wayanad district, Kerala.
+Figure 43. Landslides mapped using high-resolution satellite data in Tamil Nadu, which occurred between
+2014 to 2018.
+Figure 44. Landslides in Coimbatore district, Tamil Nadu.
+Figure 45. Landslides mapped using high-resolution satellite data in Goa, which occurred between 2014 to
+2017.
+Figure 46. LSZ map for Shimla– Rampur– Sarahan – Sumdo Route.
+Figure 47. Socio-economic parameter risk exposure map, The contribution of each exposure element for
+the top ten landslide-exposed districts is shown in bar diagram.
+Figure 48. Landslide prediction using MT InSAR. Kikruma landslide.
+Figure 49. Flow modeling for Puthumala Landslide, Wayanad District, Kerala.
+Figure 50. Landslide modeling using UAV data, Puthumala Landslide, Wayanad District, Kerala.
+Figure 51. Landslide susceptibility maps generated using spatial sampling strategy. Landslide susceptibility
+maps of Mizoram.
+Figure 52. Landslide early warning for advance 3 days given in parts of Himachal Pradesh.
+Figure 53. Step-by-step procedure for landslide data collection using FLIM mobile app.
+Figure 54. Landslide data from western Maharashtra collected in Bhuvan FLIM database.
+Figure 55. Ground landslide data collected in NER using FLIM mobile App.
+3National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+4
+Tables
+Table 1. The classification of landslides by Varnes (1978).
+Table 2. Landslides inventory of India statistic.
+Table 3. Table shows the rank of districts in 17 states of India for their exposure to landslides .
+Table 4. Table showing triggering probability for landslide trigger.
+5
+List of tables
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+6
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+7
+The frequently used definition of landslide is “a movement of mass of rock, earth or debris down a slope”
+(Cruden, 1991). Different types of landslides such as Debris slide, debris flows, Rock slide, rock fall etc. can be
+triggered by rainfall, undercutting of slopes due to flooding or excavation, earthquakes, snowmelt and other
+natural causes, as well as anthropogenic causes such as over grazing by cattle, terrain cutting and filling, excessive
+development, etc. They can occur on many types of terrain given the right conditions of soil, rock, geological
+structure and slope.
+Landslides are among the main natural catastrophes, which cause major problems in mountainous terrain by
+killing hundreds of people every year besides damaging property, disrupting transportation and blocking
+communication links. In some areas, such as the western coastal parts of North and South America, Central
+America, Alpine regions of Italy, France, Switzerland and Austria in Europe, Himalayan regions of India, Nepal in
+Asia and parts Central Asia, the effects of landslides are more pronounced mainly due to the spurred
+developmental activities to meet the ever growing demand of people. As per the official figures of United Nations
+International Strategy for Disaster Reduction (UN/ISDR) and the Centre for Research on the Epidemiology of
+Disasters (CRED) for the year 2006, landslide ranked 3rd in terms of number of deaths among the top ten natural
+disasters. Approximately 4 million people were affected by landslides in 2006 (OFDA/CRED, 2006). Regions with
+the highest landslide risk can be found in Colombia, Tajikistan, India, and Nepal where the estimated number of
+people killed per year per 100 km2 was found to be greater than one (Nadim et al., 2006)
+India is among the top four countries with highest landslide risk, where the estimated loss of life per 100 km2 per
+year is greater than one. In India, most of the landslides occur in the monsoon months (between June and
+September). Globally, India contribute 16 % rainfall-triggered landslide events (Source: Froude and Petley, 2018).
+Landslides mainly occur along slope of hills due to natural triggering factors such as heavy rainfall and earthquake
+or due to anthropogenic activities such as construction of roads, buildings and mining. The atlas comprises of
+information about the landslide records occurred between 1998 to 2022. It highlights the understanding of socio-
+economic parameters with respect to district wise landslide distribution in the country.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+8
+Landslides are one of the common geological hazards in hilly areas throughout the world. Other than geological
+and anthropogenic causes, rainfall is the natural triggering factor for occurrence of landslides. Rainfall-induced
+landslides are the result of the combined action of water on topography, geology, soil and vegetation. Landslides
+have led to massive environmental damages such as increase in sediment discharge due to soil erosion and loss of
+human lives every year. India, a country with varied physiographic and climatic conditions, frequently faces the
+vagaries of landslide disaster. Approximately 0.42 million sq. km or 12.6% of land area, excluding snow covered
+area, is prone to landslide hazard. Out of this, 0.18 million sq. km falls in North East Himalaya, including Darjeeling
+and Sikkim Himalaya; 0.14 million sq. km falls in North West Himalaya (Uttarakhand, Himachal Pradesh and Jammu
+& Kashmir); 0.09 million sq. km in Western Ghats and Konkan hills (Tamil Nadu, Kerala, Karnataka, Goa and
+Maharashtra) and 0.01 million sq. km in Eastern Ghats of Aruku area in Andhra Pradesh (www.gsi.gov.in). In India,
+landslides mostly occur in the monsoon season. Himalayas and Western Ghats are highly susceptible to mass
+movements due to hilly topography and heavy rainfall
+The majority of landslides are triggered by variability in rainfall patterns, while sporadic events such as very heavy
+rainfall outside the monsoon period (Kedarnath event of 2013) and earthquakes (Sikkim earthquake) cause
+significant disruption to livelihood and infrastructure. The Northernmost Indian states, J&K, Himachal Pradesh, and
+Uttarakhand, are the worst affected states by the landslides disasters as the majority of the territory falls within
+the Himalayas. Many districts of these states have high population densities, and major pilgrimage routes or major
+tourism spots are exposed and affected by landslides. Although the North Eastern states have many landslides
+yearly, they are not particularly vulnerable to them in terms of socioeconomic factors due to their lower population
+density and wide unoccupied mountain areas.
+The vulnerability of the inhabitants and households is more significant in the Western Ghats due to the very high
+population and household density, especially in Kerala, even when fewer landslides exist than in the Himalayan
+regions. The Himalayan range has a significant influence on the geographic distribution of landslides. The spatial
+distribution of landslides is controlled by the shale-sandstone-metasediments generating dissected hills and valleys
+over the Himalayan range with slopes 30° to 45°. This, together with rainfall between 750-1000 mm is the cause of
+landslides. Also, the Chenab subbasin, whose geographic expanse primarily comprises steeply sloping mountains,
+records the highest number of landslides. The steep escarpments of the Western Ghats record occurrences of
+landslides, but however,these are primarily controlled by the soil cover on the slopes.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+9
+Abbreviated Classification of Slope Movements
+Type of movement
+TYPE OF MATERIAL 
+Bed Rock
+Engineering Soils
+Predominantly Course Predominantly Fine
+Fall Rock Fall Debris Fall Earth Fall
+Topple Rock Topple Debris Topple Earth Topple
+Slide Rotational (Slump) Rotational Debris Slide Rotational Earth Slide
+Translational Translational Rock Slide Translational Debris Slide TranslationalEarth Slide
+Lateral Spread Rock Spread Debris Spread Earth Spread
+Flow Rock Flow (Deep creep) Debris Flow (Soil Creep) Earth Flow (Soil Creep)
+Complex Combination of two or more principal types of movement
+Figure 1. Block diagram of features of landslide: Earth flow type (pubs.usgs.gov).
+Table 1. The classification of landslides.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+10
+Types of Movement
+Falls: Falls are rapid movements of rocks and boulders detached from steep slopes or cliffs along fractures, joints,
+and bedding planes.
+Topple: It is the forward rotation of a mass of debris or rock out of a slope. The slope failure generally occurs at
+point near the base of the block of rock.
+Slides: A slide is a downslope movement of material that occurs along a slip surface.
+Rotational slide: In this slide the slide movement is roughly rotational about an axis which is parallel to the ground 
+surface and transverse across the slide.
+Translational slide: In this slide the landslide mass moves along a planar surface with rotation or backward tilting 
+Lateral Spreads: It is the lateral movement usually occur on very gentle slopes or flat terrain. The failure is caused
+by liquefaction due to earthquake.
+Types of flows
+Debris flow: It is a form of rapid mass movement in which a combination of loose soil, rock, organic matter, slurry
+that flows downslope. They are commonly caused by intense precipitation or rapid snow melt.
+Earth flow: It is down slope viscous flow of fine grained material saturated with water.
+Mudflow: A mudflow is wet or viscous fluid mass of fine and coarse grained material flows rapidly along drainage
+channels.
+Creep: Creep is the slow, steady, downward movement of material under gravity occurs in large area.
+Types of Materials
+Rock: hard or firm mass.
+Debris: 20% to 80% of the particles are larger than 2mm, and the remainder is less than 2mm”.
+Earth: material in which 80% or more of the particles are smaller than 2mm.
+Soil: an aggregate of solid particles, generally of minerals and rocks.
+Mud: material in which 80% or more of the particles are smaller than 0.06mm.
+Debris flow landslide, Mahad, Maharashtra
+ Debris flow landslide, Maaniyankunnu, Kerala
+ Rock slide, Rudraprayag, Uttarakhand
+Figure 2. Landslides from different parts of India
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+11
+RAPID RESPONSE TO  LANDSLIDE DISASTER 
+USING EO DATA
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+12
+Figure 3. Landslide damage to New Haflong Railway Station Dima Hasao District of Assam (15-16 May 2022).
+Preliminary observation shows the occurrence of a number of landslides on the slopes on either side of the station. A
+large debris flow on the NW of the station has resulted in the overtoppling and damage of a parked train in the
+station.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+13
+Figure 4. Damage caused by the Raunthi Gad landslide. Synoptic view of the affected region by Raunthi Gad rock fall
+and Debris flow (7 Feb 2021 ) as seen from Resourcesat-2A LISS IV image (08 February 2021) shown in FCC. Inset:
+shows enlarged view of the rock avalanche zone with joints and foliation.
+Figure 5. Damage caused by the Raunthi Gad landslide a. Photograph taken from the helicopter showing the triangle
+shaped release area of the rock avalanche b. Foliation and joint-1 exposed on the joint-2 section, c. Ground
+photograph showing boulders of various sizes over the dam and on the valley floor, d. Tunnel filled with debris and
+water e. Ground photograph showing debris flow mark above the valley floor.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+14
+Figure 6. Geomorphological changes leading to the disaster around Kedarnath, Uttarakhand (2013). Satellite data
+reconstructed the chain of events around Kedarnath during 16-17 June 2013. It was found that reactivation of a large
+old landslide damaged a river training wall that resulted in the flooding of Kedarnath town on 16 June 2013. The twin
+events not only buried Kedarnath town with debris brought down from terminal and lateral moraines of Chorabari
+and Companion glaciers but also changed the course of Mandakini river from west of Kedarnath town to east of it.
+Pre-disaster Cartosat 1 image and post-disaster Cartosat-2S image of Kedarnath town showing structural damage to
+buildings and other facilities due to debris flow and flash flood.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+15
+Figure 7. Blockage of road (highlighted with circles) adjacent to the Tista river due to landslides triggered by Sikkim
+Earthquake, 2011 . Left - pre-earthquake WorldView-2 image, and right - post-earthquake pansharpened GeoEye-1 image
+shown with natural colour composite.
+Figure 8. Parts of the road destroyed by landslides triggered due to the earthquake near Chungthang area in north Sikkim.
+Pre- and post-earthquake Cartosat-1 images are shown in left and right, respectively.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+Post-event: Geoeye-1  (19 Sept 2012)Pre-event: Geoeye-1 (30 Mar 2012)
+AFTERBEFORE
+BEFORE
+BEFORE
+AFTER
+AFTER
+Figure 9. Landslide damage in Okhimath town. Pre- (left) and post- (right) landslide GeoEye-1 images showing buildings
+that were damaged (yellow outlines) by landslides. A. Mangali village - debris flow buried majority of houses, B. Chunni
+village - The debris flow that has buried Mangali village has also buried the majority of houses in Chunni village located in
+the downslope. C. Buildings in the debris flow path were levelled to the ground.
+A
+B
+C
+16
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+17
+LANDSLIDE INVENTORY OF INDIA
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+18
+Figure 10. Landslide inventory of India.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+19
+Sl. No. State/UTs Monsoon season
+2014
+Monsoon season 2017 Field-based/year Event-based / year Total
+1 Jammu and Kashmir 6826 19 434 / 2011 1 / 2015 7280
+2 Ladakh 23 - - 23
+3 Himachal Pradesh 922 172 413 / 1998 1/ 2017
+51/2013
+2/2021
+1561
+4 Uttarakhand 1593 455 1419 / 1998 32/2003
+307/2010
+473 / 2012
+6610 / 2013
+1 / 2017
+329/2021
+1/2022
+11219
+5 Sikkim 73 79 - 1408 / 2011
+8 / 2012
+1/ 2016
+1569
+6 West Bengal 24 82 - 66 / 2011 172
+7 Arunachal Pradesh 2904 4709 - 75 / 2016
+1/2021
+7689
+8 Nagaland 54 2071 - 7/2017 2132
+9 Manipur 379 4559 - 556/2017
+1/2022
+5494
+10 Mizoram 1205 2254 - 8926/2017 12385
+11 Tripura 56 8014 - - 8070
+12 Assam 1243 793 - 533/2017
+5091/2022
+2569
+13 Meghalaya 2127 512 - - 2639
+14 Maharashtra 97 3 - 5012/2021 5112
+15 Goa 2 1 - - 3
+16 Karnataka 82 19 - 993/2018 1094
+17 Kerala 9 45 - 5191/2018
+756/2019
+09/2020
+29/2021
+6039
+18 Tamil Nadu 79 8 - 603/2018 690
+19 Haryana - 100 - - 100
+Total 17,698 23,895 2,266 37,074 80933
+The database covers landslide-vulnerable regions of India in the Himalayas and Western Ghats. Satellite data of high
+to very high resolution nature such as IRS-1D PAN+LISS-III, Resourcesat-1, 2 and 2A LISS-IV Mx, Cartosat-1 and 2S,
+Aerial images were used in the mapping of landslides. Change detection using visual (manual) and digital (automatic)
+techniques were used to prepare the landslide inventory database. Some mapped landslides were validated in the
+field using mobile App and from the news report. The database mainly contains three types of inventory – seasonal,
+event-based and route-wise for the 2000-2017 period. Seasonal inventory contains pan-India landslide database
+corresponding to the 2014 and 2017 rainy season in India. The inventory database is available in a web GIS platform
+in the Bhuvan portal. The landslide inventory database shows the hotspot areas.
+Table 2. Landslides inventory database of India.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+20
+Figure 11. Landslides mapped using high-resolution satellite data in Jammu & Kashmir and Ladakh, which
+occurred between 2014 to 2017.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+21
+Figure 12. Paryote landslides near Paryote village in Doda district, Jammu and Kashmir. The continuous reactivation
+of Paryote Landslide near Paryote village in Doda district of Jammu and Kashmir. Translational-type failure with
+rock fall has occurred near the crown of the landslide, followed by a partially channelized debris flow along the
+main body of the landslide.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+22
+Figure 13. Landslides mapped using high-resolution satellite data in Himachal Pradesh, which occurred
+between 1998 to 2017.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+23
+Figure 14. Kotropi landslides, Mandi district, Himachal Pradesh. A massive landslide occurred near the village
+of Kotropi in Mandi district of Himachal Pradesh, on Sunday, 13th of August, 2017. The landslide occurred on
+National highway 154, the road between Mandi and Pathankot. The landslide resulted from rotation failure
+near the crown region followed by deep translational mechanism along the landslide body and channelised
+debris flow along the toe.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+24
+Figure 15. Landslides mapped using high-resolution satellite data in Uttarakhand, which occurred between
+1998 to 2022.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+25
+Figure 16. Landslides around Kedarnath, Uttarakhand. During 16-17 June 2013, heavy rainfall (approximately 325
+mm) caused widespread flash floods in the upstream areas of Mandakini, Alaknanda and Bhagirathi rivers
+resulting in massive damage to properties and infrastructures in the Kedarnath valley and areas in the
+downstream of Badrinath and Gangotri. A large reactivated landslide breached an artificial embankment north of
+the Kedarnath town.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+26
+Figure 17. Landslides mapped using high-resolution satellite data in Haryana, which occurred in 2017.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+27
+Figure 18. Panchkula landslides, Haryana. Landslide was triggered in the Panchkula of Haryana to heavy monsoonal
+rain in 2017. The landslide is shallow translational failure followed by channelized debris flow.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+28
+Figure 19. Landslides mapped using high-resolution satellite data in Sikkim, which occurred between 2011 to
+2022.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+29
+Figure 20. Mantam landslide, Sikkim. A massive landslide occurred near the village of Mantam (opposite the
+Passingdang-Mantam road) in Sikkim on 13th of August, 2016. Wedge type failure has occurred near the crown of the
+landslide followed by a translational type of failure in the main body of the landslide.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+30
+Figure 21. Landslides mapped using high-resolution satellite data in West Bengal, which occurred between
+2011 to 2017.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+31
+Figure 22. Landslide near Kurseong village, West Bengal. Reactivation of a large landslide near Kurseong town in
+Darjeeling district of West Bengal. Translational-type failure has occurred near the crown of the landslide, followed by a
+channelized debris flow along the main body of the landslide.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+32
+Figure 23. Landslides mapped using high-resolution satellite data in Arunachal Pradesh, which occurred
+between 2014 to 2021.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+33
+Figure 24. Landslide from West Siang, Arunachal Pradesh. Landslide was triggered in the West Siang of Arunachal
+Pradesh to heavy monsoonal rain in 2017. The landslide is shallow translational failure.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+34
+Figure 25. Landslides mapped using high-resolution satellite data in Assam, which occurred between 2014 to
+2022.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+35
+Figure 26. Landslide from Dima Hasao District, Assam. Cluster landslides in Dima Hasao District of Assam caused by
+heavy rainfall in the month of May, 2022. Most of the landslides are shallow translational failures.
+s
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+36
+Figure 27. Landslides mapped using high-resolution satellite data in Nagaland, which occurred between 2014
+to 2018.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+37
+Figure 28. Landslide from Kikruma from Phek district, Nagaland. A large landslide was triggered on 29 July 2018 near
+Kikruma village in Phek district of Nagaland resulting in the formation of an artificial dam on the Sidzu. The failure
+mechanism of the landslide is deep translational (planar) .
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+38
+Figure 29. Landslides mapped using high resolution satellite data in Manipur which were occurred between
+2014 to 2022.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+39
+Figure 30. Landslide Occurred near Tupul Railway Station, Noney, Manipur . A large landslide occurred near Tupul
+railway station in the Noney district of Manipur on 30 June 2022. From the geometry of the landslide, it can be
+inferred that the failure is a rotational type, and the crown is located on an unstable slope.
+POST IMAGE: RISAT-SAR (04 JULY 2022)
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+40
+Figure 31. Landslides mapped using high-resolution satellite data in Mizoram, which occurred between 2014
+to 2018.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+41
+Figure 32. Landslide from Aizwal, Mizoram. Landslide was triggered in the Aizawl of Mizoram to heavy monsoonal
+rain in 2017. The landslide is shallow translational failure.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+42
+Figure 33. Landslides mapped using high-resolution satellite data in Tripura which, occurred between 2014 to
+2018.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+43
+Figure 34. Landslide from Dhalai, Tripura . Landslides were triggered in the Dhalai of Tripura to heavy monsoonal
+rain in 2017. The landslide is shallow translational failure.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+44
+Figure 35. Landslides mapped using high-resolution satellite data in Meghalaya, which occurred between
+2014 to 2017.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+45
+Figure 36. Landslide from East Khasi Hills, Meghalaya. Landslides were triggered in the East Khasi Hills of Meghalaya
+due to heavy monsoonal rain in 2017. The landslides are shallow translational failures.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+46
+Figure 37. Landslides mapped using high-resolution satellite data in Maharashtra, which occurred between
+2014 to 2021.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+47
+Figure 38. Landslide from Taliye Village ,Mahad district, Maharashtra. A catastrophic landslide occurred at the
+village of Taliye in Mahad taluk of Raigad on 22 July 2021. The landslide crown shows a rotational failure followed
+by deep translational failure along the main body.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+48
+Figure 39. Landslides mapped using high-resolution satellite data in Karnataka, which occurred between 2014
+to 2018.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+49
+Figure 40. Landslide from Kodagu and Dakshina Kannada districts, Karnataka. Landslides were triggered in the
+Kodagu and Dakshina Kannada districts of Karnataka due to heavy rain in the 3rd week of August, 2018. Majority of
+the landslides were shallow translational failures.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+50
+Figure 41. Landslides mapped using high-resolution satellite data in Kerala which, occurred between 2014 to
+2021.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+51
+Figure 42. Landslide from Puthumala region, Wayanad district, Kerala. Most of these landslides are channelised
+debris flows
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+52
+Figure 43. Landslides mapped using high-resolution satellite data in Tamil Nadu, which occurred between
+2014 to 2018.
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+53
+Figure 44. Landslide in Coimbatore district, Tamil Nadu. Most of the landslides are shallow translational failures or 
+channelised debris flows  
+
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+Figure 45. Landslides mapped using high-resolution satellite data in Goa, which occurred between 2014 to
+2017.
+54
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+55
+LANDSLIDE SUSCEPTIBILITY MAPPING AND
+DISTRICTS-WISE  LANDSLIDE RISK EXPOSURE
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+56
+In view of the recurrence of landslides and resultant death toll in recent years in the Himalayas, and also appreciating
+the importance of remote sensing techniques in landslide related studies, at the instance of Cabinet Secretary,
+Government of India, Department of Space had undertaken a specific project for preparation of Landslide
+Susceptibility Zonation (LSZ) and Management maps on 1:25,000 scale in the Himalayas of Uttarakhand and
+Himachal Pradesh states.
+The whole process of landslide phenomena is dependent on two groups of causative
+factors as below:
+Geological / Topographic factors
+* Lithology
+* Geological structures (fault, trust, lineament etc)
+* Slope-dip (bedding, joint) relation
+* Geomorphology
+* Drainage
+* Slope angle, slope aspect and slope morphology
+* Land use / land cover
+* Soil texture and depth
+* Rock weathering
+The geological factors are often considered for the Landslide Susceptibility Zonation, as they play a dominant role in 
+the prognosis of landslide.
+Triggering Factors
+* Anthropogeny
+* Rainfall
+* Earthquake
+Keeping in view the various techniques of model, it has been felt that a model addressing the expert knowledge
+combined with a statistical technique suffices the need.
+In this method, how each parameter of the terrain and categories within the parameters respond to landslide
+susceptibility are considered and ranked as per domain expert opinions. Finally, ranks are translated to weightages
+using the Decision space software and LSZ modeler for generation of the hazard maps. The basic principle used for
+developing this model is the Analytical Hierarchical Process (AHP) and Saaty’s Principle of pair wise comparison.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+57
+About 2000 km stretch of routes was taken up for LSZ study. For convenience in handling the huge database, the routes
+were divided into different sectors
+Uttarakhand
+1. Rishikesh – Rudraprayag – Chamoli – Badrinath
+2. Rudraprayag – Okhimath – Kedarnath
+3. Chamoli – Okhimath
+4. Rishikesh – Uttarkashi – Gangotri – Gaumukh
+5. Pithoragarh – Khela - Malpa
+Himachal Pradesh 
+1. Shimla – Rampur – Sarahan – Sumdo
+2. Shimla – Bilaspur – Kulu – Manali 
+3. Dalhousie – Chamba – Brahmaur
+Figure 46. LSZ map for Shimla – Rampur – Sarahan – Sumdo Route. 
+The occurrence of landslides in an area is due to the interplay of favorable terrain parameters such as slope,
+lithology, topography and land use which trigger landslides in response to rainfall or earthquake events.
+Preparation of landslide inventory, hazard, and risk mapping is done in India using satellite data to analyze the cause
+of landslides which is mostly found to be :
+•Litho-tectonic control- earthquake
+•Precipitation (rainfall) control.
+In India, the major areas which are affected by landslides are :
+•The Northwest Himalayas contribute- 66.5% of landslides in India, followed by the Northeast Himalayas -18.8% and
+the Western Ghats - 14.7%.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+Methods of mapping landslide inventory
+Data collected: pre-monsoon season (Mar–May, 2014) and post-monsoon season (Oct–Dec, 2014).
+Satellites used: Resourcesat-2 LISS-IV Mx (5.8 m)- for seasonal landslide mapping - trigger by monsoon rainfall.
+As manual method of landslide mapping is a tedious job, so semi-automatic method developed by Martha et al.
+(2010, 2011, 2012) for the detection of landslides from high-resolution satellite data and DEM was used for the
+creation of the seasonal landslide inventory database.
+Event-based landslide (caused by earthquakes or short-duration rainfall event) inventory mapping:
+An event-based landslide inventory map was prepared using the same method as adopted for the SLIM.
+Field-based landslide inventory:
+This landslide inventory tallies to 1998, which was prepared by NRSC by means of merged IRS-1D PAN+LISS III data
+(5.8 m) by visual image interpretation and verified on the ground (NRSA 2001).
+Assessment of Socio-economic Parameter exposure
+Socio-economic parameters (SEP) include total population, number of households, road and livestock. The unit of
+exposure analysis is taken as district and two indices were created so that they normalize with the area of the same
+district. These Indices are :
+These indices were calculated using excel table operation.
+Later district exposure index (DEI) was calculated to rank the districts.
+where subscripts p, h, l and r in DSEPD refer to population, house, livestock and road, respectively.
+58
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+59
+Figure 47. Socio-economic parameter risk exposure map, The contribution of each exposure
+element for the top ten landslide exposed districts is shown in bar diagram.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+60
+Landslide exposure analysis were carried out in the mountainous areas. Rudraprayag district in Uttarakhand state
+which has highest landslide density in India is also having highest exposure to total population, working population,
+literacy and no. of houses. Below is the rank of all 147 districts in 17 states and 02 UTs of India for their exposure to
+landslides in terms of key socio economic parameters.
+District 
+Rank District State
+1 Rudraprayag Uttaranchal
+2 Tehri Garhwal Uttaranchal
+3 Thrissur Kerala
+4 Rajauri J&K
+5 Palakkad Kerala
+6 Poonch J&K
+7 Malappuram Kerala
+8 South District Sikkim
+9 East District Sikkim
+10 Kozhikode Kerala
+11 Imphal West Manipur
+12 Kodagu Karnataka
+13 Wayanad Kerala
+14 Jammu J&K
+15 Ernakulam Kerala
+16 Mandi Himachal Pradesh
+17 Udhampur J&K
+18 Idukki Kerala
+19 Chamoli Uttaranchal
+20 West District Sikkim
+21 Uttarkashi Uttaranchal
+22 Cachar Assam
+23 Garhwal Uttaranchal
+24 Kottayam Kerala
+25 Hamirpur Himachal Pradesh
+26 Kannur Kerala
+27 Pulwama J&K
+28 Thiruvananthapuram Kerala
+29 Dehra Dun Uttaranchal
+30 Bilaspur Himachal Pradesh
+31 West Garo Hills Meghalaya
+32 Chamba Himachal Pradesh
+33 Pathanamthitta Kerala
+34 East Khasi Hills Meghalaya
+35 Darjiling West Bengal
+District 
+Rank District State
+36 Coimbatore Tamil Nadu
+37 Solan Himachal Pradesh
+38 Aizawl Mizoram
+39 Lunglei Mizoram
+40 Kamrup Assam
+41 Dindigul Tamil Nadu
+42 Kathua J&K
+43 Kanniyakumari Tamil Nadu
+44 Kasaragod Kerala
+45 Lawngtlai Mizoram
+46 Kinnaur Himachal Pradesh
+47 Hailakandi Assam
+48 Kollam Kerala
+49 Goalpara Assam
+50 Bageshwar Uttaranchal
+51 North District Sikkim
+52 Anantanag J&K
+53 Hassan Karnataka
+54 Dakshina Kannada Karnataka
+55 Karbi Anglong Assam
+56 Lohit Arunachal Pradesh
+57 Kullu Himachal Pradesh
+58 Baramulla J&K
+59 Theni Tamil Nadu
+60 Kolasib Mizoram
+61 Shimla Himachal Pradesh
+62 Kangra Himachal Pradesh
+63 Churachandpur Manipur
+64 East Garo Hills Meghalaya
+65 Champawat Uttaranchal
+66 West Khasi Hills Meghalaya
+67 Ribhoi Meghalaya
+68 Naini Tal Uttaranchal
+69 Jaintia Hills Meghalaya
+70 Una Himachal Pradesh
+Table 3. Table shows the rank of districts of India for their exposure to landslides. 
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+61
+District 
+Rank District State
+71 Mamit Mizoram
+72 Tirunelveli Tamil Nadu
+73 Papum Pare Arunachal Pradesh
+74 Tawang Arunachal Pradesh
+75 West Tripura Tripura
+76 North Tripura Tripura
+77 Udupi Karnataka
+78 East Siang Arunachal Pradesh
+79 Doda J&K
+80 Thane Maharashtra
+81 Almora Uttaranchal
+82 Serchhip Mizoram
+83 North Cachar Hills Assam
+84 Lower Subansiri Arunachal Pradesh
+85 The Nilgiris Tamil Nadu
+86 Pithoragarh Uttaranchal
+87 West Kameng Arunachal Pradesh
+88 Sirmaur Himachal Pradesh
+89 Phek Nagaland
+90 South Garo Hills Meghalaya
+91 Changlang Arunachal Pradesh
+92 Chikmagalur Karnataka
+93 Mon Nagaland
+94 Tuensang Nagaland
+95 Bongaigaon Assam
+96 Lower Dibang Valley Arunachal Pradesh
+97 Senapati Manipur
+98 Srinagar J&k
+99 Morigaon Assam
+100 Tamenglong Manipur
+101 East Kameng Arunachal Pradesh
+102 Saiha Mizoram
+103 Shimoga Karnataka
+104 Upper Siang Arunachal Pradesh
+105 Mokokchung Nagaland
+106 Kohima Nagaland
+107 Pune Maharashtra
+108 West Siang Arunachal Pradesh
+109 Raygarh Maharashtra
+District 
+Rank District State
+110 Dhalai Tripura
+111 North Goa Goa
+112 Ukhrul Manipur
+113 Kurung Kumey Arunachal Pradesh
+114 Sindhudurg Maharashtra
+115 Tirap Arunachal Pradesh
+116 Uttara Kannada Karnatka
+117 Nagaon Assam
+118 Champhai Mizoram
+119 Budgam J&K
+120 Upper Subansiri Arunachal Pradesh
+121 South Goa Goa
+122 Chandel Manipur
+123 Kargil J&K
+124 Haveri Karnataka
+125 Anjaw Arunachal Pradesh
+126 Lahul & Spiti Himachal Pradesh
+127 Dhubri Assam
+128 Nashik Maharashtra
+129 Ratnagiri Maharashtra
+130 South Tripura Tripura
+131 Ahmadnagar Maharashtra
+132 Kupwara J&k
+133 Kolhapur Maharashtra
+134 Satara Maharashtra
+135 Dibang Valley Arunachal Pradesh
+136 Leh-ladakh J&K
+137 Karimganj Assam
+138 Alappuzha Kerala
+139 Mumbai Suburban Maharashtra
+140 Mumbai Maharashtra
+141 Thoubal Manipur
+142 Imphal East Manipur
+143 Bishnupur Manipur
+144 Zunheboto Nagaland
+145 Wokha Nagaland
+146 Haridwar Uttaranchal
+147 Udham Singh Nagar Uttaranchal
+Table 3. Table shows the rank of districts of India for their exposure to landslides continues…… 
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+62
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+63
+RESEARCH & DEVELOPMENT IN LANDSLIDES 
+STUDIES 
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+64
+Landslides from remote steep slopes render people living downhill vulnerable, unaware of the impending danger.
+Identifications of slow-moving mountain slopes are possible now due to time series measurements from space
+using microwave satellite data and the InSAR technique, which can detect displacement at the millimetre level. The
+availability of open-source Sentinel-1 data has revolutionised the study involving landslide kinematics and
+predicting the time of failure. However, identifying accelerating trends, demarcation of the release area, and
+predicting flow path after failure initiation is still challenging.
+Time of failure prediction of the Kikruma landslides in the NE Himalaya is carried out using Persistent Scatter
+Interferometry (PSI) interferometric technique on Sentinel-1 SAR data to analyse the trend of ground deformation
+leading to slope failures. The displacement time series of the measurement points (MPs), analysed using inverse
+velocity and modified inverse velocity methods, show that the instability had commenced almost a year or more
+with the final onset of acceleration (OOA) triggered by heavy rainfall, couple of weeks prior to the actual failure (Roy
+et al. 2022).
+Figure 48. Landslide prediction using MT InSAR. Top panel: Representative displacement time series and inverse
+velocities for the Kikruma landslide showing the OOA (t0) and last observation point (t). Inset: Failure day
+estimation using INV. Bottom panel: Rainfall variation in the region during the observation period. Predicted day of
+failure: 26 July 2018; Actual day of failure: 29 July 2018.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+65
+Dynamic modelling of debris flow landslides has become an increasingly important practice for simulating the
+characteristics and behaviour of debris flow relying on the physical laws of conservation of mass, momentum and
+energy (Melo et al., 2018). This model approach can be broadly classified as the lumped mass moment where motion
+of slide is considered as a single point which is not always the case or based on continuum mechanics associated with
+a distinct rheology (Hungr, 1995). To simulate the deformation of the moving mass along the flow path, choosing
+appropriate friction parameters and material rheologies is taxing (Rickenmann, 2005).
+Numerical debris flow modelling was carried out for several major landslides in Kerala to characterize the landslide
+geometry and assess their impact.
+For modeling debris flow paths, Rapid Mass Movement Simulation (RAMMS) software developed by WSL Institute for
+Snow and Avalanche Research SLF and the Swiss Federal Institute for Forest, Snow and Landscape Research WSL, was
+used. The model gives flow height, velocity and pressure of debris flow. The main input parameters to be ingested in the
+model are high resolution Digital Elevation Model (DEM) for deriving topographic parameters, release area and friction
+information. CartoDEM (2.5 m) was used for flow modeling (Jain et al. 2021).
+Actual and modeled Kurchermala debris flow
+Actual and modeled Puthumaladebris flow
+Figure 49. Flow modeling for Puthumala Landslide, Wayanad District, Kerala.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+66
+Photogrammetric techniques have been increasingly used because of their capability to rapidly reconstruct the 3-D
+topography from aerial photographs and provided such data exist for different time periods, allow objective change
+detection (Martha et al, 2010). Knowledge of failure volumes is also critical for a more accurate understanding of the
+landslide process and its flow, which shows the affected areas.
+The increasing availability of high-resolution UAV data, quantitative studies on landform changes using DEMs have
+become a viable option.
+UAV data were acquired over the Puthumala landslide in Kerala area on 22 March 2021. The resolution of
+orthoimage of UAV is 2 cm and the grid size of DTM is 8 cm. The positional accuracy of the image is 1-2 m. . Pre and
+post-DEM were utilized for volumetric estimation and release area mapping.
+POST DTMPRE DTM
+Release area
+Entrainment 1
+Entrainment 2
+Deposition
+Model input: Variable material thickness
+of Release area
+Release area
+Figure 50. Landslide modeling using UAV data, Puthumala Landslide, Wayanad District, Kerala.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+67
+A large area covering 21,087 km2 of the Mizoram state, India has been investigated, using five statistical methods of
+susceptibility models viz. Multi Criterion Weighted Overlay (MCWO), Information Value (IV), Weights of Evidence
+(WoE), Logistic Regression (LR) and Artificial Neural Network (ANN) to prepare macro-scale landslide susceptibility
+maps
+Figure 51. Landslide susceptibility maps generated using spatial sampling strategy by a) MCWO, b) IV, c) WoE, d) LR
+and e) ANN. f - prediction and success rate curves for of all five models.
+nrscLandslide Atlas of India
+68
+A regional landslide early warning system for selective routes of HP ,Uttarakhand and NER is operational on an
+experimental basis for monsoon season. It uses rainfall forecast data from MOSADAC, IMD and Climate Prediction
+Center (CPC). Below is the landslide early warning was given along the Dalhousie-Chamba route.
+Rainfall threshold for landslides is the value which when reached or exceeded is likely to trigger landslides. Rainfall
+thresholding for slope failure can be established using process based, empirical or statistical approach. Historical
+data on landslide causing rainfall events and the corresponding landslide records can be used to establish rainfall
+thresholds for various geographical extents based on consideration of specific rainfall events or using antecedent
+conditions. The I-D based thresholding is the most widely used empirical thresholding method. The thresholding is
+done by drawing lower-bound lines on plots of points representing landslide triggering rainfall events. The daily, 3-
+day cumulative and 15-day & 30-day antecedent rainfall values associated with landslides had been subjected to
+binary logistic regression using landslide as dichotomous dependent variable. significant predictors influencing slope
+failure. By using binary logistic regression model the slope failure triggering probability is estimated.
+Different combinations of triggering probability and the
+Landslide Susceptibility classes used in this approach are
+described below:
+02 Sep. 2017
+Daily warning for advance 3 days
+ The logistic regression retained the daily (DR), 3-day
+cumulative (3DCR) and 30-day antecedent rainfall (30DAR)
+as significant predictors influencing slope failure.
+Figure 52. Landslide early warning for advance
+3 days given in parts of Himachal Pradesh.
+Table 4. Table showing triggering probability for landslide trigger.
+National Remote Sensing Centre, ISRO, Hyderabad
+Landslide in Shimla
+nrscLandslide Atlas of India
+69
+The FLIM mobile app is developed by
+NRSC/ISRO. It aimed to be used by
+SDMAs/DDMAs/Govt.
+organizations/researchers with reasonable
+knowledge on landslides. The main purposes
+of this app are to collect data of landslides
+from the field and to develop a landslide
+warning system for the region using the
+collected field landslide data.
+Figure 53. Step-by-step procedure for landslide data
+collection using FLIM mobile app.
+National Remote Sensing Centre, ISRO, Hyderabad
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+70
+Figure 54. Landslide data from western Maharashtra collected in Bhuvan FLIM database.
+The FLIM mobile app is developed by NRSC/ISRO. It aimed to be used by SDMAs/DDMAs/Govt.
+organizations/researchers with reasonable knowledge on landslides. The main purposes of this app are to collect
+data of landslides from the field and to develop a landslide warning system for the region using the collected
+field landslide data. The collected data sent from the field using this app will be uploaded in the BHUVAN and
+NDEM servers for analysis and visualization. Hence, the app will help the state agencies as incident reporting
+system for landslide disasters and for development of a landslide early warning system in the region.
+Figure 55 . Ground landslide data collected in NER using FLIM mobile App.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+71
+D. M. Cruden. A Simple Definition of a Landslide. Bulletin of the International Association of
+Engineering Geology, Volume 43, 1991, 27-29. https://doi.org/10.1007/BF02590167.
+D. J. Varnes. Slope movement types and processes, In: R.L. Schuster and R.J. Krizek, Landslides—
+Analysis and control. National Research Council, Special Report 176, 1978, 11–33.
+D. J. Varnes. Landslide Types and Processes, Landslides and Engineering Practice. National Research
+Council, Special Report 58, 1958, 20-47.
+D. Rickenmann. Runout prediction methods. In: Debris-flow Hazards and Related Phenomena. Springer
+Praxis Books. Springer, Berlin, Heidelberg, 2005. https://doi.org/10.1007/3-540-27129-5_13.
+Fabio Vittorio De Blasio. Introduction to the Physics of Landslides, Lecture Notes on the Dynamics of
+Mass Wasting, Springer Dordrecht Heidelberg London New York. 2011.
+https://doi.org/10.1007/978-94-007-1122-8.
+F. Nadim, O. Kjekstad, P. Peduzzi, C. Herold, C. Jaedicke. Global landslide and avalanche hotspots.
+Landslides 3, 2006, 159–173. https://doi.org/10.1007/s10346-006-0036-1.
+L. M. Highland, P. Bobrowsky. The Landslide Handbook - A Guide to Understanding Landslides. U.S.
+Geological Survey, 2008.
+Nirmala Jain, Tapas Ranjan Martha, Kriti Khanna, Priyom Roy, K. Vinod Kumar. Major landslides in
+Kerala, India, during 2018–2020 period: an analysis using rainfall data and debris flow
+model. Landslides 18, 2021, 3629–3645. https://doi.org/10.1007/s10346-021-01746-x.
+Oldrich Hungr. A Model for the Runout Analysis of Rapid Flow Slides, Debris Flow, and Avalanches.
+Canadian Geotechnical Journal, 1995, Volume 32, 610-623. https://doi.org/10.1139/t95-063.
+Oldrich Hungr, Serge Leroueil, Luciano Picarelli. The Varnes classification of landslide types, an update.
+Landslides 11, 2014, 167–194. https://doi.org/10.1007/s10346-013-0436-y.
+Oldrich Hungr, S. G. Evans, M. J. Bovis, J. N. Hutchinson. A review of the classification of landslides of
+the flow type. Environmental & Engineering Geoscience, Volume 7, 2001, 221–238.
+https://doi.org/ 10.2113/gseegeosci.7.3.221.
+References
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+72
+Pierluigi Confuorto. ‘From site-scale to large areas monitoring of ground deformation phenomena by
+integration of different DInSAR techniques in Crotone Province (Southern Italy)’. 2016.
+https://doi.org/10.13140/RG.2.1.2146.1364.
+Tapas Ranjan Martha, Priyom Roy, Nirmala Jain, Kirti Khanna, K. Mrinalni, K. Vinod Kumar ,P. V. N.
+Rao. Geospatial landslide inventory of India—an insight into occurrence and exposure on a national
+scale. Landslides 18, 2021, 2125–2141. https://doi.org/10.1007/s10346-021-01645-1.
+Tapas Ranjan Martha, Norman Kerle, Victor Jetten, Cees J. van Westen, K. Vinod Kumar. Characterising
+spectral, spatial and morphometric properties of landslides for semi-automatic detection using
+object-oriented methods. Geomorphology, Volume 116, 2010, 24-36.
+https://doi.org/10.1016/j.geomorph.2009.10.004.
+Tapas Ranjan Martha, Norman Kerle, Cees J. van Westen, Victor Jetten, K. Vinod Kumar. Object-oriented
+analysis of multi-temporal panchromatic images for creation of historical landslide inventories,
+ISPRS Journal of Photogrammetry and Remote Sensing, Volume 67, 2012, 105-119,
+https://doi.org/10.1016/j.isprsjprs.2011.11.004.
+Turner, A. Keith, and Schuster, L. Robert. Landslides—Investigation and mitigation. National Research
+Council, National Academy Press, 1996.
+List of Websites
+National Remote Sensing Centre (NRSC) portal: https://www.nrsc.gov.in/ 
+Bhuvan portal: https://bhuvan.nrsc.gov.in/home/index.php
+National Database for Disaster Management (NDEM): https://ndem.nrsc.gov.in/
+, , , ,
+, , , ,
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+73
+Priyom Roy, Tapas Ranjan Martha, K. Vinod Kumar, Prakash Chauhan, Vala Venkateshwar Rao. Cluster
+landslides and associated damage in the Dima Hasao district of Assam, India due to heavy rainfall
+in May 2022. Landslides 20, 2023, 97–109. https://doi.org/10.1007/s10346-022-01977-6.
+Priyom Roy, Tapas Ranjan Martha, Kirti Khanna, Nirmala Jain, K. Vinod Kumar. Time and path prediction
+of landslides using InSAR and flow model, Remote Sensing of Environment. Volume 271, 2022,
+112899. https://doi.org/10.1016/j.rse.2022.112899.
+Priyom Roy, Nirmala Jain, Tapas Ranjan Martha, K. Vinod Kumar. Reactivating Balia Nala landslide,
+Nainital, India—a disaster in waiting. Landslides 19, 2022, 1531–1535. .
+https://doi.org/10.1007/s10346-022-01881-z.
+Lina Hao, Cees van Westen, A. Rajaneesh, K.S. Sajinkumar, Tapas Ranjan Martha, Pankaj Jaiswal.
+Evaluating the relation between land use changes and the 2018 landslide disaster in Kerala, India.
+CATENA, Volume 216, 2022, 106363. https://doi.org/10.1016/j.catena.2022.106363.
+Vipin Kumar Maurya, Ramji Dwivedi, Tapas Ranjan Martha. Site scale landslide deformation and strain
+analysis using MT-InSAR and GNSS approach – A case study. Advances in Space Research. Volume
+70, 2022, 3932-3947. https://doi.org/10.1016/j.asr.2022.05.028.
+S. Devaraj, K. Yarrakula, Tapas Ranjan Martha, Geetha Priya Murugesan, Divya Sekhar Vaka, Samvedya
+Surampudi, Abhinav Wadhwa, Parthiban Loganathan, Venkatesh Budamala. Time series SAR
+interferometry approach for landslide identification in mountainous areas of Western Ghats,
+India. J Earth Syst Sci 131, 2022, 133 . https://doi.org/10.1007/s12040-022-01876-3.
+Tapas Ranjan Martha, Priyom Roy, Nirmala Jain, Kirti Khanna, K. Mrinalni, K. Vinod Kumar ,P. V. N.
+Rao. Geospatial landslide inventory of India—an insight into occurrence and exposure on a
+national scale. Landslides 18, 2021, 2125–2141. https://doi.org/10.1007/s10346-021-01645-1.
+Tapas Ranjan Martha, Priyom Roy, Nirmala Jain, K. Vinod Kumar, P. Sashivardhan Reddy, J. Nalini, S. V.
+S. P. Sharma, Abhinav Kumar Shukla, K. H. V. Durga Rao, B. Narender, P. V. N. Rao, S.
+Muralikrishnan. Rock avalanche induced flash flood on 07 February 2021 in Uttarakhand, India—a
+photogeological reconstruction of the event. Landslides 18, 2021, 2881–2893.
+https://doi.org/10.1007/s10346-021-01691-9.
+Bibliography of landslide studies done by NRSC
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+74
+Nirmala Jain, Tapas Ranjan Martha, Kriti Khanna, K. Vinod Kumar. Major landslides in Kerala, India,
+during 2018–2020 period: an analysis using rainfall data and debris flow model. Landslides 18,
+2021, 3629–3645. https://doi.org/10.1007/s10346-021-01746-x.
+Alessandro Cesare Mondini, Fausto Guzzetti, Kang-Tsung Chang, Oriol Monserrat, Tapas Ranjan Martha,
+Andrea Manconi. Landslide failures detection and mapping using Synthetic Aperture Radar: Past,
+present and future. Earth-Science Reviews. Volume 216, 2021, 103574.
+https://doi.org/10.1016/j.earscirev.2021.103574.
+Kriti Khanna, Tapas Ranjan Martha, Priyom Roy, K. Vinod Kumar. Effect of time and space partitioning
+strategies of samples on regional landslide susceptibility modeling. Landslides 18, 2021, 2281–
+2294. https://doi.org/10.1007/s10346-021-01627-3.
+Lina Hao, A. Rajaneesh, Cees van Westen, K.S Sajinkumar, Tapas Ranjan Martha, Pankaj Jaiswal, and
+Brian G. McAdoo. Constructing a complete landslide inventory dataset for the 2018 monsoon
+disaster in Kerala , India, for land use change analysis. Earth System Science Data, Volume 12,
+2020, 2899–2918. https://doi.org/10.5194/essd-12-2899-2020.
+Tapas Ranjan Martha, Priyom Roy, Kirti Khanna, K. Mrinalni and K. Vinod Kumar. “Landslides Mapped
+Using Satellite Data in the Western Ghats of India after Excess Rainfall during August 2018.”
+Current Science, Volume 117, 2019, 804–12. URL: https://www.jstor.org/stable/27138344.
+Ren N. Keyport, Thomas Oommen, Tapas Ranjan Martha, K.S. Sajinkumar, John S. Gierke. A comparative
+analysis of pixel and object-based detection of landslides from very high-resolution images.
+International Journal of Applied Earth Observation and Geoinformation, Volume 64, 2018, 1-11,
+https://doi.org/10.1016/j.jag.2017.08.015.
+Priyom Roy, Tapas Ranjan Martha, Nirmala Jain and K. Vinod Kumar. “Reactivation of Minor Scars to
+Major Landslides – a Satellite-Based Analysis of Kotropi Landslide (13 August 2017) in Himachal
+Pradesh, India.”. Current Science, Volume 115, 2018, 395–98. URL:
+https://www.jstor.org/stable/26978223.
+Tapas Ranjan Martha, Priyom Roy, Ritwik Mazumdar, K. Babu Govindharaj, K. Vinod Kumar. Spatial
+characteristics of landslides triggered by the 2015 Mw 7.8 (Gorkha) and Mw 7.3 (Dolakha)
+earthquakes in Nepal. Landslides 14, 2017, 697–704. https://doi.org/10.1007/s10346-016-0763-x.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+75
+Tapas Ranjan Martha, P. Shashivardhan Reddy, C. M. Bhatt, K. Babu Govindha Raj, J. Nalini, E.
+Anantha Padmanabha, B. Narender, K. Vinod Kumar, S. Muralikrishnan, G. Srinivasa Rao, P. G.
+Diwakar, V. K. Dadhwal. Debris volume estimation and monitoring of Phuktal river landslide-
+dammed lake in the Zanskar Himalayas, India using Cartosat-2 images. Landslides 14, 2017, 373–
+383. https://doi.org/10.1007/s10346-016-0749-8.
+Tapas Ranjan Martha, P. Kamala, Josna Jose, K. Vinod Kumar, G. Jai Sankar. Identification of new
+Landslides from High Resolution Satellite Data Covering a Large Area Using Object-Based Change
+Detection Methods. J Indian Soc Remote Sens 44, 2016, 515–524. https://doi.org/10.1007/s12524-
+015-0532-7.
+Tapas Ranjan Martha, Priyom Roy, K. Babu Govindharaj, K. Vinod Kumar, P. G. Diwakar, V. K.
+Dadhwal . Landslides triggered by the June 2013 extreme rainfall event in parts of Uttarakhand
+state, India. Landslides 12, 2015, 135–146 . https://doi.org/10.1007/s10346-014-0540-7.
+Tapas Martha Ranjan, K. Vinod Kumar. September, 2012 landslide events in Okhimath, India—an
+assessment of landslide consequences using very high resolution satellite data. Landslides 10,
+2013, 469–479. https://doi.org/10.1007/s10346-013-0420-6.
+Tapas Ranjan Martha, Cees J. van Westen, Norman Kerle, Victor Jetten, K. Vinod Kumar. Landslide
+hazard and risk assessment using semi-automatically created landslide inventories.
+Geomorphology, Volume 184, 2013, 139-150. https://doi.org/10.1016/j.geomorph.2012.12.001.
+Tapas Ranjan Martha, Cees J. van Westen, Norman Kerle, Victor Jetten, K. Vinod Kumar. Landslide
+hazard and risk assessment using semi-automatically created landslide inventories.
+Geomorphology, Volume 184, 2013, 139-150. https://doi.org/10.1016/j.geomorph.2012.12.001.
+Shraban Sarkar, Archana K. Roy, Tapas Ranjan Martha. Landslide susceptibility assessment using
+Information Value Method in parts of the Darjeeling Himalayas. J Geol Soc India 82, 2013, 351–362
+. https://doi.org/10.1007/s12594-013-0162-z.
+Tapas Ranjan Martha, Norman Kerle, Cees J. van Westen, Victor Jetten, K. Vinod Kumar. Object-oriented
+analysis of multi-temporal panchromatic images for creation of historical landslide inventories,
+ISPRS Journal of Photogrammetry and Remote Sensing, Volume 67, 2012, 105-119,
+https://doi.org/10.1016/j.isprsjprs.2011.11.004.
+National Remote Sensing Centre, ISRO, Hyderabad
+nrscLandslide Atlas of India
+76
+Tapas Ranjan Martha, Norman Kerle, Cees J. van Westen, Victor Jetten, K. Vinod Kumar. Segment
+Optimization and Data-Driven Thresholding for Knowledge-Based Landslide Detection by Object-
+Based Image Analysis. IEEE Transactions on Geoscience and Remote Sensing, Volume 49, 2011,
+4928-4943. https://doi.org/10.1109/TGRS.2011.2151866.
+Tapas Ranjan Martha, Norman Kerle, Victor Jetten, Cees J. van Westen, K. Vinod Kumar. Characterising
+spectral, spatial and morphometric properties of landslides for semi-automatic detection using
+object-oriented methods. Geomorphology, Volume 116, 2010, 24-36.
+https://doi.org/10.1016/j.geomorph.2009.10.004.
+Tapas Ranjan Martha, Norman Kerle, Victor Jetten, Cees J. van Westen, K. Vinod Kumar. Landslide
+Volumetric Analysis Using Cartosat-1-Derived DEMs. IEEE Geoscience and Remote Sensing Letters,
+Volume 7, 2010, 582-586. https://doi.org/10.1109/LGRS.2010.2041895.
+K. Vinod Kumar, R. C. Lakhera, Tapas Ranjan Martha, R. S. Chatterjee, A. Bhattacharya . Analysis of the
+2003 Varunawat Landslide, Uttarkashi, India using Earth Observation data. Environ Geol 55, 2008,
+789–799 . https://doi.org/10.1007/s00254-007-1032-z.
+Landslide near Jakholi village, near Agastyamuni
+town, Rudraprayag district, Uttarakhand
+Landslide from Bhiri village, near Guptakashi, 
+Mandakini Valley, Uttarakhand
+Landslide from Chamoli district, UttarakhandLandslide is located in Mohand ridge in Sivallik
+hills near Deharadun, Uttarakhand
+
+Landslide near Jakholi village, near Agastyamuni
+town, Rudraprayag district, Uttarakhand
+Landslide from Bhiri village, near Guptakashi, 
+Mandakini Valley, Uttarakhand
+Landslide from Chamoli district, UttarakhandLandslide is located in Mohand ridge in Sivallik
+hills near Deharadun, Uttarakhand

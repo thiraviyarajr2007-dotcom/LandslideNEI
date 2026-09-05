@@ -1,0 +1,50 @@
+ Brief Report on “So Bhir” Landslide on 13/08/2016 near the 
+Mantam village, North Sikkim - Analysis using Cartosat-2B image 
+1. Introduction 
+A massive landslide occurred near the village of Mantam  (opposite to the Passin gdang-Mantam 
+Road) in Sikkim at around 13:30 hrs (IST) on 13th of August, 2016 (Figure 1). As per the news reports 
+formation of the lake and consequent rise in water level submerged the Kanka bridge and washed 
+away about 300 metres of road . Five houses in the Mantam village have  been submerged . The 
+villages of Tingvong, Lingdem, Laven , Kayeem, Lingzya , Bay , S akyong Pentong and Ruklu K ayeem 
+are cut-off due to the damage to the connecting road. There are no human casualties reported from 
+the incident. 
+ 
+Figure 1: Photograph of the Mantam landslide (Source: Social media). 
+2. Landslide analysis 
+The landslide generated a huge cloud of dust engulfing the nearby settlements (Figure 2a). From the 
+field photograph it appears that it is a rock av alanche and the dust cloud was formed due to rapid 
+downslope movement of dry rockmass resulting in airblast.  The debris from the landslide is believed 
+to have blocked the flow of the Kanaka river/Ringpai Chu, which is one of the main tributaries to the 
+Teesta River.  
+An analysis was carried using very high resolution Cartosat -2B (80 cm) image acquired on 15 August 
+2016. The water impoundment has resulted in the formation of artificial lake  of 2.2 km length and 
+209 m width at the lake head, north of the Manta m (Figure 2b). The width of the landslide is 530 m 
+in the middle and length is 790 m. The landslide is rectangular in shape. The crown of the landslide is 
+on the ridge line  (Figure 3) . Debris deposits are clearly observed on either side of the ridge line. 
+Joints exposed after the landsliding suggest a wedge type failure near the crown of the landslide 
+followed by translational type of failure in the main body of the landslide.  
+
+This area is near to Main Central Thrust (MCT), which takes a convex turn to the north and also has a 
+tectonic window known as Rangit window . Due to the presence of MCT, h igh grad e central 
+Himalayan crystalline rocks (e.g. quartzites and granite gneisses) exposed in this area were subjected 
+to shearing which is evident from the density  of joints in the landslide scarp  region. Area around 
+Sakkyong in the upstream part of the Kanka river also witnessed severe landslide occurrences during 
+the Sikkim earthquake on 18 September 2011. Groundwater seepages from the exposed joint planes 
+are clearly visible in the Cartosa t-2B image.  Therefore, the role of aqui fer induced pore pressure 
+(due to earlier monsoon rains)  and escarpment stress condition as evident from the presence of an 
+old landslide could be probable causative factors for the landslide occurrence on 13 August 2016. 
+The water impoundment may have presented a serious threat to settlements downstream and 
+installations like the T eesta Low Dam Project V of NHPC.   However, as seen from the Cartosat 2B 
+image, the river water has overtopped the debris  dam and now flowing along its natur al course in 
+the form of a turbulent rapid , without any lateral breaching . As a consequence  of this, the lake is 
+draining out through the narrow outlet and there is no eminent  water level rise. Nevertheless, it is 
+important to monitor the water spread and the volume of the lake over the next few weeks, as a 
+sudden even of high rainfall in the upstream areas, can lead to rapid water level rise and 
+submergence of the habitations beside the lake. 
+ 
+ 
+Figure 2a: Dust cloud from the landslide; 2b: Artificial lake formation due to the landslide (Source: 
+Social media) 
+
+ 
+Figure 3. Analysis of Mantam landslide using Cartosat-2B image. 

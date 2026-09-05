@@ -1,0 +1,1 @@
+curl "https://bhuvan-vec2.nrsc.gov.in/bhuvan/wms?REQUEST=GetFeatureInfo&SERVICE=WMS&VERSION=1.1.1&LAYERS=disaster:AR_SLIM_2014_GCS&QUERY_LAYERS=disaster:AR_SLIM_2014_GCS&INFO_FORMAT=application/json&BBOX=91.5,26.5,97.5,29.5&WIDTH=101&HEIGHT=101&X=50&Y=50&SRS=EPSG:4326&FEATURE_COUNT=50"

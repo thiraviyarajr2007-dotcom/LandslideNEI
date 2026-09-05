@@ -1,0 +1,71 @@
+{
+  "input": "data\\processed\\landslides\\landslide_training_samples_gadm_corrected.csv",
+  "total_samples": 4016,
+  "positive_samples": 2008,
+  "negative_samples": 2008,
+  "valid_negative_candidates": 2008,
+  "invalid_negative_candidates": 0,
+  "validity_percent": 100.0,
+  "boundary_source": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_IND_1.json",
+  "boundary_dataset": "GADM 4.1 India ADM1",
+  "states_checked": [
+    "AR",
+    "AS",
+    "ML",
+    "MN",
+    "MZ",
+    "NL",
+    "SK",
+    "TR"
+  ],
+  "state_summary": {
+    "AR": {
+      "negatives": 723,
+      "valid": 723,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "AS": {
+      "negatives": 252,
+      "valid": 252,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "ML": {
+      "negatives": 507,
+      "valid": 507,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "MN": {
+      "negatives": 131,
+      "valid": 131,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "MZ": {
+      "negatives": 354,
+      "valid": 354,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "NL": {
+      "negatives": 8,
+      "valid": 8,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "SK": {
+      "negatives": 21,
+      "valid": 21,
+      "invalid": 0,
+      "valid_pct": 100.0
+    },
+    "TR": {
+      "negatives": 12,
+      "valid": 12,
+      "invalid": 0,
+      "valid_pct": 100.0
+    }
+  }
+}
