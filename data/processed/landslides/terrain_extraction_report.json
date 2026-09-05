@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "dataset_name": "Landslide Training Samples with DEM Terrain Features",
+  "dem_source": "Copernicus DEM GLO-30 Public (30m nominal COG)",
+  "dem_product_type": "Digital Surface Model (DSM)",
+  "input_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_gadm_corrected.csv",
+  "output_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_terrain.csv",
+  "total_samples": 4016,
+  "positive_samples": 2008,
+  "negative_samples": 2008,
+  "integrity_checks": {
+    "row_count_preserved": true,
+    "coordinate_changes": 0,
+    "label_changes": 0,
+    "slide_no_changes": 0,
+    "duplicate_rows": 0
+  },
+  "terrain_quality_counts": {
+    "OK": 4012,
+    "PARTIAL_WINDOW": 3,
+    "NODATA": 1
+  },
+  "feature_statistics": {
+    "elevation_m": {
+      "valid": 4015,
+      "null": 1,
+      "min": 13.0,
+      "max": 7203.00244140625,
+      "mean": 883.6749153859291,
+      "std": 915.6781540612175
+    },
+    "slope_deg": {
+      "valid": 4015,
+      "null": 1,
+      "min": 0.0,
+      "max": 84.91943083809619,
+      "mean": 24.06639870051897,
+      "std": 13.647964520422402
+    },
+    "aspect_deg": {
+      "valid": 3999,
+      "null": 17,
+      "min": 0.01039224956465782,
+      "max": 359.9746016482872,
+      "mean": 172.89817493932156,
+      "std": 86.43548332461675
+    },
+    "relief_std_5x5_m": {
+      "valid": 4015,
+      "null": 1,
+      "min": 0.0,
+      "max": 254.50318908691406,
+      "mean": 19.27784639687775,
+      "std": 12.803135346118879
+    }
+  },
+  "notes": [
+    "Elevation source is Copernicus DEM GLO-30 Public (DSM).",
+    "Slope is computed using Horn's 3x3 algorithm with metric dx and dy scaled by latitude.",
+    "Aspect is compass azimuth 0-360 deg (0=North, 90=East, 180=South, 270=West). Flat slopes stored as NaN.",
+    "Relief is population standard deviation (ddof=0) across a 5x5 window.",
+    "All base landslide inventory attributes, IDs, coordinates, and labels are 100% preserved."
+  ]
+}
