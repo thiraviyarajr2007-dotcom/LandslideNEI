@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "method": "GADM ADM1 polygon-constrained spatial negative sampling",
+  "baseline_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples.csv",
+  "boundary_file": "C:\\SIH Landslide\\data\\inspection\\landslide_validation\\gadm41_IND_1.json",
+  "output_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_gadm_corrected.csv",
+  "seed": 20260905,
+  "negative_buffer_meters": 1000.0,
+  "baseline_rows": 4016,
+  "positive_rows": 2008,
+  "negative_rows": 2008,
+  "total_rows": 4016,
+  "invalid_boundary_count": 0,
+  "duplicate_negative_coordinates": 0,
+  "positive_slide_no_preserved": true,
+  "state_counts": {
+    "AR": {
+      "positive": 723,
+      "negative": 723
+    },
+    "AS": {
+      "positive": 252,
+      "negative": 252
+    },
+    "MN": {
+      "positive": 131,
+      "negative": 131
+    },
+    "ML": {
+      "positive": 507,
+      "negative": 507
+    },
+    "MZ": {
+      "positive": 354,
+      "negative": 354
+    },
+    "NL": {
+      "positive": 8,
+      "negative": 8
+    },
+    "SK": {
+      "positive": 21,
+      "negative": 21
+    },
+    "TR": {
+      "positive": 12,
+      "negative": 12
+    }
+  },
+  "generation_report": {
+    "AR": {
+      "positive_count": 723,
+      "negative_count": 723,
+      "attempts": 1604
+    },
+    "AS": {
+      "positive_count": 252,
+      "negative_count": 252,
+      "attempts": 892
+    },
+    "MN": {
+      "positive_count": 131,
+      "negative_count": 131,
+      "attempts": 224
+    },
+    "ML": {
+      "positive_count": 507,
+      "negative_count": 507,
+      "attempts": 897
+    },
+    "MZ": {
+      "positive_count": 354,
+      "negative_count": 354,
+      "attempts": 599
+    },
+    "NL": {
+      "positive_count": 8,
+      "negative_count": 8,
+      "attempts": 20
+    },
+    "SK": {
+      "positive_count": 21,
+      "negative_count": 21,
+      "attempts": 33
+    },
+    "TR": {
+      "positive_count": 12,
+      "negative_count": 12,
+      "attempts": 30
+    }
+  },
+  "scientific_note": "Negative samples are spatial negative candidates generated inside the intended GADM state polygon and outside a 1 km buffer around known positive landslide coordinates. They are not confirmed landslide absences."
+}
