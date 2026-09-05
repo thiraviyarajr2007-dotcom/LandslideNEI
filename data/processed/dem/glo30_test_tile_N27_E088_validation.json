@@ -1,0 +1,31 @@
+{
+  "validation_date": "2026-09-05",
+  "source_url": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N27_00_E088_00_DEM/Copernicus_DSM_COG_10_N27_00_E088_00_DEM.tif",
+  "http_status": 200,
+  "file_exists": true,
+  "filename": "data/raw/dem/copernicus_glo30/downloads/Copernicus_DSM_COG_10_N27_00_E088_00_DEM_DEM.tif",
+  "file_size_bytes": 41974783,
+  "dataset": "Copernicus GLO-30 Public COG / COP-DEM_GLO-30-DGED",
+  "product_type": "Digital Surface Model (DSM), not bare-earth DTM",
+  "crs": "EPSG:4326",
+  "width": 3600,
+  "height": 3600,
+  "pixel_resolution": [
+    0.0002777777777777778,
+    0.0002777777777777778
+  ],
+  "bounds": [
+    87.99986111111112,
+    27.000138888888888,
+    88.99986111111112,
+    28.000138888888888
+  ],
+  "dtype": "float32",
+  "nodata": null,
+  "minimum_elevation_m": 183.0,
+  "maximum_elevation_m": 8564.2939453125,
+  "valid_pixel_count": 12960000,
+  "nodata_pixel_count": 0,
+  "glo30_check": true,
+  "validation_status": "PASS"
+}

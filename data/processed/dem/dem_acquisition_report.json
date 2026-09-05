@@ -3,6 +3,7 @@
   "source_url": "https://copernicus-dem-30m.s3.amazonaws.com/",
   "documentation_url": "https://copernicus-dem-30m.s3.amazonaws.com/readme.html",
   "dataset_name": "Copernicus DEM GLO-30 Public / COP-DEM_GLO-30-DGED",
+  "product_type": "Digital Surface Model (DSM), not bare-earth Digital Terrain Model (DTM)",
   "resolution": "30 m nominal; 10 arc-second COG grid",
   "acquisition_method": "Downloaded exact required 1-degree COG objects over HTTPS from the public Copernicus DEM S3 bucket",
   "download_date": "2026-09-05",
