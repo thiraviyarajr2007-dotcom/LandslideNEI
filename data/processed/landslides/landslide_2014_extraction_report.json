@@ -1,0 +1,137 @@
+{
+  "generated_at_utc": "2026-09-04T20:21:16.744608+00:00",
+  "service": "https://bhuvan-vec2.nrsc.gov.in/bhuvan/wms",
+  "method": "WMS GetFeatureInfo tiled sampling",
+  "year": 2014,
+  "raw_sources_modified": false,
+  "states": {
+    "AR": {
+      "state": "Arunachal Pradesh",
+      "layer": "disaster:AR_SLIM_2014_GCS",
+      "bbox": [
+        91.5,
+        26.5,
+        97.5,
+        29.5
+      ],
+      "output": "data\\raw\\landslides\\2014\\AR_SLIM_2014_GCS.geojson",
+      "sha256": "b89bc5b662d558f055b44e82d342a00eeece53e4ab83a8a989c4d568d6d05f31",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 723
+    },
+    "AS": {
+      "state": "Assam",
+      "layer": "disaster:AS_SLIM_2014_GCS",
+      "bbox": [
+        89.5,
+        24.0,
+        96.5,
+        28.5
+      ],
+      "output": "data\\raw\\landslides\\2014\\AS_SLIM_2014_GCS.geojson",
+      "sha256": "0b9ea75a01bbd3658f3fc780dbce99a502d6aa7aec074307087b58e19aa31f27",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 252
+    },
+    "MN": {
+      "state": "Manipur",
+      "layer": "disaster:MN_SLIM_2014_GCS",
+      "bbox": [
+        93.0,
+        23.5,
+        94.9,
+        25.8
+      ],
+      "output": "data\\raw\\landslides\\2014\\MN_SLIM_2014_GCS.geojson",
+      "sha256": "082c11720f7a6c99dd6e17f8f65906df7272381964931cea8ad3246e23409709",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 131
+    },
+    "ML": {
+      "state": "Meghalaya",
+      "layer": "disaster:ML_SLIM_2014_GCS",
+      "bbox": [
+        89.5,
+        25.0,
+        92.9,
+        26.2
+      ],
+      "output": "data\\raw\\landslides\\2014\\ML_SLIM_2014_GCS.geojson",
+      "sha256": "2d811e3490bc0510db5ccdbe978f5d2741a54871f78000261e8c25578b06c51a",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 507
+    },
+    "MZ": {
+      "state": "Mizoram",
+      "layer": "disaster:MZ_SLIM_2014_GCS",
+      "bbox": [
+        92.1,
+        21.9,
+        93.5,
+        24.5
+      ],
+      "output": "data\\raw\\landslides\\2014\\MZ_SLIM_2014_GCS.geojson",
+      "sha256": "7e8ab14ab24c8853806b3dd0d983cccf9d8950d13fba30006e0e68659b298740",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 354
+    },
+    "NL": {
+      "state": "Nagaland",
+      "layer": "disaster:NL_SLIM_2014_GCS",
+      "bbox": [
+        93.3,
+        25.2,
+        95.3,
+        27.1
+      ],
+      "output": "data\\raw\\landslides\\2014\\NL_SLIM_2014_GCS.geojson",
+      "sha256": "94c56fa2d8472c9b3fca423741cd6a250ec86e69f52d296a2b6f51a7d908d8a9",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 8
+    },
+    "SK": {
+      "state": "Sikkim",
+      "layer": "disaster:SK_SLIM_2014_GCS",
+      "bbox": [
+        88.0,
+        27.0,
+        88.9,
+        28.2
+      ],
+      "output": "data\\raw\\landslides\\2014\\SK_SLIM_2014_GCS.geojson",
+      "sha256": "97ecd9fa2b7003d9c198bc0c40c694b25a7e60e38022ebe68e5457d332e6e600",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 21
+    },
+    "TR": {
+      "state": "Tripura",
+      "layer": "disaster:TR_SLIM_2014_GCS",
+      "bbox": [
+        91.0,
+        22.9,
+        92.3,
+        24.5
+      ],
+      "output": "data\\raw\\landslides\\2014\\TR_SLIM_2014_GCS.geojson",
+      "sha256": "cb75421900665daf4b6fd42bd3c05f107fcce87fa592a262a8ebbd62451bbe8f",
+      "requests_attempted": 576,
+      "requests_successful": 576,
+      "requests_failed": 0,
+      "unique_features": 12
+    }
+  }
+}

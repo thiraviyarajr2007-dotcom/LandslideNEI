@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "random_seed": 20260905,
+  "exclusion_radius_m": 1000.0,
+  "negative_to_positive_ratio_requested": 1.0,
+  "positive_count": 2008,
+  "negative_count": 2008,
+  "total_samples": 4016,
+  "label_counts": {
+    "1": 2008,
+    "0": 2008
+  },
+  "positive_unique_slide_no": 2008,
+  "positive_null_coordinates": 0,
+  "negative_null_coordinates": 0,
+  "positive_state_counts": {
+    "AR": 723,
+    "AS": 252,
+    "ML": 507,
+    "MN": 131,
+    "MZ": 354,
+    "NL": 8,
+    "SK": 21,
+    "TR": 12
+  },
+  "negative_state_counts": {
+    "AR": 723,
+    "AS": 252,
+    "ML": 507,
+    "MN": 131,
+    "MZ": 354,
+    "NL": 8,
+    "SK": 21,
+    "TR": 12
+  },
+  "notes": [
+    "Positive samples originate from the official 2014 Bhuvan inventory.",
+    "Negative samples are spatially separated candidates, not confirmed absence observations.",
+    "Negative candidates are generated inside state study bounding boxes.",
+    "No rainfall, terrain, soil, LULC, or other environmental feature values are attached in Phase 8D.",
+    "The 2014 inventory provides year-level temporal information; exact event dates are not assumed."
+  ]
+}
