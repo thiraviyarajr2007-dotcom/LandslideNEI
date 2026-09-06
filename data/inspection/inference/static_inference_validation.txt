@@ -1,0 +1,66 @@
+================================================================================
+PHASE 8G — STATIC SUSCEPTIBILITY INFERENCE & LOCATION PROFILING REPORT
+================================================================================
+Generated UTC: 2026-09-06T06:09:22.789072+00:00
+Status:        VALIDATION_PASSED
+
+1. INFERENCE ENGINE ARCHITECTURE
+--------------------------------------------------------------------------------
+  * Model Selected:       Model A (Environmental Only)
+  * Pipeline Artifact:    model/static_lsm_pipeline.joblib
+  * Metadata Artifact:    model/static_lsm_metadata.json
+  * Required Features:    10 (8 Numeric Terrain/Soil, 2 Categorical Soil/LULC)
+  * Output Mode:          Raw Random Forest Susceptibility Score [0.0 to 1.0]
+  * Excluded Features:    Proximity-to-landslide (rejected due to buffer bias), Road/River, Rainfall
+
+2. MULTI-SOURCE EXTRACTION BACKENDS
+--------------------------------------------------------------------------------
+  * Technical Status:     Verified: inference terrain, soil, and WorldCover feature extraction is consistent with the Phase 8E/8F training feature definitions.
+  * Terrain (30m):        Copernicus DEM GLO-30 (Elevation, Horn's 3x3 Slope, Aspect, 5x5 Relief std)
+  * Soil (250m):          ISRIC SoilGrids v2.0 (WRB Class, Clay%, Sand%, Silt%, Bulk Density)
+  * Land Cover (10m):     ESA WorldCover 2021 v200 (11-class global legend)
+  * Domain Check:         GADM 4.1 Level 1 Vector Polygons (8 Northeast Indian States)
+
+3. TEST SUITE & VERIFICATION STATUS
+--------------------------------------------------------------------------------
+  * Unit Tests:           12 / 12 PASSED (tests/test_static_lsm_inference.py)
+  * CLI Verification:     Single location and --json output verified (scripts/profile_location.py)
+  * Batch Processing:     Batch profiling verified on 10 rows (scripts/profile_locations.py)
+  * Output CSV:           data/processed/inference/location_profiles.csv
+
+4. REGRESSION SAMPLES AUDIT (10 REPRESENTATIVE LOCATIONS)
+   (Inference regression samples drawn from existing training rows; this verifies pipeline execution and feature extraction, not independent generalization.)
+--------------------------------------------------------------------------------
+Sample ID       | State              | Slope    | WRB Soil     | Landcover      | Score    | Tier      
+--------------------------------------------------------------------------------
+LS2014_000001   | Arunachal Pradesh  | 37.4   ° | Luvisols     | Tree cover     | 0.5848  | HIGH      
+LS2014_000724   | Meghalaya          | 15.7   ° | Acrisols     | Tree cover     | 0.8779  | VERY_HIGH 
+LS2014_000976   | Meghalaya          | 16.6   ° | Acrisols     | Tree cover     | 0.6865  | HIGH      
+LS2014_001483   | Manipur            | 45.7   ° | Acrisols     | Tree cover     | 0.9480  | VERY_HIGH 
+LS2014_001614   | Mizoram            | 21.4   ° | Acrisols     | Tree cover     | 0.8096  | VERY_HIGH 
+LS2014_001968   | Nagaland           | 33.7   ° | Luvisols     | Tree cover     | 0.7329  | HIGH      
+LS2014_001976   | Sikkim             | 39.1   ° | Luvisols     | Tree cover     | 0.8218  | VERY_HIGH 
+LS2014_001997   | Tripura            | 19.4   ° | Acrisols     | Tree cover     | 0.8523  | VERY_HIGH 
+NEG_AR_0001     | Arunachal Pradesh  | 0.4    ° | Vertisols    | Cropland       | 0.0073  | LOW       
+NEG_AR_0493     | Arunachal Pradesh  | 39.1   ° | Luvisols     | Tree cover     | 0.0606  | LOW       
+--------------------------------------------------------------------------------
+
+5. OPERATIONAL SUSCEPTIBILITY CATEGORIES (CONFIGURABLE)
+--------------------------------------------------------------------------------
+  * [0.00 – <0.25) : LOW
+  * [0.25 – <0.50) : MODERATE
+  * [0.50 – <0.75) : HIGH
+  * [0.75 – 1.00]  : VERY_HIGH
+  (Note: Categories are operational presentation bins, not independently validated hazard thresholds)
+
+6. CORE SCIENTIFIC LIMITATIONS & SAFEGUARDS
+--------------------------------------------------------------------------------
+  1. Model trained on 2014 inventory: The baseline reflects historical slope failures mapped in 2014.
+  2. Static susceptibility is not an event-time warning: A high score indicates terrain predisposition to failure, not that a landslide is occurring or imminent.
+  3. Rainfall is intentionally excluded: Dynamic meteorological triggers (CWC/IMD) operate as a separate operational tier.
+  4. Model score is not a calibrated probability: Score represents the Random Forest voting fraction and must not be described as percentage likelihood of occurrence.
+  5. Model was spatially validated at regional block level: Held-out spatial blocks demonstrate generalization (ROC-AUC ~0.81), but local micro-topography may vary.
+  6. Nearest-landslide proximity was rejected from the production model: To prevent synthetic negative buffer leakage, inventory proximity is strictly excluded.
+  7. Domain limited to Northeast India: Inference is valid only within the 8 Northeast Indian states.
+  8. Sensor resolution differences: DEM (~30m), WorldCover (~10m), and SoilGrids (~250m) represent differing spatial scales.
+================================================================================

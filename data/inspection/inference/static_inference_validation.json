@@ -1,0 +1,435 @@
+{
+  "status": "VALIDATION_PASSED",
+  "validation_timestamp_utc": "2026-09-06T06:09:22.789072+00:00",
+  "technical_verification_statement": "Verified: inference terrain, soil, and WorldCover feature extraction is consistent with the Phase 8E/8F training feature definitions.",
+  "model_contract": {
+    "selected_model": "Model A (Environmental Only)",
+    "pipeline_path": "model/static_lsm_pipeline.joblib",
+    "metadata_path": "model/static_lsm_metadata.json",
+    "features_used": [
+      "elevation_m",
+      "slope_deg",
+      "aspect_deg",
+      "relief_std_5x5_m",
+      "clay_percent",
+      "sand_percent",
+      "silt_percent",
+      "bulk_density_kg_dm3",
+      "soil_class",
+      "landcover_class"
+    ],
+    "output_interpretation": "Raw Random Forest susceptibility score/probability estimate in range 0\u20131 (uncalibrated probability estimate, not an event probability).",
+    "features_strictly_excluded": [
+      "distance_to_road_m",
+      "distance_to_river_m",
+      "distance_to_nearest_other_landslide_m",
+      "rainfall"
+    ]
+  },
+  "source_datasets": {
+    "terrain": {
+      "source": "Copernicus DEM GLO-30 (30m)",
+      "variables": [
+        "elevation_m",
+        "slope_deg",
+        "aspect_deg",
+        "relief_std_5x5_m"
+      ],
+      "slope_aspect_method": "Horn's 3x3 weighted partial derivatives",
+      "relief_method": "5x5 window elevation standard deviation"
+    },
+    "soil": {
+      "source": "ISRIC SoilGrids 2020 v2.0 (250m)",
+      "variables": [
+        "soil_class",
+        "clay_percent",
+        "sand_percent",
+        "silt_percent",
+        "bulk_density_kg_dm3"
+      ],
+      "classification": "WRB (World Reference Base) 30 reference soil groups",
+      "depth": "0-5 cm standard topsoil"
+    },
+    "landcover": {
+      "source": "ESA WorldCover 2021 v200 (10m)",
+      "variable": "landcover_class",
+      "classification": "Official 11-class global legend (Tree cover, Shrubland, Grassland, Cropland, etc.)"
+    },
+    "domain_boundaries": {
+      "source": "GADM 4.1 India Level 1 administrative boundaries",
+      "states_supported": [
+        "Arunachal Pradesh",
+        "Assam",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Sikkim",
+        "Tripura"
+      ]
+    }
+  },
+  "operational_categories": {
+    "LOW": {
+      "min": 0.0,
+      "max": 0.25,
+      "description": "Low baseline terrain susceptibility"
+    },
+    "MODERATE": {
+      "min": 0.25,
+      "max": 0.5,
+      "description": "Moderate baseline terrain susceptibility"
+    },
+    "HIGH": {
+      "min": 0.5,
+      "max": 0.75,
+      "description": "High baseline terrain susceptibility"
+    },
+    "VERY_HIGH": {
+      "min": 0.75,
+      "max": 1.0,
+      "description": "Very high baseline terrain susceptibility"
+    }
+  },
+  "test_results_summary": {
+    "unit_tests": {
+      "test_file": "tests/test_static_lsm_inference.py",
+      "tests_executed": 12,
+      "tests_passed": 12,
+      "status": "ALL_PASSED"
+    },
+    "domain_edge_tests": [
+      {
+        "test_case": "Valid interior (Shillong)",
+        "latitude": 25.5788,
+        "longitude": 91.8933,
+        "status": "SUCCESS",
+        "matched_state": "Meghalaya",
+        "passed": true
+      },
+      {
+        "test_case": "Valid interior (Guwahati)",
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "status": "SUCCESS",
+        "matched_state": "Assam",
+        "passed": true
+      },
+      {
+        "test_case": "Outside NER (New Delhi)",
+        "latitude": 28.6139,
+        "longitude": 77.209,
+        "status": "OUTSIDE_SUPPORTED_DOMAIN",
+        "matched_state": null,
+        "passed": true
+      },
+      {
+        "test_case": "Outside NER (Kolkata)",
+        "latitude": 22.5726,
+        "longitude": 88.3639,
+        "status": "OUTSIDE_SUPPORTED_DOMAIN",
+        "matched_state": null,
+        "passed": true
+      },
+      {
+        "test_case": "Invalid Lat (>90)",
+        "latitude": 95.0,
+        "longitude": 91.0,
+        "status": "OUTSIDE_SUPPORTED_DOMAIN",
+        "matched_state": null,
+        "passed": true
+      },
+      {
+        "test_case": "Invalid Lon (>180)",
+        "latitude": 25.0,
+        "longitude": 195.0,
+        "status": "OUTSIDE_SUPPORTED_DOMAIN",
+        "matched_state": null,
+        "passed": true
+      }
+    ],
+    "regression_samples_tested": 10,
+    "regression_samples_note": "Inference regression samples drawn from existing training rows; this verifies pipeline execution and feature extraction, not independent generalization."
+  },
+  "regression_samples": [
+    {
+      "sample_id": "LS2014_000001",
+      "true_historical_label": 1,
+      "historical_state": "Arunachal Pradesh",
+      "detected_state": "Arunachal Pradesh",
+      "latitude": 27.5925,
+      "longitude": 91.6087,
+      "elevation_m": 3139.7,
+      "slope_deg": 37.41,
+      "aspect_deg": 141.49,
+      "relief_std_5x5_m": 36.0,
+      "soil_class": "Luvisols",
+      "clay_percent": 26.4,
+      "sand_percent": 39.1,
+      "silt_percent": 34.6,
+      "bulk_density_kg_dm3": 1.09,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.5848,
+      "susceptibility_category": "HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "TERRAIN_STEEP_SLOPE",
+        "HIGH_LOCAL_RELIEF",
+        "SOUTH_FACING_ASPECT_SIGNAL",
+        "HIGH_ELEVATION_SIGNAL"
+      ],
+      "inference_time_ms": 446.45
+    },
+    {
+      "sample_id": "LS2014_000724",
+      "true_historical_label": 1,
+      "historical_state": "Assam",
+      "detected_state": "Meghalaya",
+      "latitude": 25.613,
+      "longitude": 90.0162,
+      "elevation_m": 81.75,
+      "slope_deg": 15.73,
+      "aspect_deg": 197.94,
+      "relief_std_5x5_m": 12.37,
+      "soil_class": "Acrisols",
+      "clay_percent": 26.6,
+      "sand_percent": 38.3,
+      "silt_percent": 35.1,
+      "bulk_density_kg_dm3": 1.29,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.8779,
+      "susceptibility_category": "VERY_HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 353.66
+    },
+    {
+      "sample_id": "LS2014_000976",
+      "true_historical_label": 1,
+      "historical_state": "Meghalaya",
+      "detected_state": "Meghalaya",
+      "latitude": 25.4369,
+      "longitude": 90.0127,
+      "elevation_m": 95.45,
+      "slope_deg": 16.62,
+      "aspect_deg": 261.83,
+      "relief_std_5x5_m": 10.43,
+      "soil_class": "Acrisols",
+      "clay_percent": 26.5,
+      "sand_percent": 39.1,
+      "silt_percent": 34.4,
+      "bulk_density_kg_dm3": 1.28,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.6865,
+      "susceptibility_category": "HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 297.3
+    },
+    {
+      "sample_id": "LS2014_001483",
+      "true_historical_label": 1,
+      "historical_state": "Manipur",
+      "detected_state": "Manipur",
+      "latitude": 24.0499,
+      "longitude": 93.1059,
+      "elevation_m": 289.54,
+      "slope_deg": 45.69,
+      "aspect_deg": 177.56,
+      "relief_std_5x5_m": 44.2,
+      "soil_class": "Acrisols",
+      "clay_percent": 27.1,
+      "sand_percent": 25.3,
+      "silt_percent": 47.6,
+      "bulk_density_kg_dm3": 1.14,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.948,
+      "susceptibility_category": "VERY_HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "TERRAIN_STEEP_SLOPE",
+        "HIGH_LOCAL_RELIEF",
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 312.71
+    },
+    {
+      "sample_id": "LS2014_001614",
+      "true_historical_label": 1,
+      "historical_state": "Mizoram",
+      "detected_state": "Mizoram",
+      "latitude": 23.1598,
+      "longitude": 92.4144,
+      "elevation_m": 72.36,
+      "slope_deg": 21.37,
+      "aspect_deg": 211.15,
+      "relief_std_5x5_m": 11.54,
+      "soil_class": "Acrisols",
+      "clay_percent": 28.9,
+      "sand_percent": 31.8,
+      "silt_percent": 39.2,
+      "bulk_density_kg_dm3": 1.18,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.8096,
+      "susceptibility_category": "VERY_HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 344.89
+    },
+    {
+      "sample_id": "LS2014_001968",
+      "true_historical_label": 1,
+      "historical_state": "Nagaland",
+      "detected_state": "Nagaland",
+      "latitude": 25.6381,
+      "longitude": 93.8585,
+      "elevation_m": 955.5,
+      "slope_deg": 33.73,
+      "aspect_deg": 219.54,
+      "relief_std_5x5_m": 22.51,
+      "soil_class": "Luvisols",
+      "clay_percent": 33.0,
+      "sand_percent": 30.2,
+      "silt_percent": 36.8,
+      "bulk_density_kg_dm3": 1.05,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.7329,
+      "susceptibility_category": "HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "TERRAIN_STEEP_SLOPE",
+        "SOUTH_FACING_ASPECT_SIGNAL",
+        "FINE_SOIL_TEXTURE_SIGNAL"
+      ],
+      "inference_time_ms": 344.15
+    },
+    {
+      "sample_id": "LS2014_001976",
+      "true_historical_label": 1,
+      "historical_state": "Sikkim",
+      "detected_state": "Sikkim",
+      "latitude": 27.1275,
+      "longitude": 88.1321,
+      "elevation_m": 1275.44,
+      "slope_deg": 39.06,
+      "aspect_deg": 113.98,
+      "relief_std_5x5_m": 32.25,
+      "soil_class": "Luvisols",
+      "clay_percent": 25.3,
+      "sand_percent": 34.0,
+      "silt_percent": 40.7,
+      "bulk_density_kg_dm3": 1.15,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.8218,
+      "susceptibility_category": "VERY_HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "TERRAIN_STEEP_SLOPE",
+        "HIGH_LOCAL_RELIEF",
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 331.04
+    },
+    {
+      "sample_id": "LS2014_001997",
+      "true_historical_label": 1,
+      "historical_state": "Tripura",
+      "detected_state": "Tripura",
+      "latitude": 24.1323,
+      "longitude": 91.7455,
+      "elevation_m": 128.14,
+      "slope_deg": 19.35,
+      "aspect_deg": 157.08,
+      "relief_std_5x5_m": 9.54,
+      "soil_class": "Acrisols",
+      "clay_percent": 26.7,
+      "sand_percent": 38.1,
+      "silt_percent": 35.1,
+      "bulk_density_kg_dm3": 1.24,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.8523,
+      "susceptibility_category": "VERY_HIGH",
+      "quality_status": "OK",
+      "reason_codes": [
+        "SOUTH_FACING_ASPECT_SIGNAL"
+      ],
+      "inference_time_ms": 324.97
+    },
+    {
+      "sample_id": "NEG_AR_0001",
+      "true_historical_label": 0,
+      "historical_state": "ArunachalPradesh",
+      "detected_state": "Arunachal Pradesh",
+      "latitude": 28.09661877010858,
+      "longitude": 95.75793119126952,
+      "elevation_m": 196.68,
+      "slope_deg": 0.39,
+      "aspect_deg": 239.82,
+      "relief_std_5x5_m": 0.53,
+      "soil_class": "Vertisols",
+      "clay_percent": 32.5,
+      "sand_percent": 40.3,
+      "silt_percent": 27.2,
+      "bulk_density_kg_dm3": 1.19,
+      "landcover_class": "Cropland",
+      "susceptibility_score": 0.0073,
+      "susceptibility_category": "LOW",
+      "quality_status": "OK",
+      "reason_codes": [
+        "SOUTH_FACING_ASPECT_SIGNAL",
+        "FINE_SOIL_TEXTURE_SIGNAL"
+      ],
+      "inference_time_ms": 343.05
+    },
+    {
+      "sample_id": "NEG_AR_0493",
+      "true_historical_label": 0,
+      "historical_state": "ArunachalPradesh",
+      "detected_state": "Arunachal Pradesh",
+      "latitude": 28.062744501739047,
+      "longitude": 95.01854042061552,
+      "elevation_m": 1582.14,
+      "slope_deg": 39.09,
+      "aspect_deg": 271.42,
+      "relief_std_5x5_m": 34.38,
+      "soil_class": "Luvisols",
+      "clay_percent": 32.0,
+      "sand_percent": 34.2,
+      "silt_percent": 33.8,
+      "bulk_density_kg_dm3": 1.04,
+      "landcover_class": "Tree cover",
+      "susceptibility_score": 0.0606,
+      "susceptibility_category": "LOW",
+      "quality_status": "OK",
+      "reason_codes": [
+        "TERRAIN_STEEP_SLOPE",
+        "HIGH_LOCAL_RELIEF",
+        "HIGH_ELEVATION_SIGNAL",
+        "FINE_SOIL_TEXTURE_SIGNAL"
+      ],
+      "inference_time_ms": 338.54
+    }
+  ],
+  "batch_inference_status": {
+    "batch_script": "scripts/profile_locations.py",
+    "sample_output": "C:\\SIH Landslide\\data\\processed\\inference\\location_profiles.csv",
+    "rows_generated": 10,
+    "verified": true
+  },
+  "known_scientific_limitations": [
+    "1. Model trained on 2014 inventory: The baseline reflects historical slope failures mapped in 2014.",
+    "2. Static susceptibility is not an event-time warning: A high score indicates terrain predisposition to failure, not that a landslide is occurring or imminent.",
+    "3. Rainfall is intentionally excluded: Dynamic meteorological triggers (CWC/IMD) operate as a separate operational tier.",
+    "4. Model score is not a calibrated probability: Score represents the Random Forest voting fraction and must not be described as percentage likelihood of occurrence.",
+    "5. Model was spatially validated at regional block level: Held-out spatial blocks demonstrate generalization (ROC-AUC ~0.81), but local micro-topography may vary.",
+    "6. Nearest-landslide proximity was rejected from the production model: To prevent synthetic negative buffer leakage, inventory proximity is strictly excluded.",
+    "7. Domain limited to Northeast India: Inference is valid only within the 8 Northeast Indian states.",
+    "8. Sensor resolution differences: DEM (~30m), WorldCover (~10m), and SoilGrids (~250m) represent differing spatial scales."
+  ]
+}
