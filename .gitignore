@@ -30,3 +30,4 @@ temp/
 # Data directories
 data/raw/
 data/processed/
+data/inspection/landslide_pdfs/
