@@ -1,23 +1,41 @@
+"""
+Phase 8E.2.1 - Soil Feature Extraction from ISRIC SoilGrids v2.0
+================================================================
+Source:
+  Official ISRIC SoilGrids 2020 v2.0 (250m global mosaics)
+  URL: https://files.isric.org/soilgrids/latest/data/
+
+Extracted Soil Variables:
+  - soil_class: WRB (World Reference Base) Most Probable Reference Soil Group
+  - clay_percent: Clay content (0-2 µm) at 0-5 cm depth (%)
+  - sand_percent: Sand content (50-2000 µm) at 0-5 cm depth (%)
+  - silt_percent: Silt content (2-50 µm) at 0-5 cm depth (%)
+  - bulk_density_kg_dm3: Bulk density of fine earth fraction at 0-5 cm depth (kg/dm3)
+  - soil_quality: Quality flag ("OK" or "MISSING" for water/nodata)
+
+Strict Preservation:
+  - 4,016 samples (2,008 positive Bhuvan landslides, 2,008 GADM ADM1 spatial negatives)
+  - 0 coordinate alterations, 0 label changes, 0 duplicate rows
+"""
+
 from __future__ import annotations
 
 import json
-import math
+import os
 import sys
-import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+import rasterio
+from rasterio.windows import from_bounds
+from pyproj import Transformer
 
-# ============================================================
-# CONFIGURATION
-# ============================================================
+# ==============================================================================
+# CONFIGURATION & PATHS
+# ==============================================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,146 +50,164 @@ INPUT_CSV = (
 OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "landslides"
 OUTPUT_CSV = OUTPUT_DIR / "landslide_training_samples_soil.csv"
 REPORT_JSON = OUTPUT_DIR / "soil_extraction_report.json"
-CACHE_FILE = OUTPUT_DIR / "soilgrids_cache.json"
 
-URL_PROPERTIES = "https://rest.isric.org/soilgrids/v2.0/properties/query"
-URL_CLASSIFICATION = "https://rest.isric.org/soilgrids/v2.0/classification/query"
+RAW_SOIL_DIR = PROJECT_ROOT / "data" / "raw" / "soil"
 
-MAX_WORKERS = 6
-REQUEST_TIMEOUT = 12.0
-SAVE_INTERVAL = 25  # Save cache every 25 queries
+# SoilGrids VRT Endpoints
+VRT_BASE = "https://files.isric.org/soilgrids/latest/data"
 
-_thread_local = threading.local()
+SOIL_LAYERS = {
+    "clay": {
+        "url": f"/vsicurl/{VRT_BASE}/clay/clay_0-5cm_mean.vrt",
+        "local_tif": RAW_SOIL_DIR / "clay_0-5cm_mean_nei.tif",
+        "d_factor": 10.0,
+        "round_digits": 2,
+        "col_name": "clay_percent",
+        "nodata_val": -32768,
+        "is_homolosine": True,
+    },
+    "sand": {
+        "url": f"/vsicurl/{VRT_BASE}/sand/sand_0-5cm_mean.vrt",
+        "local_tif": RAW_SOIL_DIR / "sand_0-5cm_mean_nei.tif",
+        "d_factor": 10.0,
+        "round_digits": 2,
+        "col_name": "sand_percent",
+        "nodata_val": -32768,
+        "is_homolosine": True,
+    },
+    "silt": {
+        "url": f"/vsicurl/{VRT_BASE}/silt/silt_0-5cm_mean.vrt",
+        "local_tif": RAW_SOIL_DIR / "silt_0-5cm_mean_nei.tif",
+        "d_factor": 10.0,
+        "round_digits": 2,
+        "col_name": "silt_percent",
+        "nodata_val": -32768,
+        "is_homolosine": True,
+    },
+    "bdod": {
+        "url": f"/vsicurl/{VRT_BASE}/bdod/bdod_0-5cm_mean.vrt",
+        "local_tif": RAW_SOIL_DIR / "bdod_0-5cm_mean_nei.tif",
+        "d_factor": 100.0,
+        "round_digits": 3,
+        "col_name": "bulk_density_kg_dm3",
+        "nodata_val": -32768,
+        "is_homolosine": True,
+    },
+    "wrb": {
+        "url": f"/vsicurl/{VRT_BASE}/wrb/MostProbable.vrt",
+        "local_tif": RAW_SOIL_DIR / "wrb_most_probable_nei.tif",
+        "col_name": "soil_class",
+        "nodata_val": 255,
+        "is_homolosine": False,
+    },
+}
+
+# Official WRB 30-class thematic mapping from MostProbable.vrt
+WRB_CLASS_MAP = {
+    0: "Acrisols",
+    1: "Albeluvisols",
+    2: "Alisols",
+    3: "Andosols",
+    4: "Arenosols",
+    5: "Calcisols",
+    6: "Cambisols",
+    7: "Chernozems",
+    8: "Cryosols",
+    9: "Durisols",
+    10: "Ferralsols",
+    11: "Fluvisols",
+    12: "Gleysols",
+    13: "Gypsisols",
+    14: "Histosols",
+    15: "Kastanozems",
+    16: "Leptosols",
+    17: "Lixisols",
+    18: "Luvisols",
+    19: "Nitisols",
+    20: "Phaeozems",
+    21: "Planosols",
+    22: "Plinthosols",
+    23: "Podzols",
+    24: "Regosols",
+    25: "Solonchaks",
+    26: "Solonetz",
+    27: "Stagnosols",
+    28: "Umbrisols",
+    29: "Vertisols",
+}
 
 
 def log(msg=""):
     print(msg, flush=True)
 
 
-def get_session() -> requests.Session:
-    if not hasattr(_thread_local, "session"):
-        s = requests.Session()
-        retries = Retry(
-            total=3,
-            backoff_factor=1.0,
-            status_forcelist=[429, 500, 502, 503, 504],
-            raise_on_status=False,
-        )
-        adapter = HTTPAdapter(max_retries=retries, pool_connections=5, pool_maxsize=5)
-        s.mount("https://", adapter)
-        s.mount("http://", adapter)
-        _thread_local.session = s
-    return _thread_local.session
+def acquire_regional_tif(layer_key: str, min_lon: float, min_lat: float, max_lon: float, max_lat: float) -> Path:
+    """Download/crop the Northeast India region raster from ISRIC VRT if not locally cached."""
+    cfg = SOIL_LAYERS[layer_key]
+    out_tif = cfg["local_tif"]
+    if out_tif.exists() and out_tif.stat().st_size > 100_000:
+        log(f"  [OK] Found local cached raster: {out_tif.name} ({out_tif.stat().st_size / (1024*1024):.2f} MB)")
+        return out_tif
 
+    log(f"  Fetching {layer_key} window from remote VRT: {cfg['url']}...")
+    t0 = time.time()
+    RAW_SOIL_DIR.mkdir(parents=True, exist_ok=True)
 
-def query_soilgrids_single(lat: float, lon: float) -> dict:
-    session = get_session()
-    result = {
-        "latitude": lat,
-        "longitude": lon,
-        "soil_class": None,
-        "clay_percent": None,
-        "sand_percent": None,
-        "silt_percent": None,
-        "bulk_density_kg_dm3": None,
-        "soil_quality": "OK",
-        "api_properties_status": None,
-        "api_classification_status": None,
-        "error_message": None,
-    }
-
-    # 1. Properties Query (0-5 cm depth)
-    try:
-        r_prop = session.get(
-            URL_PROPERTIES,
-            params={
-                "lat": lat,
-                "lon": lon,
-                "property": ["clay", "sand", "silt", "bdod"],
-                "depth": ["0-5cm"],
-                "value": ["mean"],
-            },
-            timeout=REQUEST_TIMEOUT,
-        )
-        result["api_properties_status"] = r_prop.status_code
-        if r_prop.status_code == 200:
-            d_prop = r_prop.json()
-            layers = d_prop.get("properties", {}).get("layers", [])
-            prop_map = {}
-            for layer in layers:
-                name = layer.get("name")
-                depths = layer.get("depths", [])
-                if depths:
-                    val = depths[0].get("values", {}).get("mean")
-                    prop_map[name] = val
-
-            clay_raw = prop_map.get("clay")
-            sand_raw = prop_map.get("sand")
-            silt_raw = prop_map.get("silt")
-            bdod_raw = prop_map.get("bdod")
-
-            if clay_raw is not None:
-                result["clay_percent"] = round(float(clay_raw) / 10.0, 2)
-            if sand_raw is not None:
-                result["sand_percent"] = round(float(sand_raw) / 10.0, 2)
-            if silt_raw is not None:
-                result["silt_percent"] = round(float(silt_raw) / 10.0, 2)
-            if bdod_raw is not None:
-                result["bulk_density_kg_dm3"] = round(float(bdod_raw) / 100.0, 3)
-
-            if all(v is None for v in [clay_raw, sand_raw, silt_raw, bdod_raw]):
-                result["soil_quality"] = "MISSING"
-
-        elif r_prop.status_code in (404, 400):
-            result["soil_quality"] = "MISSING"
+    with rasterio.open(cfg["url"]) as src:
+        if cfg["is_homolosine"]:
+            trans = Transformer.from_crs("EPSG:4326", src.crs, always_xy=True)
+            xs, ys = trans.transform([min_lon, max_lon, min_lon, max_lon], [min_lat, min_lat, max_lat, max_lat])
+            b_min_x, b_max_x = min(xs), max(xs)
+            b_min_y, b_max_y = min(ys), max(ys)
+            window = from_bounds(b_min_x, b_min_y, b_max_x, b_max_y, transform=src.transform)
         else:
-            result["soil_quality"] = "API_ERROR"
-            result["error_message"] = f"Properties HTTP {r_prop.status_code}"
+            window = from_bounds(min_lon, min_lat, max_lon, max_lat, transform=src.transform)
 
-    except Exception as e:
-        result["soil_quality"] = "API_ERROR"
-        result["error_message"] = f"Properties error: {e}"
+        data = src.read(1, window=window)
+        win_transform = rasterio.windows.transform(window, src.transform)
 
-    # 2. Classification Query (WRB Most Probable)
-    try:
-        r_class = session.get(
-            URL_CLASSIFICATION,
-            params={"lat": lat, "lon": lon},
-            timeout=REQUEST_TIMEOUT,
-        )
-        result["api_classification_status"] = r_class.status_code
-        if r_class.status_code == 200:
-            d_class = r_class.json()
-            wrb_class = d_class.get("wrb_class_name")
-            if wrb_class:
-                result["soil_class"] = str(wrb_class).strip()
-            elif result["soil_quality"] == "OK":
-                result["soil_quality"] = "MISSING"
-        elif r_class.status_code in (404, 400):
-            if result["soil_quality"] == "OK":
-                result["soil_quality"] = "MISSING"
+        meta = src.meta.copy()
+        meta.update({
+            "driver": "GTiff",
+            "height": data.shape[0],
+            "width": data.shape[1],
+            "transform": win_transform,
+            "compress": "deflate",
+            "predictor": 2 if cfg["is_homolosine"] else 1,
+        })
+
+        tmp_tif = out_tif.with_suffix(".tif.tmp")
+        with rasterio.open(tmp_tif, "w", **meta) as dst:
+            dst.write(data, 1)
+        tmp_tif.replace(out_tif)
+
+    size_mb = out_tif.stat().st_size / (1024 * 1024)
+    log(f"  [OK] Saved regional GeoTIFF {out_tif.name} ({size_mb:.2f} MB) in {time.time()-t0:.2f}s")
+    return out_tif
+
+
+def sample_raster_points(tif_path: Path, lons: np.ndarray, lats: np.ndarray, is_homolosine: bool) -> np.ndarray:
+    """Sample points from a local GeoTIFF."""
+    with rasterio.open(tif_path) as src:
+        if is_homolosine:
+            trans = Transformer.from_crs("EPSG:4326", src.crs, always_xy=True)
+            xs, ys = trans.transform(lons, lats)
+            pts = list(zip(xs, ys))
         else:
-            if result["soil_quality"] != "API_ERROR":
-                result["soil_quality"] = "API_ERROR"
-                result["error_message"] = f"Classification HTTP {r_class.status_code}"
-
-    except Exception as e:
-        if result["soil_quality"] != "API_ERROR":
-            result["soil_quality"] = "API_ERROR"
-            result["error_message"] = f"Classification error: {e}"
-
-    return result
+            pts = list(zip(lons, lats))
+        vals = np.array([v[0] for v in src.sample(pts)])
+    return vals
 
 
 def main():
     log("=" * 80)
-    log("PHASE 8E.2.1 - SOILGRIDS SOIL FEATURE EXTRACTION")
+    log("PHASE 8E.2.1 - SOIL FEATURE EXTRACTION (ISRIC SOILGRIDS v2.0)")
     log("=" * 80)
 
     start_time = time.time()
     extraction_timestamp = datetime.now(timezone.utc).isoformat()
 
-    # 1. Verify input CSV
+    # 1. Load and verify input dataset
     if not INPUT_CSV.exists():
         raise FileNotFoundError(f"Input CSV not found: {INPUT_CSV}")
 
@@ -190,122 +226,66 @@ def main():
     if positives != 2008 or negatives != 2008:
         raise ValueError(f"Expected 2,008 positives and 2,008 negatives. Found {positives} / {negatives}.")
 
-    # 2. Extract unique coordinates
-    unique_coords = (
-        df[["latitude", "longitude"]]
-        .drop_duplicates()
-        .reset_index(drop=True)
+    # Compute study area bounding box with 0.1 degree buffer
+    min_lon = float(df["longitude"].min() - 0.1)
+    min_lat = float(df["latitude"].min() - 0.1)
+    max_lon = float(df["longitude"].max() + 0.1)
+    max_lat = float(df["latitude"].max() + 0.1)
+    log(f"Study area extent:   [{min_lon:.4f}, {min_lat:.4f}] to [{max_lon:.4f}, {max_lat:.4f}]")
+
+    # 2. Acquire regional rasters
+    log("\nAcquiring / verifying regional SoilGrids rasters (250m)...")
+    for key in ["clay", "sand", "silt", "bdod", "wrb"]:
+        acquire_regional_tif(key, min_lon, min_lat, max_lon, max_lat)
+
+    # 3. Sample all layers for 4,016 coordinates
+    log("\nSampling soil layers at sample coordinates...")
+    lons = df["longitude"].values
+    lats = df["latitude"].values
+
+    # Physical properties
+    raw_samples = {}
+    for key in ["clay", "sand", "silt", "bdod"]:
+        cfg = SOIL_LAYERS[key]
+        vals = sample_raster_points(cfg["local_tif"], lons, lats, cfg["is_homolosine"])
+        raw_samples[key] = vals
+        log(f"  Sampled {key.upper()}: {len(vals)} points (raw min={vals.min()}, max={vals.max()})")
+
+    # Classification
+    wrb_cfg = SOIL_LAYERS["wrb"]
+    raw_wrb = sample_raster_points(wrb_cfg["local_tif"], lons, lats, wrb_cfg["is_homolosine"])
+    log(f"  Sampled WRB: {len(raw_wrb)} points (raw unique={len(set(raw_wrb))})")
+
+    # 4. Map values and create features
+    log("\nProcessing feature columns and quality flags...")
+    
+    # Check for nodata
+    clay_raw = raw_samples["clay"]
+    sand_raw = raw_samples["sand"]
+    silt_raw = raw_samples["silt"]
+    bdod_raw = raw_samples["bdod"]
+
+    is_missing = (
+        (clay_raw == SOIL_LAYERS["clay"]["nodata_val"])
+        | (sand_raw == SOIL_LAYERS["sand"]["nodata_val"])
+        | (silt_raw == SOIL_LAYERS["silt"]["nodata_val"])
+        | (bdod_raw == SOIL_LAYERS["bdod"]["nodata_val"])
+        | (raw_wrb == SOIL_LAYERS["wrb"]["nodata_val"])
     )
-    total_unique = len(unique_coords)
-    log(f"\nUnique coordinates to query: {total_unique} (from {len(df)} samples)")
 
-    # 3. Load cache if exists
-    cache: dict[str, dict] = {}
-    if CACHE_FILE.exists():
-        try:
-            cache = json.loads(CACHE_FILE.read_text(encoding="utf-8"))
-            log(f"Loaded existing cache with {len(cache)} cached coordinates.")
-        except Exception as e:
-            log(f"Warning: Failed to load cache file: {e}. Starting fresh.")
-            cache = {}
-
-    # Determine coordinates needing queries
-    to_query = []
-    for _, row in unique_coords.iterrows():
-        lat = float(row["latitude"])
-        lon = float(row["longitude"])
-        key = f"{lat:.6f},{lon:.6f}"
-        if key not in cache:
-            to_query.append((lat, lon, key))
-
-    log(f"Coordinates already in cache: {total_unique - len(to_query)}")
-    log(f"Coordinates needing API call: {len(to_query)}")
-
-    # 4. Query SoilGrids API with thread pool
-    if to_query:
-        log(f"\nStarting queries with {MAX_WORKERS} workers...")
-        completed_count = 0
-        batch_start_time = time.time()
-
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            future_to_key = {
-                executor.submit(query_soilgrids_single, lat, lon): key
-                for lat, lon, key in to_query
-            }
-
-            for future in as_completed(future_to_key):
-                key = future_to_key[future]
-                try:
-                    res = future.result()
-                    cache[key] = res
-                except Exception as exc:
-                    log(f"Error querying {key}: {exc}")
-                    cache[key] = {
-                        "soil_class": None,
-                        "clay_percent": None,
-                        "sand_percent": None,
-                        "silt_percent": None,
-                        "bulk_density_kg_dm3": None,
-                        "soil_quality": "API_ERROR",
-                        "error_message": str(exc),
-                    }
-
-                completed_count += 1
-
-                # Log progress every 50
-                if completed_count % 50 == 0 or completed_count == len(to_query):
-                    elapsed_batch = time.time() - batch_start_time
-                    rate = completed_count / elapsed_batch if elapsed_batch > 0 else 0
-                    remaining = (len(to_query) - completed_count) / rate if rate > 0 else 0
-                    log(
-                        f"  Queried {completed_count}/{len(to_query)} "
-                        f"({completed_count/len(to_query)*100:.1f}%) "
-                        f"| Speed: {rate:.2f} coords/s | ETA: {remaining/60:.1f}m"
-                    )
-
-                # Periodic cache save every SAVE_INTERVAL
-                if completed_count % SAVE_INTERVAL == 0 or completed_count == len(to_query):
-                    tmp_cache = CACHE_FILE.with_suffix(".json.tmp")
-                    tmp_cache.write_text(json.dumps(cache, indent=1), encoding="utf-8")
-                    tmp_cache.replace(CACHE_FILE)
-
-    # Final cache save
-    tmp_cache = CACHE_FILE.with_suffix(".json.tmp")
-    tmp_cache.write_text(json.dumps(cache, indent=1), encoding="utf-8")
-    tmp_cache.replace(CACHE_FILE)
-    log(f"\nCache successfully updated: {len(cache)} total entries saved to {CACHE_FILE}")
-
-    # 5. Map features back to all 4,016 samples
-    log("\nMapping soil features to sample rows...")
-
-    soil_classes = []
-    clay_vals = []
-    sand_vals = []
-    silt_vals = []
-    bdod_vals = []
-    qualities = []
-
-    for _, row in df.iterrows():
-        lat = float(row["latitude"])
-        lon = float(row["longitude"])
-        key = f"{lat:.6f},{lon:.6f}"
-        data = cache.get(key, {})
-
-        soil_classes.append(data.get("soil_class") if data.get("soil_class") else np.nan)
-        clay_vals.append(data.get("clay_percent") if data.get("clay_percent") is not None else np.nan)
-        sand_vals.append(data.get("sand_percent") if data.get("sand_percent") is not None else np.nan)
-        silt_vals.append(data.get("silt_percent") if data.get("silt_percent") is not None else np.nan)
-        bdod_vals.append(data.get("bulk_density_kg_dm3") if data.get("bulk_density_kg_dm3") is not None else np.nan)
-        qualities.append(data.get("soil_quality", "MISSING"))
+    soil_classes = [
+        WRB_CLASS_MAP.get(int(code), None) if code != SOIL_LAYERS["wrb"]["nodata_val"] else None
+        for code in raw_wrb
+    ]
 
     df["soil_class"] = soil_classes
-    df["clay_percent"] = clay_vals
-    df["sand_percent"] = sand_vals
-    df["silt_percent"] = silt_vals
-    df["bulk_density_kg_dm3"] = bdod_vals
-    df["soil_quality"] = qualities
+    df["clay_percent"] = np.where(clay_raw != -32768, np.round(clay_raw / 10.0, 2), np.nan)
+    df["sand_percent"] = np.where(sand_raw != -32768, np.round(sand_raw / 10.0, 2), np.nan)
+    df["silt_percent"] = np.where(silt_raw != -32768, np.round(silt_raw / 10.0, 2), np.nan)
+    df["bulk_density_kg_dm3"] = np.where(bdod_raw != -32768, np.round(bdod_raw / 100.0, 3), np.nan)
+    df["soil_quality"] = np.where(is_missing, "MISSING", "OK")
 
-    # 6. Preservation & Integrity Checks
+    # 5. Strict Preservation & Integrity Checks
     log("\n" + "=" * 80)
     log("VALIDATION & INTEGRITY SUMMARY")
     log("=" * 80)
@@ -364,34 +344,32 @@ def main():
             log(f"  mean:  {stat_dict['mean']:.2f}")
             log(f"  std:   {stat_dict['std']:.2f}")
 
-    # 7. Save output CSV atomically
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Scientific comparison: Landslides vs Negatives
+    log("\n" + "=" * 80)
+    log("SCIENTIFIC FEATURE SEPARATION: LANDSLIDES (1) vs NEGATIVES (0)")
+    log("=" * 80)
+    for feat in ["clay_percent", "sand_percent", "silt_percent", "bulk_density_kg_dm3"]:
+        mean_pos = df[df["label"] == 1][feat].mean()
+        mean_neg = df[df["label"] == 0][feat].mean()
+        log(f"{feat:22s} | Landslides: {mean_pos:.2f} | Spatial Negatives: {mean_neg:.2f}")
 
+    # 6. Save output CSV atomically
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     tmp_csv = OUTPUT_CSV.with_suffix(".csv.tmp")
     df.to_csv(tmp_csv, index=False)
     tmp_csv.replace(OUTPUT_CSV)
 
-    # 8. Save audit report
-    api_requests_count = len(to_query) * 2
-    successful_count = sum(1 for v in cache.values() if v.get("soil_quality") == "OK")
-
+    # 7. Save audit report
     report = {
         "status": "PASS",
         "dataset_name": "Landslide Training Samples with SoilGrids Features",
-        "source": "ISRIC SoilGrids v2.0 REST API",
-        "api_properties_url": URL_PROPERTIES,
-        "api_classification_url": URL_CLASSIFICATION,
+        "source": "ISRIC SoilGrids 2020 v2.0 (250m resolution)",
+        "source_base_url": VRT_BASE,
         "extraction_timestamp_utc": extraction_timestamp,
         "input_file": str(INPUT_CSV),
         "output_file": str(OUTPUT_CSV),
         "input_rows": len(original_df),
         "output_rows": len(df),
-        "unique_coordinates": total_unique,
-        "coordinates_queried_this_run": len(to_query),
-        "total_cached_coordinates": len(cache),
-        "api_requests": api_requests_count,
-        "successful_coordinates": successful_count,
-        "failed_coordinates": total_unique - successful_count,
         "preservation_checks": {
             "row_count_preserved": len(df) == 4016,
             "coordinate_changes": int(coord_diff),
@@ -406,9 +384,16 @@ def main():
         "silt_nulls": int(df["silt_percent"].isna().sum()),
         "bulk_density_nulls": int(df["bulk_density_kg_dm3"].isna().sum()),
         "feature_statistics": stats,
+        "feature_separation_by_label": {
+            feat: {
+                "landslide_mean": float(df[df["label"] == 1][feat].mean()),
+                "negative_mean": float(df[df["label"] == 0][feat].mean()),
+            }
+            for feat in ["clay_percent", "sand_percent", "silt_percent", "bulk_density_kg_dm3"]
+        },
         "top_wrb_soil_classes": {str(k): int(v) for k, v in class_counts.items()},
         "scientific_notes": [
-            "Soil data extracted from ISRIC SoilGrids v2.0 (250m resolution).",
+            "Soil data extracted from ISRIC SoilGrids 2020 v2.0 (250m resolution).",
             "Physical properties (clay, sand, silt, bdod) sampled at 0-5 cm depth.",
             "bulk_density_kg_dm3 represents fine earth fraction bulk density (bdod) converted from cg/cm3 to kg/dm3.",
             "soil_class represents the World Reference Base (WRB) Most Probable Reference Soil Group.",
@@ -422,6 +407,7 @@ def main():
 
     log(f"\nSaved soil-enriched CSV: {OUTPUT_CSV}")
     log(f"Saved audit report:       {REPORT_JSON}")
+    log(f"Total pipeline elapsed:   {time.time()-start_time:.2f}s")
     log("\nPhase 8E.2.1 soil extraction PASSED.")
 
 
