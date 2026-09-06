@@ -399,6 +399,8 @@ class RainfallProvider:
 
         if timestamp is not None:
             target_dt = pd.to_datetime(timestamp)
+            if getattr(target_dt, "tzinfo", None) is not None:
+                target_dt = target_dt.tz_convert("UTC").tz_localize(None)
             time_diffs = (st_data["dt"] - target_dt).abs()
             best_idx = int(time_diffs.argmin())
             obs = st_data.iloc[best_idx].to_dict()
@@ -410,7 +412,13 @@ class RainfallProvider:
             else:
                 ref_dt = pd.to_datetime(obs["timestamp"])
 
+        if getattr(ref_dt, "tzinfo", None) is not None:
+            ref_dt = ref_dt.tz_convert("UTC").tz_localize(None)
+
         obs_dt = pd.to_datetime(obs["timestamp"])
+        if getattr(obs_dt, "tzinfo", None) is not None:
+            obs_dt = obs_dt.tz_convert("UTC").tz_localize(None)
+
         age_hours = round(abs((ref_dt - obs_dt).total_seconds()) / 3600.0, 2)
         is_stale = age_hours > eff_max_age
 

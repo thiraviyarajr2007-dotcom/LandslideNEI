@@ -1,292 +1,424 @@
-﻿"""
-Integration and Unit Tests for the FastAPI REST API Service (api/main.py).
+"""
+Comprehensive API Contract Test Suite (Phase 8I)
+=================================================
+Validates the unified FastAPI prediction contract according to all
+Phase 8I operational and scientific requirements:
+1.  GET /api/v1/health
+2.  GET /api/v1/info
+3.  POST /api/v1/predict with valid NER coordinate (Guwahati)
+4.  POST /api/v1/predict with Tawang (>50km CWC)
+5.  POST /api/v1/predict outside NER (New Delhi)
+6.  Invalid latitude validation
+7.  Invalid longitude validation
+8.  Malformed timestamp rejection
+9.  Timezone-aware timestamp acceptance
+10. Ambiguous naive timestamp rejection
+11. Omitted timestamp handling (UTC default)
+12. Stable response schema verification
+13. Request ID UUID4 presence & traceability
+14. API version consistency ("1.0.0")
+15. Static susceptibility contract & non-probability semantics
+16. Rainfall telemetry contract & unobserved nulls
+17. Dynamic rainfall trigger contract
+18. Risk block contract & operational_fusion_score bounds
+19. Missing rainfall is not converted to 0.0
+20. Stale rainfall remains explicitly flagged
+21. No-reliable-station remains explicitly flagged
+22. IMD macro context does not become point rainfall
+23. Standardized error structure {error: {code, message, details}}
+24. Zero Python tracebacks leaked to client
+25. Health probe does not execute full raster inference
+26. POST /api/v1/profile static-only endpoint
+27. Configurable safe CORS headers
 """
 
-import io
-import os
-import sys
-import fitz  # PyMuPDF
+import uuid
+from datetime import datetime, timezone
 import pytest
 from fastapi.testclient import TestClient
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 from api.main import app
-from scripts.evaluate_model import SEVERITY_ORDER
+from src.inference.risk_engine import get_risk_engine
 
 
 @pytest.fixture(scope="module")
 def client():
-    """
-    FastAPI TestClient fixture.
-    """
     with TestClient(app) as test_client:
         yield test_client
 
 
-@pytest.fixture
-def valid_low_risk_payload():
-    return {
-        "rainfall_24h": 15.0,
-        "rainfall_3d": 35.0,
-        "rainfall_7d": 60.0,
-        "slope": 10.0,
-        "elevation": 350.0,
-        "historical_landslide": 0,
-        "distance_to_landslide": 10.0,
-        "soil_risk": 0.15,
-    }
-
-
-@pytest.fixture
-def valid_high_risk_payload():
-    return {
-        "rainfall_24h": 182.0,
-        "rainfall_3d": 420.0,
-        "rainfall_7d": 650.0,
-        "slope": 38.0,
-        "elevation": 850.0,
-        "historical_landslide": 1,
-        "distance_to_landslide": 0.8,
-        "soil_risk": 0.70,
-    }
-
-
-def create_in_memory_pdf(text_content: str) -> bytes:
-    """
-    Creates an in-memory PDF binary stream with the specified text content.
-    """
-    doc = fitz.open()
-    page = doc.new_page()
-    page.insert_text((50, 72), text_content, fontsize=11)
-    pdf_bytes = doc.write()
-    doc.close()
-    return pdf_bytes
-
-
 # ==============================================================================
-# 1. GENERAL & HEALTH ENDPOINTS
+# 1. SYSTEM ENDPOINTS
 # ==============================================================================
-
-def test_root_endpoint(client):
-    response = client.get("/")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "running"
-    assert data["version"] == "1.0.0"
-    assert "docs_url" in data
-    assert "disclaimer" in data
-    assert "demonstration" in data["disclaimer"].lower() or "synthetic" in data["disclaimer"].lower()
-
 
 def test_health_endpoint(client):
-    response = client.get("/health")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "healthy"
+    """1 & 25: Health check probe returns 200 without running full raster inference."""
+    resp = client.get("/api/v1/health")
+    assert resp.status_code == 200
+    data = resp.json()
+
+    assert data["status"] == "ok"
+    assert data["api_version"] == "1.0.0"
     assert data["model_loaded"] is True
-    assert data["model_version"] == "1.2.0"
+    assert "Model A" in data["static_model"]
+    assert data["rainfall_provider"] == "ready"
     assert "timestamp" in data
 
 
-def test_model_info_endpoint(client):
-    response = client.get("/model-info")
-    assert response.status_code == 200
-    data = response.json()
-    assert "model_version" in data
-    assert data["model_version"] == "1.2.0"
-    assert "features" in data
-    assert len(data["features"]) == 8
-    assert "classes" in data
-    assert set(data["classes"]) == set(SEVERITY_ORDER)
+def test_health_does_not_invoke_full_inference(client, monkeypatch):
+    """25: Verify health check probe does not call profile_location."""
+    called = False
+
+    def mock_profile(*args, **kwargs):
+        nonlocal called
+        called = True
+        raise RuntimeError("profile_location should not be called in health check!")
+
+    engine = get_risk_engine()
+    monkeypatch.setattr(engine.profiler, "profile_location", mock_profile)
+
+    resp = client.get("/api/v1/health")
+    assert resp.status_code == 200
+    assert called is False
 
 
-def test_docs_and_openapi_spec(client):
-    docs_resp = client.get("/docs")
-    assert docs_resp.status_code == 200
+def test_info_endpoint(client):
+    """2: System info endpoint returns safe, unprivileged operational metadata."""
+    resp = client.get("/api/v1/info")
+    assert resp.status_code == 200
+    data = resp.json()
 
-    openapi_resp = client.get("/openapi.json")
-    assert openapi_resp.status_code == 200
-    spec = openapi_resp.json()
-    assert "/predict" in spec["paths"]
-    assert "/predict/pdf" in spec["paths"]
-    assert "/demo" in spec["paths"]
+    assert data["api_version"] == "1.0.0"
+    assert "LandslideNEI" in data["name"]
+
+    # Static model metadata
+    model_meta = data["static_model"]
+    assert model_meta["name"] == "Model A (Environmental Only)"
+    assert model_meta["feature_count"] == 10
+    assert len(model_meta["features"]) == 10
+    assert "aspect_deg" in model_meta["features"]
+    assert model_meta["spatial_cv_roc_auc"] == 0.8062
+    assert "Uncalibrated static susceptibility score" in model_meta["score_interpretation"]
+
+    # Supported geography
+    geo = data["supported_geography"]
+    assert geo["region"] == "Northeast India (NER)"
+    assert len(geo["states"]) == 8
+
+    # Rainfall and thresholds
+    rf = data["rainfall"]
+    assert rf["primary_source"] == "CWC Telemetry Stations"
+    assert rf["max_station_distance_km"] == 50.0
+    assert rf["max_freshness_age_hours"] == 6.0
+
+    thresholds = data["operational_thresholds"]
+    assert thresholds["threshold_type"] == "DEMO_OPERATIONAL_DEFAULT"
+    assert "not calibrated against historical" in thresholds["disclaimer"].lower()
+
+    # Risk fusion info
+    fusion = data["risk_fusion"]
+    assert fusion["authoritative_output"] == "risk_level (LOW, WATCH, HIGH, CRITICAL)"
+    assert "engineering synthesis score" in fusion["score_semantics"].lower()
 
 
 # ==============================================================================
-# 2. TABULAR PREDICTION ENDPOINT (/predict)
+# 2. UNIFIED PREDICTION ENDPOINT (/api/v1/predict)
 # ==============================================================================
 
-def test_predict_valid_low_risk(client, valid_low_risk_payload):
-    response = client.post("/predict", json=valid_low_risk_payload)
-    assert response.status_code == 200
-    data = response.json()
-
-    assert data["risk"] in SEVERITY_ORDER
-    assert 0.0 <= data["confidence"] <= 1.0
-    assert set(data["probabilities"].keys()) == set(SEVERITY_ORDER)
-    assert sum(data["probabilities"].values()) == pytest.approx(1.0, abs=1e-3)
-    assert data["confidence"] == pytest.approx(data["probabilities"][data["risk"]], abs=1e-4)
-    assert data["model_version"] == "1.2.0"
-    assert "prediction_timestamp" in data
-    assert isinstance(data["contributing_factors"], list)
-    assert len(data["contributing_factors"]) <= 5
-
-
-def test_predict_valid_high_risk(client, valid_high_risk_payload):
-    response = client.post("/predict", json=valid_high_risk_payload)
-    assert response.status_code == 200
-    data = response.json()
-
-    assert data["risk"] in ["High", "Critical"]
-    assert data["confidence"] > 0.0
-    assert len(data["contributing_factors"]) > 0
-
-    # Validate factor schema and non-causal language
-    for factor in data["contributing_factors"]:
-        assert "code" in factor
-        assert "feature" in factor
-        assert "value" in factor
-        assert "importance" in factor
-        assert "message" in factor
-        msg_lower = factor["message"].lower()
-        assert "causes" not in msg_lower
-        assert "caused by" not in msg_lower
-        assert "causing" not in msg_lower
-        assert "guarantees" not in msg_lower
-        assert "proves" not in msg_lower
-
-
-def test_predict_negative_rainfall_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["rainfall_24h"] = -15.0
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
-    assert "rainfall_24h" in response.json()["detail"]
-
-
-def test_predict_invalid_slope_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["slope"] = 105.0
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
-    assert "slope" in response.json()["detail"]
-
-
-def test_predict_invalid_elevation_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["elevation"] = 15000.0
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
-    assert "elevation" in response.json()["detail"]
-
-
-def test_predict_invalid_historical_landslide_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["historical_landslide"] = 5
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
-    assert "historical_landslide" in response.json()["detail"]
-
-
-def test_predict_invalid_soil_risk_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["soil_risk"] = 2.5
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
-    assert "soil_risk" in response.json()["detail"]
-
-
-def test_predict_missing_field_rejected(client):
-    incomplete_payload = {
-        "rainfall_24h": 182.0,
-        "rainfall_3d": 420.0,
-        # missing rainfall_7d, slope, etc.
+def test_predict_valid_ner_guwahati(client):
+    """3 & 12-18: Valid NER location returns full compliant PredictResponse."""
+    payload = {
+        "latitude": 26.1445,
+        "longitude": 91.7362,
     }
-    response = client.post("/predict", json=incomplete_payload)
-    assert response.status_code == 422
+    resp = client.post("/api/v1/predict", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+
+    # Top-level schema compliance
+    assert data["api_version"] == "1.0.0"
+    assert "request_id" in data
+    assert uuid.UUID(data["request_id"])  # Valid UUID4
+
+    # Request echo
+    assert data["request"]["latitude"] == 26.1445
+    assert data["request"]["longitude"] == 91.7362
+    assert "timestamp" in data["request"]
+
+    # Location block
+    assert data["location"]["state"] == "Assam"
+    assert data["location"]["country"] == "India"
+    assert data["location"]["supported_domain"] is True
+
+    # Static susceptibility block
+    susc = data["static_susceptibility"]
+    assert 0.0 <= susc["score"] <= 1.0
+    assert susc["category"] in ["LOW", "MODERATE", "HIGH", "VERY_HIGH"]
+    assert "elevation_m" in susc["terrain"]
+    assert "soil_class" in susc["soil"]
+    assert "landcover_class" in susc["landcover"]
+    assert len(susc["reasons"]) > 0
+
+    # Rainfall block
+    rf = data["rainfall"]
+    assert rf["source"] == "CWC"
+    assert rf["station"] is not None
+    assert rf["distance_km"] <= 50.0
+    assert rf["quality"] in ["GOOD", "PARTIAL", "MISSING", "STALE", "NO_RELIABLE_STATION"]
+
+    # Trigger block
+    trig = data["rainfall_trigger"]
+    assert trig["level"] in ["NORMAL", "WATCH", "HIGH", "NO_DATA"]
+    if trig["trigger_score"] is not None:
+        assert 0.0 <= trig["trigger_score"] <= 1.0
+
+    # Risk block
+    risk = data["risk"]
+    assert risk["level"] in ["LOW", "WATCH", "HIGH", "CRITICAL"]
+    assert risk["risk_level"] == risk["level"]
+    assert 0.0 <= risk["operational_fusion_score"] <= 1.0
+    assert risk["risk_score"] == risk["operational_fusion_score"]
+    assert "engineering synthesis score" in risk["score_semantics"].lower()
+    assert len(risk["reasons"]) > 0
+
+    # Limitations
+    assert len(data["limitations"]) >= 5
 
 
-def test_predict_wrong_datatype_rejected(client, valid_low_risk_payload):
-    bad_payload = valid_low_risk_payload.copy()
-    bad_payload["rainfall_24h"] = "one hundred mm"
-    response = client.post("/predict", json=bad_payload)
-    assert response.status_code == 422
+def test_predict_tawang_distant_cwc(client):
+    """4, 19, 21: Tawang coordinate (>50km from CWC) flags NO_RELIABLE_LOCAL_STATION."""
+    payload = {
+        "latitude": 27.5925,
+        "longitude": 91.6087,
+    }
+    resp = client.post("/api/v1/predict", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+
+    rf = data["rainfall"]
+    assert rf["distance_km"] > 50.0
+    assert rf["quality"] == "NO_RELIABLE_STATION"
+    assert rf["status"] == "NO_RELIABLE_LOCAL_STATION"
+    # Rainfall must NOT be zeroed
+    assert rf["rainfall_1h"] is None
+    assert rf["rainfall_24h"] is None
+    assert rf["rainfall_3d"] is None
+    assert rf["rainfall_7d"] is None
+
+    # Trigger should be NO_DATA
+    assert data["rainfall_trigger"]["level"] == "NO_DATA"
+    assert data["rainfall_trigger"]["trigger_score"] is None
+
+    # Static baseline only score
+    assert data["risk"]["scoring_mode"] == "STATIC_BASELINE_ONLY_RAINFALL_UNOBSERVED"
+    assert data["risk"]["operational_fusion_score"] == data["static_susceptibility"]["score"]
+
+
+def test_predict_outside_ner(client):
+    """5: Coordinates outside Northeast India (New Delhi) return HTTP 400 OUTSIDE_SUPPORTED_DOMAIN."""
+    payload = {
+        "latitude": 28.6139,
+        "longitude": 77.2090,
+    }
+    resp = client.post("/api/v1/predict", json=payload)
+    assert resp.status_code == 400
+    data = resp.json()
+
+    assert "error" in data
+    err = data["error"]
+    assert err["code"] == "OUTSIDE_SUPPORTED_DOMAIN"
+    assert "outside" in err["message"].lower()
+    assert err["details"]["supported_domain"] is False
+
+
+def test_invalid_latitude_validation(client):
+    """6: Latitude > 90.0 or < -90.0 rejected with HTTP 422."""
+    resp = client.post("/api/v1/predict", json={"latitude": 95.0, "longitude": 91.7})
+    assert resp.status_code == 422
+    data = resp.json()
+    assert "error" in data
+    assert data["error"]["code"] == "INVALID_COORDINATES"
+
+
+def test_invalid_longitude_validation(client):
+    """7: Longitude > 180.0 or < -180.0 rejected with HTTP 422."""
+    resp = client.post("/api/v1/predict", json={"latitude": 26.0, "longitude": 195.0})
+    assert resp.status_code == 422
+    data = resp.json()
+    assert "error" in data
+    assert data["error"]["code"] == "INVALID_COORDINATES"
+
+
+def test_malformed_timestamp_rejected(client):
+    """8: Malformed timestamp rejected with HTTP 400 INVALID_TIMESTAMP."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "not-a-valid-datetime"
+    })
+    assert resp.status_code == 400
+    data = resp.json()
+    assert data["error"]["code"] == "INVALID_TIMESTAMP"
+    assert "malformed" in data["error"]["message"].lower()
+
+
+def test_naive_timestamp_rejected(client):
+    """10: Ambiguous naive timestamp without timezone offset rejected with HTTP 400."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "2026-09-02 09:00:00"
+    })
+    assert resp.status_code == 400
+    data = resp.json()
+    assert data["error"]["code"] == "INVALID_TIMESTAMP"
+    assert "timezone" in data["error"]["message"].lower()
+
+
+def test_timezone_aware_timestamp_accepted(client):
+    """9: Valid ISO-8601 with timezone accepted cleanly."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "2026-09-02T09:00:00Z"
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["request"]["timestamp"] == "2026-09-02T09:00:00Z"
+
+    # Also test positive offset +05:30 (IST)
+    resp_ist = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "2026-09-02T14:30:00+05:30"
+    })
+    assert resp_ist.status_code == 200
+
+
+def test_omitted_timestamp_generates_utc(client):
+    """11: Omitted timestamp defaults to current UTC time."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+    ts = data["request"]["timestamp"]
+    assert ts is not None
+    # Parse to verify timezone-awareness
+    dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    assert dt.tzinfo is not None
+
+
+def test_static_susceptibility_semantics(client):
+    """15: Static susceptibility score is explicitly uncalibrated terrain predisposition."""
+    resp = client.post("/api/v1/predict", json={"latitude": 26.1445, "longitude": 91.7362})
+    data = resp.json()
+    susc = data["static_susceptibility"]
+
+    # Verify field completeness
+    assert 0.0 <= susc["score"] <= 1.0
+    assert susc["category"] in ["LOW", "MODERATE", "HIGH", "VERY_HIGH"]
+    assert "uncalibrated" in susc["category_description"].lower()
+    assert "not an event" in susc["category_description"].lower()
+    assert any("probability" in lim.lower() for lim in data["limitations"])
+    assert "probability" in data["risk"]["score_semantics"].lower()
+
+
+def test_stale_rainfall_explicitly_flagged(client):
+    """20: Stale observation is explicitly flagged STALE, not silently treated as fresh."""
+    # Guwahati latest observation is from 2022 -> compared against 2026-09-02, it is STALE
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "2026-09-02T09:00:00Z"
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+
+    rf = data["rainfall"]
+    assert rf["quality"] == "STALE"
+    assert rf["status"] == "STALE"
+    assert rf["freshness"]["freshness_status"] == "STALE"
+    assert rf["freshness"]["age_hours"] > 6.0
+
+
+def test_imd_macro_context_not_point_rainfall(client):
+    """22: IMD observations are exposed strictly as macro context, not fabricated point rain."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+    })
+    data = resp.json()
+    rf = data["rainfall"]
+
+    assert rf["source"] == "CWC"
+    # Even if imd_macro_context is present or null, source is never IMD for exact location
+    if rf["imd_macro_context"] is not None:
+        assert rf["imd_macro_context"]["source"] == "IMD"
+        assert rf["imd_macro_context"]["scope"] in ["STATE", "DISTRICT"]
+
+
+def test_no_stack_traces_leaked(client):
+    """24: Error responses never expose Python stack traces or internal exception dumps."""
+    resp = client.post("/api/v1/predict", json={
+        "latitude": 28.6139,
+        "longitude": 77.2090
+    })
+    raw_text = resp.text
+    assert "Traceback (most recent call last)" not in raw_text
+    assert 'File "' not in raw_text
+    assert "line " not in raw_text or "lines outside" in raw_text
 
 
 # ==============================================================================
-# 3. PDF DOCUMENT PREDICTION ENDPOINT (/predict/pdf)
+# 3. STATIC PROFILE ENDPOINT (/api/v1/profile)
 # ==============================================================================
 
-def test_predict_pdf_non_pdf_file_rejected(client):
-    file_bytes = b"Hello, this is a plain text file."
-    files = {"file": ("report.txt", io.BytesIO(file_bytes), "text/plain")}
-    response = client.post("/predict/pdf", files=files)
-    assert response.status_code == 400
-    assert "not a valid PDF" in response.json()["detail"]
+def test_profile_endpoint_valid_tawang(client):
+    """26: POST /api/v1/profile returns static susceptibility profile without rainfall."""
+    resp = client.post("/api/v1/profile", json={
+        "latitude": 27.5925,
+        "longitude": 91.6087
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+
+    assert data["api_version"] == "1.0.0"
+    assert "request_id" in data
+    assert data["location"]["state"] == "Arunachal Pradesh"
+    assert "rainfall" not in data  # No rainfall in profile endpoint!
+    assert "risk" not in data      # No dynamic risk fusion!
+
+    susc = data["static_susceptibility"]
+    assert 0.0 <= susc["score"] <= 1.0
+    assert susc["category"] == "HIGH"
+    assert data["model"]["type"] == "STATIC_SUSCEPTIBILITY_ONLY"
 
 
-def test_predict_pdf_empty_file_rejected(client):
-    empty_bytes = b""
-    files = {"file": ("empty.pdf", io.BytesIO(empty_bytes), "application/pdf")}
-    response = client.post("/predict/pdf", files=files)
-    assert response.status_code == 400
-    assert "empty" in response.json()["detail"].lower()
+def test_profile_endpoint_outside_ner(client):
+    """Profile endpoint rejects coordinates outside supported domain."""
+    resp = client.post("/api/v1/profile", json={
+        "latitude": 19.0760,
+        "longitude": 72.8777  # Mumbai
+    })
+    assert resp.status_code == 400
+    data = resp.json()
+    assert data["error"]["code"] == "OUTSIDE_SUPPORTED_DOMAIN"
 
 
-def test_predict_pdf_incomplete_report(client):
-    # Incomplete text: missing 3d/7d rainfall, distance, soil risk, etc.
-    pdf_text = (
-        "GEOTECHNICAL PRELIMINARY NOTICE\n"
-        "Location: East Khasi Hills, Meghalaya\n"
-        "24-hour rainfall measured: 182 mm.\n"
-        "Terrain slope angle: 38 degrees.\n"
-        "Elevation: 850 metres above sea level.\n"
+# ==============================================================================
+# 4. CORS HEADERS
+# ==============================================================================
+
+def test_cors_headers(client):
+    """27: Configurable safe CORS origin headers are returned on preflight."""
+    resp = client.options(
+        "/api/v1/predict",
+        headers={
+            "Origin": "http://localhost:3000",
+            "Access-Control-Request-Method": "POST",
+        }
     )
-    pdf_bytes = create_in_memory_pdf(pdf_text)
-    files = {"file": ("incomplete_report.pdf", io.BytesIO(pdf_bytes), "application/pdf")}
-
-    response = client.post("/predict/pdf", files=files)
-    assert response.status_code == 200
-    data = response.json()
-
-    assert data["prediction_ready"] is False
-    assert data["prediction_status"] == "UNAVAILABLE_MISSING_FEATURES"
-    assert data["prediction"] is None
-    assert len(data["missing_features"]) > 0
-    assert "Data was not fabricated" in data["message"]
-
-
-# ==============================================================================
-# 4. DEMONSTRATION SCENARIOS ENDPOINT (/demo)
-# ==============================================================================
-
-def test_demo_endpoint(client):
-    response = client.get("/demo")
-    assert response.status_code == 200
-    data = response.json()
-
-    assert data["dataset_type"] == "DEMO / PIPELINE VALIDATION DATA"
-    assert "demo_notice" in data
-    assert "18-row" in data["demo_notice"]
-
-    scenarios = data["scenarios"]
-    assert "low_risk_scenario" in scenarios
-    assert "high_critical_risk_scenario" in scenarios
-    assert "incomplete_document_scenario" in scenarios
-
-    # Low risk check
-    low_out = scenarios["low_risk_scenario"]["output"]
-    assert low_out["risk"] in SEVERITY_ORDER
-    assert 0.0 <= low_out["confidence"] <= 1.0
-
-    # High risk check
-    high_out = scenarios["high_critical_risk_scenario"]["output"]
-    assert high_out["risk"] in ["High", "Critical"]
-    assert high_out["confidence"] > 0.0
-
-    # Incomplete check (Zero-Fabrication verification)
-    inc_out = scenarios["incomplete_document_scenario"]["output"]
-    assert inc_out["prediction_ready"] is False
-    assert inc_out["prediction"] is None
-    assert len(inc_out["missing_features"]) > 0
+    assert resp.status_code == 200
+    assert resp.headers.get("access-control-allow-origin") == "http://localhost:3000"

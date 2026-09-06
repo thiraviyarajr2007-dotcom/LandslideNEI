@@ -1,0 +1,79 @@
+======================================================================
+PHASE 8I — UNIFIED RISK API CONTRACT VALIDATION REPORT
+======================================================================
+
+Generated At: 2026-09-06T07:53:15.579283+00:00
+Baseline Data Integrity: PASS (10/10 MATCH)
+Smoke Tests: 9/9 Passed
+
+----------------------------------------------------------------------
+1. BASELINE FILE INTEGRITY HASHES (SHA-256)
+----------------------------------------------------------------------
+[MATCH  ] model/static_lsm_pipeline.joblib
+          SHA256: 412fce63368830555dffeb7f042010a79f3b56849a776c6b4b774e5728282ce6
+[MATCH  ] model/static_lsm_metadata.json
+          SHA256: fe53d7a69c6ea207ed7d362a42a6b89b33a465baf0c4e5d1bd3418aae9731f68
+[MATCH  ] data/processed/landslides/landslide_training_samples.csv
+          SHA256: 8b0e9b86648c8b06814b38c1def3cb5ccc62a0a042ea44cc45192fc682c34c5f
+[MATCH  ] data/processed/landslides/landslide_training_samples_gadm_corrected.csv
+          SHA256: 591d5eca157f6d1f433d1125ef416a2726a56054ff071f8e3fd90247a96fac5d
+[MATCH  ] data/processed/landslides/landslide_training_samples_terrain.csv
+          SHA256: 304658e1a9f0e37596c5e96086ad066247bacc0db7b2656e9fefc182cdcdd621
+[MATCH  ] data/processed/landslides/landslide_training_samples_soil.csv
+          SHA256: 6a34c167c52ac24b3dc580f4562ec2774ea5d336fba5b079e045a859090b3f44
+[MATCH  ] data/processed/landslides/landslide_training_samples_lulc.csv
+          SHA256: 2e73c8615c3dffd4e13138c791d854e9b92a276eb5fe8b9dda0294d84f48de78
+[MATCH  ] data/processed/landslides/landslide_training_samples_proximity.csv
+          SHA256: 46e36425ab899fd471ad3ee7460f0ef6061e23a5c9273c2f84b7b64c0b0e0239
+[MATCH  ] data/processed/cwc_rainfall_features.csv
+          SHA256: a60f971f7b01e7539d6487f160ced588f052bc26d13851c8e6e063b9e9861bce
+[MATCH  ] data/processed/rainfall/rainfall_daily_integrated.csv
+          SHA256: f058109ef6d8b6d46e531e2e858df8f28bc470b2189cd4e2c4b20c24d21ff0d6
+
+----------------------------------------------------------------------
+2. ENDPOINT SMOKE TESTS
+----------------------------------------------------------------------
+[PASS] GET  /api/v1/health       -> Status: 200 (5245.83ms)
+       Test: Health Probe
+[PASS] GET  /api/v1/info         -> Status: 200 (12.94ms)
+       Test: Model & Capability Info
+[PASS] GET  /openapi.json        -> Status: 200 (191.71ms)
+       Test: OpenAPI Schema
+[PASS] POST /api/v1/predict      -> Status: 200 (468.32ms)
+       Test: Predict Guwahati
+[PASS] POST /api/v1/predict      -> Status: 200 (420.64ms)
+       Test: Predict Tawang
+[PASS] POST /api/v1/predict      -> Status: 400 (130.18ms)
+       Test: Predict Outside NER (Delhi)
+[PASS] POST /api/v1/predict      -> Status: 422 (9.49ms)
+       Test: Predict Invalid Lat
+[PASS] POST /api/v1/profile      -> Status: 200 (361.08ms)
+       Test: Profile Tawang
+[PASS] POST /api/v1/profile      -> Status: 400 (125.45ms)
+       Test: Profile Outside NER (Delhi)
+
+----------------------------------------------------------------------
+3. LATENCY BENCHMARKS
+----------------------------------------------------------------------
+Health Probe p50:  9.59 ms (mean: 9.58 ms)
+Predict Warm p50:  316.01 ms (mean: 325.33 ms)
+
+----------------------------------------------------------------------
+4. OPERATIONAL CONTRACT SUMMARY
+----------------------------------------------------------------------
+Endpoints:
+  - GET /api/v1/health: Lightweight health probe (no raster I/O)
+  - GET /api/v1/info: Capabilities, thresholds, models, disclaimers
+  - POST /api/v1/predict: Unified prediction contract with static LSM + rainfall telemetry
+  - POST /api/v1/profile: Static-only susceptibility profile endpoint
+
+Scientific Constraints Enforced:
+  - cwc_max_distance_km: 50.0
+  - freshness_max_hours: 6.0
+  - unobserved_policy: explicit null (never converted to 0.0mm)
+  - imd_policy: macro administrative context only (never fabricated as point telemetry)
+
+Disclaimers Included in Contract:
+  * Operational decision-support synthesis, not a certified event-time warning or probabilistic guarantee.
+  * Static susceptibility score is an uncalibrated terrain predisposition estimate from Model A.
+  * Rainfall thresholds are heuristic operational defaults (DEMO_OPERATIONAL_DEFAULT), not historically calibrated landslide trigger thresholds.

@@ -1,0 +1,2066 @@
+{
+  "phase": "8I",
+  "title": "Unified Risk API & Operational Prediction Contract Validation",
+  "generated_at": "2026-09-06T07:53:15.579283+00:00",
+  "baseline_integrity_passed": true,
+  "asset_hashes": {
+    "model/static_lsm_pipeline.joblib": {
+      "status": "MATCH",
+      "sha256": "412fce63368830555dffeb7f042010a79f3b56849a776c6b4b774e5728282ce6",
+      "expected_prefix": "412fce6336883055",
+      "matches": true
+    },
+    "model/static_lsm_metadata.json": {
+      "status": "MATCH",
+      "sha256": "fe53d7a69c6ea207ed7d362a42a6b89b33a465baf0c4e5d1bd3418aae9731f68",
+      "expected_prefix": "fe53d7a69c6ea207",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples.csv": {
+      "status": "MATCH",
+      "sha256": "8b0e9b86648c8b06814b38c1def3cb5ccc62a0a042ea44cc45192fc682c34c5f",
+      "expected_prefix": "8b0e9b86648c8b06",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_gadm_corrected.csv": {
+      "status": "MATCH",
+      "sha256": "591d5eca157f6d1f433d1125ef416a2726a56054ff071f8e3fd90247a96fac5d",
+      "expected_prefix": "591d5eca157f6d1f",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_terrain.csv": {
+      "status": "MATCH",
+      "sha256": "304658e1a9f0e37596c5e96086ad066247bacc0db7b2656e9fefc182cdcdd621",
+      "expected_prefix": "304658e1a9f0e375",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_soil.csv": {
+      "status": "MATCH",
+      "sha256": "6a34c167c52ac24b3dc580f4562ec2774ea5d336fba5b079e045a859090b3f44",
+      "expected_prefix": "6a34c167c52ac24b",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_lulc.csv": {
+      "status": "MATCH",
+      "sha256": "2e73c8615c3dffd4e13138c791d854e9b92a276eb5fe8b9dda0294d84f48de78",
+      "expected_prefix": "2e73c8615c3dffd4",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_proximity.csv": {
+      "status": "MATCH",
+      "sha256": "46e36425ab899fd471ad3ee7460f0ef6061e23a5c9273c2f84b7b64c0b0e0239",
+      "expected_prefix": "46e36425ab899fd4",
+      "matches": true
+    },
+    "data/processed/cwc_rainfall_features.csv": {
+      "status": "MATCH",
+      "sha256": "a60f971f7b01e7539d6487f160ced588f052bc26d13851c8e6e063b9e9861bce",
+      "expected_prefix": "a60f971f7b01e753",
+      "matches": true
+    },
+    "data/processed/rainfall/rainfall_daily_integrated.csv": {
+      "status": "MATCH",
+      "sha256": "f058109ef6d8b6d46e531e2e858df8f28bc470b2189cd4e2c4b20c24d21ff0d6",
+      "expected_prefix": "f058109ef6d8b6d4",
+      "matches": true
+    }
+  },
+  "endpoints_tested": 9,
+  "endpoints_passed": 9,
+  "smoke_test_results": [
+    {
+      "test": "Health Probe",
+      "method": "GET",
+      "path": "/api/v1/health",
+      "request_body": null,
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 5245.83,
+      "passed": true,
+      "sample_response": {
+        "status": "ok",
+        "api_version": "1.0.0",
+        "model_loaded": true,
+        "static_model": "Model A (Environmental Only Random Forest)",
+        "rainfall_provider": "ready",
+        "timestamp": "2026-09-06T07:53:12.028283+00:00"
+      }
+    },
+    {
+      "test": "Model & Capability Info",
+      "method": "GET",
+      "path": "/api/v1/info",
+      "request_body": null,
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 12.94,
+      "passed": true,
+      "sample_response": {
+        "api_version": "1.0.0",
+        "name": "LandslideNEI Operational Landslide Risk Prediction API",
+        "environment": "production",
+        "static_model": {
+          "name": "Model A (Environmental Only)",
+          "algorithm": "RandomForestClassifier",
+          "version": "1.0.0",
+          "feature_count": 10,
+          "features": [
+            "elevation_m",
+            "slope_deg",
+            "aspect_deg",
+            "relief_std_5x5_m",
+            "soil_class",
+            "clay_percent",
+            "sand_percent",
+            "silt_percent",
+            "bulk_density_kg_dm3",
+            "landcover_class"
+          ],
+          "spatial_cv_roc_auc": 0.8062,
+          "spatial_cv_pr_auc": 0.7937,
+          "score_interpretation": "Uncalibrated static susceptibility score produced by the Phase 8F environmental-only Random Forest model. Represents terrain failure predisposition, not an event-time occurrence probability."
+        },
+        "supported_geography": {
+          "region": "Northeast India (NER)",
+          "states": [
+            "Arunachal Pradesh",
+            "Assam",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Sikkim",
+            "Tripura"
+          ],
+          "bounds": {
+            "min_latitude": 21.5,
+            "max_latitude": 29.5,
+            "min_longitude": 89.5,
+            "max_longitude": 97.5
+          }
+        },
+        "susceptibility_categories": {
+          "LOW": "Score < 0.25 (Low predisposition to slope failure)",
+          "MODERATE": "0.25 <= Score < 0.50 (Moderate predisposition)",
+          "HIGH": "0.50 <= Score < 0.75 (Significant predisposition)",
+          "VERY_HIGH": "Score >= 0.75 (Severe terrain predisposition)"
+        },
+        "rainfall": {
+          "primary_source": "CWC Telemetry Stations",
+          "active_stations": 74,
+          "max_station_distance_km": 50.0,
+          "max_freshness_age_hours": 6.0,
+          "min_coverage_ratio": 0.75,
+          "macro_context_source": "IMD Districtwise & Statewise Monitoring",
+          "spatial_policy": "Point queries strictly use CWC stations within <=50.0 km. IMD provides administrative macro context without coordinate fabrication."
+        },
+        "operational_thresholds": {
+          "operational_defaults": true,
+          "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+          "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          },
+          "max_station_distance_km": 50.0,
+          "max_rainfall_age_hours": 6.0,
+          "min_coverage_ratio": 0.75
+        },
+        "risk_fusion": {
+          "method": "Deterministic Rule-Based Decision Matrix",
+          "authoritative_output": "risk_level (LOW, WATCH, HIGH, CRITICAL)",
+          "ordering_metric": "operational_fusion_score [0.0, 1.0]",
+          "score_semantics": "The operational_fusion_score is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate."
+        }
+      }
+    },
+    {
+      "test": "OpenAPI Schema",
+      "method": "GET",
+      "path": "/openapi.json",
+      "request_body": null,
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 191.71,
+      "passed": true,
+      "sample_response": {
+        "openapi": "3.1.0",
+        "info": {
+          "title": "LandslideNEI Operational Landslide Risk Prediction API",
+          "description": "Production-style operational landslide susceptibility and dynamic rainfall risk early-warning API for Northeast India.",
+          "version": "1.0.0"
+        },
+        "paths": {
+          "/": {
+            "get": {
+              "tags": [
+                "General"
+              ],
+              "summary": "Root",
+              "description": "API identification and operational overview.",
+              "operationId": "root__get",
+              "responses": {
+                "200": {
+                  "description": "Successful Response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "additionalProperties": true,
+                        "type": "object",
+                        "title": "Response Root  Get"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/api/v1/health": {
+            "get": {
+              "tags": [
+                "System"
+              ],
+              "summary": "Health Check",
+              "description": "Lightweight health probe verifying model and data provider readiness.\nDoes NOT invoke full raster inference.",
+              "operationId": "health_check_api_v1_health_get",
+              "responses": {
+                "200": {
+                  "description": "Successful Response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/HealthResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/api/v1/info": {
+            "get": {
+              "tags": [
+                "System"
+              ],
+              "summary": "Get System Info",
+              "description": "Returns safe model metadata, feature contracts, and operational thresholds.",
+              "operationId": "get_system_info_api_v1_info_get",
+              "responses": {
+                "200": {
+                  "description": "Successful Response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/InfoResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/api/v1/predict": {
+            "post": {
+              "tags": [
+                "Inference"
+              ],
+              "summary": "Predict Risk",
+              "description": "Unified Operational Landslide Risk Prediction Endpoint.\nExecutes full pipeline:\n1. Static Susceptibility Profiling (Model A RF over Copernicus DEM + SoilGrids + WorldCover)\n2. Operational Rainfall Telemetry Matching (CWC Station <=50km, freshness <=6h)\n3. Multi-Window Dynamic Trigger Evaluation (1h, 24h, 3d, 7d)\n4. Deterministic Risk Fusion (Decision Matrix -> LOW/WATCH/HIGH/CRITICAL)",
+              "operationId": "predict_risk_api_v1_predict_post",
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/PredictRequest"
+                    }
+                  }
+                },
+                "required": true
+              },
+              "responses": {
+                "200": {
+                  "description": "Successful Response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/PredictResponse"
+                      }
+                    }
+                  }
+                },
+                "422": {
+                  "description": "Validation Error",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/HTTPValidationError"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/api/v1/profile": {
+            "post": {
+              "tags": [
+                "Inference"
+              ],
+              "summary": "Profile Location Endpoint",
+              "description": "Static-Only Susceptibility Profile Endpoint.\nUses Phase 8G LocationProfiler directly without rainfall telemetry fusion.",
+              "operationId": "profile_location_endpoint_api_v1_profile_post",
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ProfileRequest"
+                    }
+                  }
+                },
+                "required": true
+              },
+              "responses": {
+                "200": {
+                  "description": "Successful Response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/ProfileResponse"
+                      }
+                    }
+                  }
+                },
+                "422": {
+                  "description": "Validation Error",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/HTTPValidationError"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "schemas": {
+            "FreshnessBlock": {
+              "properties": {
+                "observation_timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Observation Timestamp"
+                },
+                "reference_timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Reference Timestamp"
+                },
+                "age_hours": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Age Hours"
+                },
+                "freshness_status": {
+                  "type": "string",
+                  "title": "Freshness Status"
+                },
+                "max_acceptable_age_hours": {
+                  "type": "number",
+                  "title": "Max Acceptable Age Hours",
+                  "default": 6.0
+                }
+              },
+              "type": "object",
+              "required": [
+                "freshness_status"
+              ],
+              "title": "FreshnessBlock"
+            },
+            "HTTPValidationError": {
+              "properties": {
+                "detail": {
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationError"
+                  },
+                  "type": "array",
+                  "title": "Detail"
+                }
+              },
+              "type": "object",
+              "title": "HTTPValidationError"
+            },
+            "HealthResponse": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "title": "Status",
+                  "default": "ok"
+                },
+                "api_version": {
+                  "type": "string",
+                  "title": "Api Version",
+                  "default": "1.0.0"
+                },
+                "model_loaded": {
+                  "type": "boolean",
+                  "title": "Model Loaded",
+                  "default": true
+                },
+                "static_model": {
+                  "type": "string",
+                  "title": "Static Model"
+                },
+                "rainfall_provider": {
+                  "type": "string",
+                  "title": "Rainfall Provider",
+                  "default": "ready"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "title": "Timestamp"
+                }
+              },
+              "type": "object",
+              "required": [
+                "static_model",
+                "timestamp"
+              ],
+              "title": "HealthResponse"
+            },
+            "IMDMacroContextBlock": {
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "title": "Source",
+                  "default": "IMD"
+                },
+                "scope": {
+                  "type": "string",
+                  "title": "Scope",
+                  "description": "Macro aggregation level: 'STATE' or 'DISTRICT'"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "State"
+                },
+                "district": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "District"
+                },
+                "date": {
+                  "type": "string",
+                  "title": "Date"
+                },
+                "daily_actual_mm": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Daily Actual Mm"
+                },
+                "daily_normal_mm": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Daily Normal Mm"
+                },
+                "daily_departure_pct": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Daily Departure Pct"
+                },
+                "category": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Category"
+                },
+                "integration_level": {
+                  "type": "string",
+                  "title": "Integration Level"
+                }
+              },
+              "type": "object",
+              "required": [
+                "scope",
+                "state",
+                "date",
+                "integration_level"
+              ],
+              "title": "IMDMacroContextBlock"
+            },
+            "InfoResponse": {
+              "properties": {
+                "api_version": {
+                  "type": "string",
+                  "title": "Api Version",
+                  "default": "1.0.0"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "environment": {
+                  "type": "string",
+                  "title": "Environment"
+                },
+                "static_model": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Static Model"
+                },
+                "supported_geography": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Supported Geography"
+                },
+                "susceptibility_categories": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Susceptibility Categories"
+                },
+                "rainfall": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Rainfall"
+                },
+                "operational_thresholds": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Operational Thresholds"
+                },
+                "risk_fusion": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Risk Fusion"
+                }
+              },
+              "type": "object",
+              "required": [
+                "name",
+                "environment",
+                "static_model",
+                "supported_geography",
+                "susceptibility_categories",
+                "rainfall",
+                "operational_thresholds",
+                "risk_fusion"
+              ],
+              "title": "InfoResponse"
+            },
+            "LandcoverBlock": {
+              "properties": {
+                "landcover_code": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Landcover Code"
+                },
+                "landcover_class": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Landcover Class"
+                }
+              },
+              "type": "object",
+              "title": "LandcoverBlock"
+            },
+            "LocationBlock": {
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "title": "Latitude"
+                },
+                "longitude": {
+                  "type": "number",
+                  "title": "Longitude"
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "State"
+                },
+                "district": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "District"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "Country",
+                  "default": "India"
+                },
+                "supported_domain": {
+                  "type": "boolean",
+                  "title": "Supported Domain"
+                }
+              },
+              "type": "object",
+              "required": [
+                "latitude",
+                "longitude",
+                "supported_domain"
+              ],
+              "title": "LocationBlock"
+            },
+            "ModelMetadataBlock": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name",
+                  "default": "LandslideNEI Operational Risk Engine"
+                },
+                "version": {
+                  "type": "string",
+                  "title": "Version",
+                  "default": "1.0.0"
+                },
+                "static_model": {
+                  "type": "string",
+                  "title": "Static Model",
+                  "default": "Model A (Environmental Only Random Forest)"
+                },
+                "threshold_profile": {
+                  "type": "string",
+                  "title": "Threshold Profile",
+                  "default": "DEMO_OPERATIONAL_DEFAULT"
+                },
+                "rainfall_architecture": {
+                  "type": "string",
+                  "title": "Rainfall Architecture",
+                  "default": "Decoupled Operational Telemetry Tier"
+                },
+                "fusion_method": {
+                  "type": "string",
+                  "title": "Fusion Method",
+                  "default": "Deterministic Rule-Based Decision Matrix"
+                }
+              },
+              "type": "object",
+              "title": "ModelMetadataBlock"
+            },
+            "PredictRequest": {
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "maximum": 90.0,
+                  "minimum": -90.0,
+                  "title": "Latitude",
+                  "description": "Target latitude in decimal degrees (-90.0 to 90.0)",
+                  "example": 27.5925
+                },
+                "longitude": {
+                  "type": "number",
+                  "maximum": 180.0,
+                  "minimum": -180.0,
+                  "title": "Longitude",
+                  "description": "Target longitude in decimal degrees (-180.0 to 180.0)",
+                  "example": 91.6087
+                },
+                "timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Timestamp",
+                  "description": "Optional observation timestamp in ISO-8601 format with explicit timezone (e.g. '2026-09-02T09:00:00Z' or '+05:30'). If omitted, current operational UTC time is used.",
+                  "example": "2026-09-02T09:00:00Z"
+                }
+              },
+              "type": "object",
+              "required": [
+                "latitude",
+                "longitude"
+              ],
+              "title": "PredictRequest"
+            },
+            "PredictResponse": {
+              "properties": {
+                "api_version": {
+                  "type": "string",
+                  "title": "Api Version",
+                  "default": "1.0.0"
+                },
+                "request_id": {
+                  "type": "string",
+                  "title": "Request Id"
+                },
+                "request": {
+                  "$ref": "#/components/schemas/RequestEcho"
+                },
+                "location": {
+                  "$ref": "#/components/schemas/LocationBlock"
+                },
+                "static_susceptibility": {
+                  "$ref": "#/components/schemas/StaticSusceptibilityBlock"
+                },
+                "rainfall": {
+                  "$ref": "#/components/schemas/RainfallBlock"
+                },
+                "rainfall_trigger": {
+                  "$ref": "#/components/schemas/RainfallTriggerBlock"
+                },
+                "risk": {
+                  "$ref": "#/components/schemas/RiskBlock"
+                },
+                "model": {
+                  "$ref": "#/components/schemas/ModelMetadataBlock"
+                },
+                "limitations": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Limitations"
+                },
+                "generated_at": {
+                  "type": "string",
+                  "title": "Generated At"
+                }
+              },
+              "type": "object",
+              "required": [
+                "request_id",
+                "request",
+                "location",
+                "static_susceptibility",
+                "rainfall",
+                "rainfall_trigger",
+                "risk",
+                "model",
+                "limitations",
+                "generated_at"
+              ],
+              "title": "PredictResponse"
+            },
+            "ProfileRequest": {
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "maximum": 90.0,
+                  "minimum": -90.0,
+                  "title": "Latitude",
+                  "description": "Target latitude in decimal degrees (-90.0 to 90.0)",
+                  "example": 27.5925
+                },
+                "longitude": {
+                  "type": "number",
+                  "maximum": 180.0,
+                  "minimum": -180.0,
+                  "title": "Longitude",
+                  "description": "Target longitude in decimal degrees (-180.0 to 180.0)",
+                  "example": 91.6087
+                }
+              },
+              "type": "object",
+              "required": [
+                "latitude",
+                "longitude"
+              ],
+              "title": "ProfileRequest"
+            },
+            "ProfileResponse": {
+              "properties": {
+                "api_version": {
+                  "type": "string",
+                  "title": "Api Version",
+                  "default": "1.0.0"
+                },
+                "request_id": {
+                  "type": "string",
+                  "title": "Request Id"
+                },
+                "location": {
+                  "$ref": "#/components/schemas/LocationBlock"
+                },
+                "static_susceptibility": {
+                  "$ref": "#/components/schemas/StaticSusceptibilityBlock"
+                },
+                "model": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Model"
+                },
+                "limitations": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Limitations"
+                },
+                "generated_at": {
+                  "type": "string",
+                  "title": "Generated At"
+                }
+              },
+              "type": "object",
+              "required": [
+                "request_id",
+                "location",
+                "static_susceptibility",
+                "model",
+                "limitations",
+                "generated_at"
+              ],
+              "title": "ProfileResponse"
+            },
+            "RainfallBlock": {
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "title": "Source",
+                  "description": "Primary operational telemetry source",
+                  "default": "CWC"
+                },
+                "station": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Station"
+                },
+                "station_key": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Station Key"
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "State"
+                },
+                "district": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "District"
+                },
+                "distance_km": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Distance Km"
+                },
+                "max_acceptable_distance_km": {
+                  "type": "number",
+                  "title": "Max Acceptable Distance Km",
+                  "default": 50.0
+                },
+                "timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Timestamp"
+                },
+                "rainfall_1h": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Rainfall 1H"
+                },
+                "rainfall_24h": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Rainfall 24H"
+                },
+                "rainfall_3d": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Rainfall 3D"
+                },
+                "rainfall_7d": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Rainfall 7D"
+                },
+                "coverage_24h": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Coverage 24H"
+                },
+                "coverage_3d": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Coverage 3D"
+                },
+                "coverage_7d": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Coverage 7D"
+                },
+                "quality": {
+                  "type": "string",
+                  "title": "Quality",
+                  "description": "Data quality tier: GOOD, PARTIAL, MISSING, STALE, NO_RELIABLE_STATION"
+                },
+                "status": {
+                  "type": "string",
+                  "title": "Status",
+                  "description": "Operational availability status: OK, STALE, MISSING, NO_RELIABLE_LOCAL_STATION"
+                },
+                "quality_notes": {
+                  "type": "string",
+                  "title": "Quality Notes"
+                },
+                "freshness": {
+                  "$ref": "#/components/schemas/FreshnessBlock"
+                },
+                "imd_macro_context": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IMDMacroContextBlock"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "type": "object",
+              "required": [
+                "quality",
+                "status",
+                "quality_notes",
+                "freshness"
+              ],
+              "title": "RainfallBlock"
+            },
+            "RainfallTriggerBlock": {
+              "properties": {
+                "level": {
+                  "type": "string",
+                  "title": "Level",
+                  "description": "Trigger level: NORMAL, WATCH, HIGH, NO_DATA"
+                },
+                "trigger_level": {
+                  "type": "string",
+                  "title": "Trigger Level"
+                },
+                "trigger_score": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Trigger Score",
+                  "description": "Continuous engineering metric [0.0, 1.0]; null if unobserved"
+                },
+                "reasons": {
+                  "items": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Reasons"
+                },
+                "trigger_reasons": {
+                  "items": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Trigger Reasons"
+                },
+                "thresholds_breached": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Thresholds Breached"
+                },
+                "multi_window_summary": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Multi Window Summary"
+                },
+                "data_quality": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Data Quality"
+                }
+              },
+              "type": "object",
+              "required": [
+                "level",
+                "trigger_level",
+                "reasons",
+                "trigger_reasons",
+                "thresholds_breached",
+                "multi_window_summary",
+                "data_quality"
+              ],
+              "title": "RainfallTriggerBlock"
+            },
+            "RequestEcho": {
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "title": "Latitude"
+                },
+                "longitude": {
+                  "type": "number",
+                  "title": "Longitude"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "title": "Timestamp"
+                }
+              },
+              "type": "object",
+              "required": [
+                "latitude",
+                "longitude",
+                "timestamp"
+              ],
+              "title": "RequestEcho"
+            },
+            "RiskBlock": {
+              "properties": {
+                "level": {
+                  "type": "string",
+                  "title": "Level",
+                  "description": "Authoritative operational risk tier: LOW, WATCH, HIGH, CRITICAL"
+                },
+                "risk_level": {
+                  "type": "string",
+                  "title": "Risk Level"
+                },
+                "risk_label": {
+                  "type": "string",
+                  "title": "Risk Label"
+                },
+                "operational_fusion_score": {
+                  "type": "number",
+                  "title": "Operational Fusion Score",
+                  "description": "Engineering synthesis score for ordering/visualization [0.0, 1.0]"
+                },
+                "risk_score": {
+                  "type": "number",
+                  "title": "Risk Score",
+                  "description": "Backwards-compatible alias for operational_fusion_score"
+                },
+                "score_semantics": {
+                  "type": "string",
+                  "title": "Score Semantics",
+                  "description": "Explicit non-probabilistic synthesis disclaimer"
+                },
+                "scoring_mode": {
+                  "type": "string",
+                  "title": "Scoring Mode"
+                },
+                "susceptibility_score": {
+                  "type": "number",
+                  "title": "Susceptibility Score"
+                },
+                "susceptibility_category": {
+                  "type": "string",
+                  "title": "Susceptibility Category"
+                },
+                "rainfall_trigger_level": {
+                  "type": "string",
+                  "title": "Rainfall Trigger Level"
+                },
+                "rainfall_trigger_score": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Rainfall Trigger Score"
+                },
+                "reasons": {
+                  "items": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Reasons"
+                },
+                "operational_action": {
+                  "type": "string",
+                  "title": "Operational Action"
+                },
+                "matrix_lookup": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Matrix Lookup"
+                }
+              },
+              "type": "object",
+              "required": [
+                "level",
+                "risk_level",
+                "risk_label",
+                "operational_fusion_score",
+                "risk_score",
+                "score_semantics",
+                "scoring_mode",
+                "susceptibility_score",
+                "susceptibility_category",
+                "rainfall_trigger_level",
+                "reasons",
+                "operational_action",
+                "matrix_lookup"
+              ],
+              "title": "RiskBlock"
+            },
+            "SoilBlock": {
+              "properties": {
+                "soil_class": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Soil Class"
+                },
+                "clay_percent": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Clay Percent"
+                },
+                "sand_percent": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Sand Percent"
+                },
+                "silt_percent": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Silt Percent"
+                },
+                "bulk_density_kg_dm3": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Bulk Density Kg Dm3"
+                }
+              },
+              "type": "object",
+              "title": "SoilBlock"
+            },
+            "StaticSusceptibilityBlock": {
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "title": "Score",
+                  "description": "Uncalibrated static susceptibility score [0.0, 1.0] from Phase 8F Model A"
+                },
+                "category": {
+                  "type": "string",
+                  "title": "Category",
+                  "description": "Operational susceptibility tier (LOW, MODERATE, HIGH, VERY_HIGH)"
+                },
+                "category_label": {
+                  "type": "string",
+                  "title": "Category Label"
+                },
+                "category_description": {
+                  "type": "string",
+                  "title": "Category Description"
+                },
+                "quality_status": {
+                  "type": "string",
+                  "title": "Quality Status"
+                },
+                "terrain": {
+                  "$ref": "#/components/schemas/TerrainBlock"
+                },
+                "soil": {
+                  "$ref": "#/components/schemas/SoilBlock"
+                },
+                "landcover": {
+                  "$ref": "#/components/schemas/LandcoverBlock"
+                },
+                "reasons": {
+                  "items": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Reasons"
+                }
+              },
+              "type": "object",
+              "required": [
+                "score",
+                "category",
+                "category_label",
+                "category_description",
+                "quality_status",
+                "terrain",
+                "soil",
+                "landcover",
+                "reasons"
+              ],
+              "title": "StaticSusceptibilityBlock"
+            },
+            "TerrainBlock": {
+              "properties": {
+                "elevation_m": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Elevation M"
+                },
+                "slope_deg": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Slope Deg"
+                },
+                "aspect_deg": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Aspect Deg"
+                },
+                "relief_std_5x5_m": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Relief Std 5X5 M"
+                }
+              },
+              "type": "object",
+              "title": "TerrainBlock"
+            },
+            "ValidationError": {
+              "properties": {
+                "loc": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "title": "Location"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "Message"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Error Type"
+                },
+                "input": {
+                  "title": "Input"
+                },
+                "ctx": {
+                  "type": "object",
+                  "title": "Context"
+                }
+              },
+              "type": "object",
+              "required": [
+                "loc",
+                "msg",
+                "type"
+              ],
+              "title": "ValidationError"
+            }
+          }
+        }
+      }
+    },
+    {
+      "test": "Predict Guwahati",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "request_body": {
+        "latitude": 26.1445,
+        "longitude": 91.7362,
+        "timestamp": "2026-09-02T09:00:00Z"
+      },
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 468.32,
+      "passed": true,
+      "sample_response": {
+        "api_version": "1.0.0",
+        "request_id": "5681daa4-a8b2-4610-b64a-4deadc7611e1",
+        "request": {
+          "latitude": 26.1445,
+          "longitude": 91.7362,
+          "timestamp": "2026-09-02T09:00:00Z"
+        },
+        "location": {
+          "latitude": 26.1445,
+          "longitude": 91.7362,
+          "state": "Assam",
+          "district": "KAMRUP",
+          "country": "India",
+          "supported_domain": true
+        },
+        "static_susceptibility": {
+          "score": 0.1868,
+          "category": "LOW",
+          "category_label": "Low Susceptibility",
+          "category_description": "Static terrain susceptibility estimate (uncalibrated Random Forest score; not an event-time warning or percentage probability of occurrence).",
+          "quality_status": "PARTIAL",
+          "terrain": {
+            "elevation_m": 55.67,
+            "slope_deg": 3.1,
+            "aspect_deg": 253.87,
+            "relief_std_5x5_m": 2.73
+          },
+          "soil": {
+            "soil_class": "Vertisols",
+            "clay_percent": null,
+            "sand_percent": null,
+            "silt_percent": null,
+            "bulk_density_kg_dm3": null
+          },
+          "landcover": {
+            "landcover_code": null,
+            "landcover_class": "Built-up"
+          },
+          "reasons": [
+            {
+              "code": "SOUTH_FACING_ASPECT_SIGNAL",
+              "description": "Slope aspect (253.9\u00b0) faces south-to-southwest, aligning with regional moisture intercept orientation."
+            }
+          ]
+        },
+        "rainfall": {
+          "source": "CWC",
+          "station": "Guwahati(D.C.Court)",
+          "station_key": "Assam::Guwahati(D.C.Court)",
+          "state": "Assam",
+          "district": "KAMRUP",
+          "distance_km": 5.62,
+          "max_acceptable_distance_km": 50.0,
+          "timestamp": "2022-11-26 20:00:00",
+          "rainfall_1h": null,
+          "rainfall_24h": null,
+          "rainfall_3d": null,
+          "rainfall_7d": null,
+          "coverage_24h": 0.0,
+          "coverage_3d": 0.0,
+          "coverage_7d": 0.0,
+          "quality": "STALE",
+          "status": "STALE",
+          "quality_notes": "Observation timestamp (2022-11-26 20:00:00) is 33013.0 hours old relative to reference time (2026-09-02 09:00:00), exceeding operational freshness limit of 6.0 hours.",
+          "freshness": {
+            "observation_timestamp": "2022-11-26 20:00:00",
+            "reference_timestamp": "2026-09-02T09:00:00",
+            "age_hours": 33013.0,
+            "freshness_status": "STALE",
+            "max_acceptable_age_hours": 6.0
+          },
+          "imd_macro_context": null
+        },
+        "rainfall_trigger": {
+          "level": "NORMAL",
+          "trigger_level": "NORMAL",
+          "trigger_score": 0.0,
+          "reasons": [
+            {
+              "code": "RAINFALL_DATA_STALE",
+              "description": "Rainfall observation is older than maximum freshness limit (6.0h). Hazard assessment may not reflect real-time conditions."
+            }
+          ],
+          "trigger_reasons": [
+            {
+              "code": "RAINFALL_DATA_STALE",
+              "description": "Rainfall observation is older than maximum freshness limit (6.0h). Hazard assessment may not reflect real-time conditions."
+            }
+          ],
+          "thresholds_breached": [],
+          "multi_window_summary": {},
+          "data_quality": {
+            "status": "STALE",
+            "station": "Guwahati(D.C.Court)",
+            "distance_km": 5.62,
+            "is_stale": true,
+            "age_hours": 33013.0
+          }
+        },
+        "risk": {
+          "level": "LOW",
+          "risk_level": "LOW",
+          "risk_label": "Low Operational Risk",
+          "operational_fusion_score": 0.0934,
+          "risk_score": 0.0934,
+          "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+          "scoring_mode": "DUAL_LAYER_WEIGHTED_SYNTHESIS",
+          "susceptibility_score": 0.1868,
+          "susceptibility_category": "LOW",
+          "rainfall_trigger_level": "NORMAL",
+          "rainfall_trigger_score": 0.0,
+          "reasons": [
+            {
+              "code": "STATIC_LOW_SUSCEPTIBILITY",
+              "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate LOW static susceptibility (score: 0.1868)."
+            },
+            {
+              "code": "RAINFALL_NORMAL_TRIGGER",
+              "description": "Current meteorological telemetry indicates NORMAL operational rainfall trigger level."
+            },
+            {
+              "code": "RAINFALL_DATA_STALE",
+              "description": "Rainfall observation is older than maximum freshness limit (6.0h). Hazard assessment may not reflect real-time conditions."
+            }
+          ],
+          "operational_action": "Routine monitoring; baseline susceptibility is low and no severe rainfall trigger observed.",
+          "matrix_lookup": {
+            "susceptibility_tier": "LOW",
+            "rainfall_trigger_tier": "NORMAL",
+            "resulting_risk_tier": "LOW"
+          }
+        },
+        "model": {
+          "name": "LandslideNEI Operational Risk Engine",
+          "version": "1.0.0",
+          "static_model": "Model A (Environmental Only Random Forest)",
+          "threshold_profile": "DEMO_OPERATIONAL_DEFAULT",
+          "rainfall_architecture": "Decoupled Operational Telemetry Tier",
+          "fusion_method": "Deterministic Rule-Based Decision Matrix"
+        },
+        "limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ],
+        "generated_at": "2026-09-06T07:53:12.708733+00:00"
+      }
+    },
+    {
+      "test": "Predict Tawang",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "request_body": {
+        "latitude": 27.5925,
+        "longitude": 91.6087,
+        "timestamp": "2026-09-02T09:00:00Z"
+      },
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 420.64,
+      "passed": true,
+      "sample_response": {
+        "api_version": "1.0.0",
+        "request_id": "e5d1d8fd-697d-459a-98ec-2ba33df1c67b",
+        "request": {
+          "latitude": 27.5925,
+          "longitude": 91.6087,
+          "timestamp": "2026-09-02T09:00:00Z"
+        },
+        "location": {
+          "latitude": 27.5925,
+          "longitude": 91.6087,
+          "state": "Arunachal Pradesh",
+          "district": "BARPETA",
+          "country": "India",
+          "supported_domain": true
+        },
+        "static_susceptibility": {
+          "score": 0.5848,
+          "category": "HIGH",
+          "category_label": "High Susceptibility",
+          "category_description": "Static terrain susceptibility estimate (uncalibrated Random Forest score; not an event-time warning or percentage probability of occurrence).",
+          "quality_status": "OK",
+          "terrain": {
+            "elevation_m": 3139.7,
+            "slope_deg": 37.41,
+            "aspect_deg": 141.49,
+            "relief_std_5x5_m": 36.0
+          },
+          "soil": {
+            "soil_class": "Luvisols",
+            "clay_percent": 26.4,
+            "sand_percent": 39.1,
+            "silt_percent": 34.6,
+            "bulk_density_kg_dm3": 1.09
+          },
+          "landcover": {
+            "landcover_code": null,
+            "landcover_class": "Tree cover"
+          },
+          "reasons": [
+            {
+              "code": "TERRAIN_STEEP_SLOPE",
+              "description": "Slope gradient (37.4\u00b0) exceeds 25\u00b0, contributing strong terrain gradient signal."
+            },
+            {
+              "code": "HIGH_LOCAL_RELIEF",
+              "description": "Local 5x5 relief roughness (36.0 m) indicates significant topographic incision."
+            },
+            {
+              "code": "SOUTH_FACING_ASPECT_SIGNAL",
+              "description": "Slope aspect (141.5\u00b0) faces south-to-southwest, aligning with regional moisture intercept orientation."
+            },
+            {
+              "code": "HIGH_ELEVATION_SIGNAL",
+              "description": "Elevation (3139.7 m) places the location in an elevated montane zone."
+            }
+          ]
+        },
+        "rainfall": {
+          "source": "CWC",
+          "station": "Melabazar",
+          "station_key": "Assam::Melabazar",
+          "state": "Assam",
+          "district": "BARPETA",
+          "distance_km": 88.01,
+          "max_acceptable_distance_km": 50.0,
+          "timestamp": null,
+          "rainfall_1h": null,
+          "rainfall_24h": null,
+          "rainfall_3d": null,
+          "rainfall_7d": null,
+          "coverage_24h": null,
+          "coverage_3d": null,
+          "coverage_7d": null,
+          "quality": "NO_RELIABLE_STATION",
+          "status": "NO_RELIABLE_LOCAL_STATION",
+          "quality_notes": "Nearest telemetry station (Melabazar) is 88.01 km away, exceeding the maximum acceptable operational distance limit of 50.0 km. Rainfall unobserved at local scale. IMD district/state observations are retained as an available macro operational source, but the current exact-location provider uses CWC station observations because no unvalidated station-to-IMD spatial mapping is assumed.",
+          "freshness": {
+            "observation_timestamp": null,
+            "reference_timestamp": "2026-09-02 09:00:00+00:00",
+            "age_hours": null,
+            "freshness_status": "UNAVAILABLE",
+            "max_acceptable_age_hours": 6.0
+          },
+          "imd_macro_context": null
+        },
+        "rainfall_trigger": {
+          "level": "NO_DATA",
+          "trigger_level": "NO_DATA",
+          "trigger_score": null,
+          "reasons": [
+            {
+              "code": "RAINFALL_NO_RELIABLE_STATION",
+              "description": "Nearest telemetry station (Melabazar) is 88.01 km away, exceeding the maximum acceptable operational distance limit of 50.0 km. Rainfall unobserved at local scale. IMD district/state observations are retained as an available macro operational source, but the current exact-location provider uses CWC station observations because no unvalidated station-to-IMD spatial mapping is assumed."
+            }
+          ],
+          "trigger_reasons": [
+            {
+              "code": "RAINFALL_NO_RELIABLE_STATION",
+              "description": "Nearest telemetry station (Melabazar) is 88.01 km away, exceeding the maximum acceptable operational distance limit of 50.0 km. Rainfall unobserved at local scale. IMD district/state observations are retained as an available macro operational source, but the current exact-location provider uses CWC station observations because no unvalidated station-to-IMD spatial mapping is assumed."
+            }
+          ],
+          "thresholds_breached": [],
+          "multi_window_summary": {},
+          "data_quality": {
+            "status": "NO_RELIABLE_STATION",
+            "station": "Melabazar",
+            "distance_km": 88.01,
+            "is_stale": false
+          }
+        },
+        "risk": {
+          "level": "WATCH",
+          "risk_level": "WATCH",
+          "risk_label": "Watch Operational Risk",
+          "operational_fusion_score": 0.5848,
+          "risk_score": 0.5848,
+          "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+          "scoring_mode": "STATIC_BASELINE_ONLY_RAINFALL_UNOBSERVED",
+          "susceptibility_score": 0.5848,
+          "susceptibility_category": "HIGH",
+          "rainfall_trigger_level": "NO_DATA",
+          "rainfall_trigger_score": null,
+          "reasons": [
+            {
+              "code": "STATIC_HIGH_SUSCEPTIBILITY",
+              "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate HIGH static susceptibility (score: 0.5848)."
+            },
+            {
+              "code": "STATIC_HIGH_SUSCEPTIBILITY_RAINFALL_UNOBSERVED",
+              "description": "HIGH static susceptibility maintains elevated baseline vigilance despite unobserved local rainfall."
+            },
+            {
+              "code": "RAINFALL_NO_RELIABLE_STATION",
+              "description": "Nearest telemetry station (Melabazar) is 88.01 km away, exceeding the maximum acceptable operational distance limit of 50.0 km. Rainfall unobserved at local scale. IMD district/state observations are retained as an available macro operational source, but the current exact-location provider uses CWC station observations because no unvalidated station-to-IMD spatial mapping is assumed."
+            }
+          ],
+          "operational_action": "Advisory vigilance; elevated static terrain predisposition or moderate rainfall trigger.",
+          "matrix_lookup": {
+            "susceptibility_tier": "HIGH",
+            "rainfall_trigger_tier": "NO_DATA",
+            "resulting_risk_tier": "WATCH"
+          }
+        },
+        "model": {
+          "name": "LandslideNEI Operational Risk Engine",
+          "version": "1.0.0",
+          "static_model": "Model A (Environmental Only Random Forest)",
+          "threshold_profile": "DEMO_OPERATIONAL_DEFAULT",
+          "rainfall_architecture": "Decoupled Operational Telemetry Tier",
+          "fusion_method": "Deterministic Rule-Based Decision Matrix"
+        },
+        "limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ],
+        "generated_at": "2026-09-06T07:53:13.127508+00:00"
+      }
+    },
+    {
+      "test": "Predict Outside NER (Delhi)",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "request_body": {
+        "latitude": 28.6139,
+        "longitude": 77.209
+      },
+      "status_code": 400,
+      "expected_status": 400,
+      "duration_ms": 130.18,
+      "passed": true,
+      "sample_response": {
+        "error": {
+          "code": "OUTSIDE_SUPPORTED_DOMAIN",
+          "message": "Coordinates (28.6139, 77.2090) lie outside the supported Northeast India (NER) operational domain.",
+          "details": {
+            "latitude": 28.6139,
+            "longitude": 77.209,
+            "state": null,
+            "country": "India",
+            "supported_domain": false
+          }
+        }
+      }
+    },
+    {
+      "test": "Predict Invalid Lat",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "request_body": {
+        "latitude": 99.0,
+        "longitude": 91.7
+      },
+      "status_code": 422,
+      "expected_status": 422,
+      "duration_ms": 9.49,
+      "passed": true,
+      "sample_response": {
+        "error": {
+          "code": "INVALID_COORDINATES",
+          "message": "Validation error: Input should be less than or equal to 90",
+          "details": [
+            {
+              "type": "less_than_equal",
+              "loc": [
+                "body",
+                "latitude"
+              ],
+              "msg": "Input should be less than or equal to 90",
+              "input": 99.0,
+              "ctx": {
+                "le": 90.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "test": "Profile Tawang",
+      "method": "POST",
+      "path": "/api/v1/profile",
+      "request_body": {
+        "latitude": 27.5925,
+        "longitude": 91.6087
+      },
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 361.08,
+      "passed": true,
+      "sample_response": {
+        "api_version": "1.0.0",
+        "request_id": "cb1101bd-a340-432b-94b9-274970c73c2d",
+        "location": {
+          "latitude": 27.5925,
+          "longitude": 91.6087,
+          "state": "Arunachal Pradesh",
+          "district": null,
+          "country": "India",
+          "supported_domain": true
+        },
+        "static_susceptibility": {
+          "score": 0.5848,
+          "category": "HIGH",
+          "category_label": "High Susceptibility",
+          "category_description": "Static terrain susceptibility estimate (uncalibrated Random Forest score; not an event-time warning or percentage probability of occurrence).",
+          "quality_status": "OK",
+          "terrain": {
+            "elevation_m": 3139.7,
+            "slope_deg": 37.41,
+            "aspect_deg": 141.49,
+            "relief_std_5x5_m": 36.0
+          },
+          "soil": {
+            "soil_class": "Luvisols",
+            "clay_percent": 26.4,
+            "sand_percent": 39.1,
+            "silt_percent": 34.6,
+            "bulk_density_kg_dm3": 1.09
+          },
+          "landcover": {
+            "landcover_code": null,
+            "landcover_class": "Tree cover"
+          },
+          "reasons": [
+            {
+              "code": "TERRAIN_STEEP_SLOPE",
+              "description": "Slope gradient (37.4\u00b0) exceeds 25\u00b0, contributing strong terrain gradient signal."
+            },
+            {
+              "code": "HIGH_LOCAL_RELIEF",
+              "description": "Local 5x5 relief roughness (36.0 m) indicates significant topographic incision."
+            },
+            {
+              "code": "SOUTH_FACING_ASPECT_SIGNAL",
+              "description": "Slope aspect (141.5\u00b0) faces south-to-southwest, aligning with regional moisture intercept orientation."
+            },
+            {
+              "code": "HIGH_ELEVATION_SIGNAL",
+              "description": "Elevation (3139.7 m) places the location in an elevated montane zone."
+            }
+          ]
+        },
+        "model": {
+          "name": "Model A (Environmental Only)",
+          "type": "STATIC_SUSCEPTIBILITY_ONLY",
+          "version": "1.0.0"
+        },
+        "limitations": [],
+        "generated_at": "2026-09-06T07:53:13.630901+00:00"
+      }
+    },
+    {
+      "test": "Profile Outside NER (Delhi)",
+      "method": "POST",
+      "path": "/api/v1/profile",
+      "request_body": {
+        "latitude": 28.6139,
+        "longitude": 77.209
+      },
+      "status_code": 400,
+      "expected_status": 400,
+      "duration_ms": 125.45,
+      "passed": true,
+      "sample_response": {
+        "error": {
+          "code": "OUTSIDE_SUPPORTED_DOMAIN",
+          "message": "Coordinates (28.6139, 77.2090) lie outside the supported Northeast India (NER) operational domain.",
+          "details": {
+            "latitude": 28.6139,
+            "longitude": 77.209,
+            "state": null,
+            "country": "India",
+            "supported_domain": false
+          }
+        }
+      }
+    }
+  ],
+  "benchmarks": {
+    "health_ms": {
+      "p50": 9.59,
+      "p95": 11.53,
+      "min": 7.58,
+      "max": 11.53,
+      "mean": 9.58
+    },
+    "predict_ms": {
+      "p50": 316.01,
+      "min": 313.12,
+      "max": 344.0,
+      "mean": 325.33
+    }
+  },
+  "api_contract_summary": {
+    "version": "1.0.0",
+    "endpoints": [
+      {
+        "path": "/api/v1/health",
+        "method": "GET",
+        "description": "Lightweight health probe (no raster I/O)"
+      },
+      {
+        "path": "/api/v1/info",
+        "method": "GET",
+        "description": "Capabilities, thresholds, models, disclaimers"
+      },
+      {
+        "path": "/api/v1/predict",
+        "method": "POST",
+        "description": "Unified prediction contract with static LSM + rainfall telemetry"
+      },
+      {
+        "path": "/api/v1/profile",
+        "method": "POST",
+        "description": "Static-only susceptibility profile endpoint"
+      }
+    ],
+    "risk_levels": [
+      "LOW",
+      "WATCH",
+      "HIGH",
+      "CRITICAL"
+    ],
+    "susceptibility_categories": [
+      "LOW",
+      "MODERATE",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "rainfall_trigger_levels": [
+      "NORMAL",
+      "WATCH",
+      "HIGH",
+      "NO_DATA"
+    ],
+    "rainfall_constraints": {
+      "cwc_max_distance_km": 50.0,
+      "freshness_max_hours": 6.0,
+      "unobserved_policy": "explicit null (never converted to 0.0mm)",
+      "imd_policy": "macro administrative context only (never fabricated as point telemetry)"
+    },
+    "disclaimers": [
+      "Operational decision-support synthesis, not a certified event-time warning or probabilistic guarantee.",
+      "Static susceptibility score is an uncalibrated terrain predisposition estimate from Model A.",
+      "Rainfall thresholds are heuristic operational defaults (DEMO_OPERATIONAL_DEFAULT), not historically calibrated landslide trigger thresholds."
+    ]
+  }
+}
