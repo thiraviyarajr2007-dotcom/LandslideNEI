@@ -1,0 +1,144 @@
+{
+  "status": "PASS",
+  "dataset_name": "Landslide Training Samples with ESA WorldCover 10m Features",
+  "dataset_version": "v200 (2021)",
+  "source": "ESA WorldCover 10m (AWS Open Data s3://esa-worldcover/v200/2021/map/)",
+  "nominal_resolution_m": 10.0,
+  "extraction_timestamp_utc": "2026-09-06T04:52:40.009440+00:00",
+  "input_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_soil.csv",
+  "output_file": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_lulc.csv",
+  "input_rows": 4016,
+  "output_rows": 4016,
+  "preservation_checks": {
+    "row_count_preserved": true,
+    "positive_label_count": 2008,
+    "negative_label_count": 2008,
+    "coordinate_changes": 0,
+    "label_changes": 0,
+    "slide_no_changes": 0,
+    "terrain_drift": 0,
+    "soil_drift": 0,
+    "bhuvan_lulc_drift": 0,
+    "duplicate_rows": 0
+  },
+  "tiles_required": 9,
+  "tiles_downloaded": 9,
+  "tile_validation_summary": [
+    {
+      "tile_id": "N21E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N21E090_Map.tif",
+      "sample_count": 454,
+      "passed": true
+    },
+    {
+      "tile_id": "N21E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N21E093_Map.tif",
+      "sample_count": 142,
+      "passed": true
+    },
+    {
+      "tile_id": "N24E087",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E087_Map.tif",
+      "sample_count": 30,
+      "passed": true
+    },
+    {
+      "tile_id": "N24E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E090_Map.tif",
+      "sample_count": 1525,
+      "passed": true
+    },
+    {
+      "tile_id": "N24E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E093_Map.tif",
+      "sample_count": 384,
+      "passed": true
+    },
+    {
+      "tile_id": "N27E087",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E087_Map.tif",
+      "sample_count": 42,
+      "passed": true
+    },
+    {
+      "tile_id": "N27E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E090_Map.tif",
+      "sample_count": 249,
+      "passed": true
+    },
+    {
+      "tile_id": "N27E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E093_Map.tif",
+      "sample_count": 883,
+      "passed": true
+    },
+    {
+      "tile_id": "N27E096",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E096_Map.tif",
+      "sample_count": 307,
+      "passed": true
+    }
+  ],
+  "lulc_quality_distribution": {
+    "OK": 4016
+  },
+  "landcover_class_distribution": {
+    "Tree cover": 3449,
+    "Grassland": 287,
+    "Cropland": 167,
+    "Moss and lichen": 31,
+    "Bare / sparse vegetation": 26,
+    "Snow and ice": 22,
+    "Permanent water bodies": 17,
+    "Built-up": 17
+  },
+  "landcover_by_label": {
+    "Tree cover": {
+      "landslide_positives": 1842,
+      "spatial_negatives": 1607,
+      "total": 3449
+    },
+    "Grassland": {
+      "landslide_positives": 131,
+      "spatial_negatives": 156,
+      "total": 287
+    },
+    "Cropland": {
+      "landslide_positives": 23,
+      "spatial_negatives": 144,
+      "total": 167
+    },
+    "Bare / sparse vegetation": {
+      "landslide_positives": 5,
+      "spatial_negatives": 21,
+      "total": 26
+    },
+    "Built-up": {
+      "landslide_positives": 7,
+      "spatial_negatives": 10,
+      "total": 17
+    },
+    "Permanent water bodies": {
+      "landslide_positives": 0,
+      "spatial_negatives": 17,
+      "total": 17
+    },
+    "Snow and ice": {
+      "landslide_positives": 0,
+      "spatial_negatives": 22,
+      "total": 22
+    },
+    "Moss and lichen": {
+      "landslide_positives": 0,
+      "spatial_negatives": 31,
+      "total": 31
+    }
+  },
+  "scientific_notes": [
+    "ESA WorldCover 10m v200 provides global land cover at 10 m resolution for 2021 based on Sentinel-1 and Sentinel-2.",
+    "Class codes and human-readable names follow the official ESA WorldCover 11-class legend exactly.",
+    "Base Bhuvan inventory 'lulc' attribute is 100% preserved as historical provenance.",
+    "Baseline landslide inventory, coordinates, and labels are 100% preserved.",
+    "No synthetic imputation or default zeroes were applied."
+  ]
+}

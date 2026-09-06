@@ -1,0 +1,223 @@
+{
+  "dataset": "ESA WorldCover 10m v200 (2021)",
+  "product_version": "v200",
+  "reference_year": 2021,
+  "source_s3_bucket": "esa-worldcover",
+  "source_s3_prefix": "v200/2021/map/",
+  "https_base_url": "https://esa-worldcover.s3.amazonaws.com/",
+  "nominal_resolution": "10m (8.333333e-5 degrees)",
+  "grid_step": "3x3 degrees",
+  "coordinate_system": "EPSG:4326 (WGS84)",
+  "generated_timestamp_utc": "2026-09-06T04:51:18.726810+00:00",
+  "study_area_extent": {
+    "min_latitude": 21.9817,
+    "max_latitude": 29.401291661769648,
+    "min_longitude": 88.08232804047617,
+    "max_longitude": 97.34253530905325
+  },
+  "total_samples": 4016,
+  "positive_samples": 2008,
+  "negative_samples": 2008,
+  "required_tile_count": 9,
+  "total_download_size_mb": 738.13,
+  "verification_status": "PASS_VERIFIED",
+  "tiles": [
+    {
+      "tile_id": "N21E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N21E090_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N21E090_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N21E090_Map.tif",
+      "size_bytes": 58949208,
+      "size_mb": 56.22,
+      "bounds": {
+        "min_lon": 90,
+        "min_lat": 21,
+        "max_lon": 93,
+        "max_lat": 24
+      },
+      "sample_count": 454,
+      "positive_sample_count": 231,
+      "negative_sample_count": 223,
+      "states_covered": [
+        "Mizoram",
+        "Tripura"
+      ]
+    },
+    {
+      "tile_id": "N21E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N21E093_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N21E093_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N21E093_Map.tif",
+      "size_bytes": 94447576,
+      "size_mb": 90.07,
+      "bounds": {
+        "min_lon": 93,
+        "min_lat": 21,
+        "max_lon": 96,
+        "max_lat": 24
+      },
+      "sample_count": 142,
+      "positive_sample_count": 38,
+      "negative_sample_count": 104,
+      "states_covered": [
+        "Manipur",
+        "Mizoram"
+      ]
+    },
+    {
+      "tile_id": "N24E087",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E087_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E087_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E087_Map.tif",
+      "size_bytes": 117460909,
+      "size_mb": 112.02,
+      "bounds": {
+        "min_lon": 87,
+        "min_lat": 24,
+        "max_lon": 90,
+        "max_lat": 27
+      },
+      "sample_count": 30,
+      "positive_sample_count": 13,
+      "negative_sample_count": 17,
+      "states_covered": [
+        "Assam",
+        "Meghalaya"
+      ]
+    },
+    {
+      "tile_id": "N24E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E090_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E090_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E090_Map.tif",
+      "size_bytes": 98826043,
+      "size_mb": 94.25,
+      "bounds": {
+        "min_lon": 90,
+        "min_lat": 24,
+        "max_lon": 93,
+        "max_lat": 27
+      },
+      "sample_count": 1525,
+      "positive_sample_count": 858,
+      "negative_sample_count": 667,
+      "states_covered": [
+        "Arunachal Pradesh",
+        "ArunachalPradesh",
+        "Assam",
+        "Meghalaya",
+        "Mizoram",
+        "Tripura"
+      ]
+    },
+    {
+      "tile_id": "N24E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N24E093_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E093_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N24E093_Map.tif",
+      "size_bytes": 55435233,
+      "size_mb": 52.87,
+      "bounds": {
+        "min_lon": 93,
+        "min_lat": 24,
+        "max_lon": 96,
+        "max_lat": 27
+      },
+      "sample_count": 384,
+      "positive_sample_count": 167,
+      "negative_sample_count": 217,
+      "states_covered": [
+        "Arunachal Pradesh",
+        "ArunachalPradesh",
+        "Assam",
+        "Manipur",
+        "Mizoram",
+        "Nagaland"
+      ]
+    },
+    {
+      "tile_id": "N27E087",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E087_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E087_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E087_Map.tif",
+      "size_bytes": 88835880,
+      "size_mb": 84.72,
+      "bounds": {
+        "min_lon": 87,
+        "min_lat": 27,
+        "max_lon": 90,
+        "max_lat": 30
+      },
+      "sample_count": 42,
+      "positive_sample_count": 21,
+      "negative_sample_count": 21,
+      "states_covered": [
+        "Sikkim"
+      ]
+    },
+    {
+      "tile_id": "N27E090",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E090_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E090_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E090_Map.tif",
+      "size_bytes": 84842890,
+      "size_mb": 80.91,
+      "bounds": {
+        "min_lon": 90,
+        "min_lat": 27,
+        "max_lon": 93,
+        "max_lat": 30
+      },
+      "sample_count": 249,
+      "positive_sample_count": 167,
+      "negative_sample_count": 82,
+      "states_covered": [
+        "Arunachal Pradesh",
+        "ArunachalPradesh"
+      ]
+    },
+    {
+      "tile_id": "N27E093",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E093_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E093_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E093_Map.tif",
+      "size_bytes": 79061337,
+      "size_mb": 75.4,
+      "bounds": {
+        "min_lon": 93,
+        "min_lat": 27,
+        "max_lon": 96,
+        "max_lat": 30
+      },
+      "sample_count": 883,
+      "positive_sample_count": 374,
+      "negative_sample_count": 509,
+      "states_covered": [
+        "Arunachal Pradesh",
+        "ArunachalPradesh",
+        "Assam"
+      ]
+    },
+    {
+      "tile_id": "N27E096",
+      "file_name": "ESA_WorldCover_10m_2021_v200_N27E096_Map.tif",
+      "s3_key": "v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E096_Map.tif",
+      "https_url": "https://esa-worldcover.s3.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N27E096_Map.tif",
+      "size_bytes": 96124189,
+      "size_mb": 91.67,
+      "bounds": {
+        "min_lon": 96,
+        "min_lat": 27,
+        "max_lon": 99,
+        "max_lat": 30
+      },
+      "sample_count": 307,
+      "positive_sample_count": 139,
+      "negative_sample_count": 168,
+      "states_covered": [
+        "Arunachal Pradesh",
+        "ArunachalPradesh"
+      ]
+    }
+  ]
+}
