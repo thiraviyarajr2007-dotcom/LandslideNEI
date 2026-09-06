@@ -1,0 +1,116 @@
+{
+  "module": "Phase 8E.2.3 - Proximity Feature Layer",
+  "generated_timestamp_utc": "2026-09-06T05:12:55.220663+00:00",
+  "study_area_extent": {
+    "min_latitude": 21.9817,
+    "max_latitude": 29.401291661769648,
+    "min_longitude": 88.08232804047617,
+    "max_longitude": 97.34253530905325
+  },
+  "total_samples": 4016,
+  "positive_samples": 2008,
+  "negative_samples": 2008,
+  "projected_metric_crs": {
+    "name": "WGS 84 / UTM zone 46N",
+    "epsg": 32646,
+    "proj4": "+proj=utm +zone=46 +datum=WGS84 +units=m +no_defs",
+    "central_meridian": "93.0\u00b0E (centered directly over Northeast India 88.0\u00b0E - 97.4\u00b0E)",
+    "unit": "metre"
+  },
+  "sources": {
+    "transportation": {
+      "source_name": "OpenStreetMap / Geofabrik North-Eastern Zone",
+      "download_url": "https://download.geofabrik.de/asia/india/north-eastern-zone-latest-free.shp.zip",
+      "release_id": "north-eastern-zone-260903-free",
+      "target_files": [
+        "gis_osm_roads_free_1.shp",
+        "gis_osm_roads_free_1.shx",
+        "gis_osm_roads_free_1.dbf",
+        "gis_osm_roads_free_1.prj",
+        "gis_osm_roads_free_1.cpg"
+      ],
+      "geometry_type": "LineString",
+      "source_crs": "EPSG:4326 (WGS84)",
+      "estimated_compressed_size_mb": 92.7,
+      "estimated_uncompressed_size_mb": 189.4,
+      "highway_classes_included": [
+        "motorway",
+        "trunk",
+        "primary",
+        "secondary",
+        "tertiary",
+        "unclassified",
+        "residential",
+        "service",
+        "track"
+      ],
+      "highway_classes_excluded": [
+        "footway",
+        "path",
+        "cycleway",
+        "pedestrian",
+        "steps",
+        "bridleway"
+      ]
+    },
+    "hydrography": {
+      "source_name": "OpenStreetMap / Geofabrik North-Eastern Zone",
+      "download_url": "https://download.geofabrik.de/asia/india/north-eastern-zone-latest-free.shp.zip",
+      "release_id": "north-eastern-zone-260903-free",
+      "target_files": [
+        "gis_osm_waterways_free_1.shp",
+        "gis_osm_waterways_free_1.shx",
+        "gis_osm_waterways_free_1.dbf",
+        "gis_osm_waterways_free_1.prj",
+        "gis_osm_waterways_free_1.cpg"
+      ],
+      "geometry_type": "LineString",
+      "source_crs": "EPSG:4326 (WGS84)",
+      "estimated_compressed_size_mb": 12.2,
+      "estimated_uncompressed_size_mb": 19.0,
+      "waterway_classes_included": [
+        "river",
+        "stream",
+        "canal",
+        "drain"
+      ],
+      "waterway_classes_excluded": [
+        "ditch",
+        "dock",
+        "dam"
+      ]
+    },
+    "landslide_inventory": {
+      "source_name": "ISRO / Bhuvan 2014 Landslide Inventory (Official NER Extraction)",
+      "input_reference_dataset": "data/processed/landslides/landslide_training_samples_lulc.csv (label == 1)",
+      "total_positive_reference_points": 2008,
+      "self_exclusion_policy": "For label=1 samples: exclude the sample's own Bhuvan event/coordinate from the KDTree nearest-neighbor search to guarantee zero distance leakage (distance > 0). For label=0 spatial negative candidates: query the complete 2,008-point Bhuvan inventory.",
+      "scientific_provenance_note": "distance_to_nearest_other_landslide_m is retained as a candidate spatial clustering feature. Since positive samples originate from the 2014 Bhuvan event clusters, this feature may encode spatial structure; an explicit ablation study (Model without proximity vs Model with proximity) is scheduled before final deployment."
+    }
+  },
+  "features_to_produce": [
+    {
+      "name": "distance_to_road_m",
+      "type": "float64",
+      "unit": "metres",
+      "description": "Shortest 2D Euclidean distance to nearest motorable/vehicular OSM road geometry in UTM 46N."
+    },
+    {
+      "name": "distance_to_river_m",
+      "type": "float64",
+      "unit": "metres",
+      "description": "Shortest 2D Euclidean distance to nearest OSM river/stream/canal/drain geometry in UTM 46N."
+    },
+    {
+      "name": "distance_to_nearest_other_landslide_m",
+      "type": "float64",
+      "unit": "metres",
+      "description": "Shortest 2D Euclidean distance to nearest OTHER Bhuvan landslide point in UTM 46N (self-excluded for label=1)."
+    },
+    {
+      "name": "proximity_quality",
+      "type": "string",
+      "description": "Quality flag: 'OK', 'ROAD_MISSING', 'RIVER_MISSING', 'LANDSLIDE_REFERENCE_MISSING'."
+    }
+  ]
+}
