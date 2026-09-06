@@ -1,0 +1,90 @@
+======================================================================
+PHASE 8J — OPERATIONAL DASHBOARD & GIS VISUALIZATION REPORT
+======================================================================
+
+Generated At: 2026-09-06T08:11:34.790775+00:00
+Baseline Data Integrity: PASS (10/10 MATCH)
+Smoke Tests: 17/17 Passed
+
+----------------------------------------------------------------------
+1. BASELINE FILE INTEGRITY HASHES (SHA-256)
+----------------------------------------------------------------------
+[MATCH  ] model/static_lsm_pipeline.joblib
+          SHA256: 412fce63368830555dffeb7f042010a79f3b56849a776c6b4b774e5728282ce6
+[MATCH  ] model/static_lsm_metadata.json
+          SHA256: fe53d7a69c6ea207ed7d362a42a6b89b33a465baf0c4e5d1bd3418aae9731f68
+[MATCH  ] data/processed/landslides/landslide_training_samples.csv
+          SHA256: 8b0e9b86648c8b06814b38c1def3cb5ccc62a0a042ea44cc45192fc682c34c5f
+[MATCH  ] data/processed/landslides/landslide_training_samples_gadm_corrected.csv
+          SHA256: 591d5eca157f6d1f433d1125ef416a2726a56054ff071f8e3fd90247a96fac5d
+[MATCH  ] data/processed/landslides/landslide_training_samples_terrain.csv
+          SHA256: 304658e1a9f0e37596c5e96086ad066247bacc0db7b2656e9fefc182cdcdd621
+[MATCH  ] data/processed/landslides/landslide_training_samples_soil.csv
+          SHA256: 6a34c167c52ac24b3dc580f4562ec2774ea5d336fba5b079e045a859090b3f44
+[MATCH  ] data/processed/landslides/landslide_training_samples_lulc.csv
+          SHA256: 2e73c8615c3dffd4e13138c791d854e9b92a276eb5fe8b9dda0294d84f48de78
+[MATCH  ] data/processed/landslides/landslide_training_samples_proximity.csv
+          SHA256: 46e36425ab899fd471ad3ee7460f0ef6061e23a5c9273c2f84b7b64c0b0e0239
+[MATCH  ] data/processed/cwc_rainfall_features.csv
+          SHA256: a60f971f7b01e7539d6487f160ced588f052bc26d13851c8e6e063b9e9861bce
+[MATCH  ] data/processed/rainfall/rainfall_daily_integrated.csv
+          SHA256: f058109ef6d8b6d46e531e2e858df8f28bc470b2189cd4e2c4b20c24d21ff0d6
+
+----------------------------------------------------------------------
+2. DASHBOARD SMOKE TESTS
+----------------------------------------------------------------------
+[PASS] GET  /dashboard/                         -> Status: 200 (129.66ms)
+       Test: Dashboard HTML Root
+[PASS] GET  /dashboard/css/styles.css           -> Status: 200 (10.75ms)
+       Test: Tactical Dark CSS
+[PASS] GET  /dashboard/js/i18n.js               -> Status: 200 (9.44ms)
+       Test: Bilingual Translation Dict
+[PASS] GET  /dashboard/js/demo_presets.js       -> Status: 200 (9.73ms)
+       Test: SIH Demo Presets Script
+[PASS] GET  /dashboard/js/map.js                -> Status: 200 (9.89ms)
+       Test: Leaflet Map Controller
+[PASS] GET  /dashboard/js/app.js                -> Status: 200 (9.31ms)
+       Test: Main App Controller
+[PASS] GET  /dashboard/assets/ner_states.geojson -> Status: 200 (13.31ms)
+       Test: NER 8-State GeoJSON
+[PASS] GET  /dashboard/assets/cwc_stations.json -> Status: 200 (12.99ms)
+       Test: CWC 73 Station Coordinates
+[PASS] GET  /                                   -> Status: 307 (14.77ms)
+       Test: HTML Root Redirect to /dashboard/
+[PASS] GET  /                                   -> Status: 200 (9.13ms)
+       Test: API JSON Root with dashboard_url
+[PASS] POST /api/v1/predict                     -> Status: 200 (5675.08ms)
+       Test: Preset: Guwahati Urban
+[PASS] POST /api/v1/predict                     -> Status: 200 (447.75ms)
+       Test: Preset: Tawang Alpine
+[PASS] POST /api/v1/predict                     -> Status: 200 (380.29ms)
+       Test: Preset: Mangan Sikkim
+[PASS] POST /api/v1/predict                     -> Status: 200 (373.3ms)
+       Test: Preset: Cherrapunji
+[PASS] POST /api/v1/predict                     -> Status: 200 (361.51ms)
+       Test: Preset: Aizawl Ridge
+[PASS] POST /api/v1/predict                     -> Status: 400 (110.98ms)
+       Test: Preset: Out-of-Domain Delhi
+[PASS] POST /api/v1/profile                     -> Status: 200 (294.53ms)
+       Test: Profile Endpoint: Tawang
+
+----------------------------------------------------------------------
+3. LATENCY BENCHMARKS
+----------------------------------------------------------------------
+Dashboard HTML Delivery p50: 13.43 ms (mean: 13.57 ms)
+NER GeoJSON Delivery p50:    11.97 ms (mean: 11.77 ms)
+
+----------------------------------------------------------------------
+4. SIH PRESENTATION FEATURES
+----------------------------------------------------------------------
+Demo Presets:
+  * Guwahati Urban (Assam) - Low risk baseline
+  * Tawang Alpine (Arunachal) - High susceptibility, distant station (>50km)
+  * Mangan / Chungthang (Sikkim) - Steep Himalayas, high relief
+  * Cherrapunji / Sohra (Meghalaya) - Extreme rainfall plateau
+  * Aizawl Ridge City (Mizoram) - Ridge urban hazard
+  * New Delhi (Out of Domain) - Validation & rejection test
+
+Bilingual Localization:
+  * en (English)
+  * ta (Tamil)

@@ -1,0 +1,302 @@
+{
+  "phase": "8J",
+  "title": "Operational Dashboard & GIS Risk Visualization Validation",
+  "generated_at": "2026-09-06T08:11:34.790775+00:00",
+  "baseline_data_integrity": true,
+  "asset_hashes": {
+    "model/static_lsm_pipeline.joblib": {
+      "status": "MATCH",
+      "sha256": "412fce63368830555dffeb7f042010a79f3b56849a776c6b4b774e5728282ce6",
+      "expected_prefix": "412fce6336883055",
+      "matches": true
+    },
+    "model/static_lsm_metadata.json": {
+      "status": "MATCH",
+      "sha256": "fe53d7a69c6ea207ed7d362a42a6b89b33a465baf0c4e5d1bd3418aae9731f68",
+      "expected_prefix": "fe53d7a69c6ea207",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples.csv": {
+      "status": "MATCH",
+      "sha256": "8b0e9b86648c8b06814b38c1def3cb5ccc62a0a042ea44cc45192fc682c34c5f",
+      "expected_prefix": "8b0e9b86648c8b06",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_gadm_corrected.csv": {
+      "status": "MATCH",
+      "sha256": "591d5eca157f6d1f433d1125ef416a2726a56054ff071f8e3fd90247a96fac5d",
+      "expected_prefix": "591d5eca157f6d1f",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_terrain.csv": {
+      "status": "MATCH",
+      "sha256": "304658e1a9f0e37596c5e96086ad066247bacc0db7b2656e9fefc182cdcdd621",
+      "expected_prefix": "304658e1a9f0e375",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_soil.csv": {
+      "status": "MATCH",
+      "sha256": "6a34c167c52ac24b3dc580f4562ec2774ea5d336fba5b079e045a859090b3f44",
+      "expected_prefix": "6a34c167c52ac24b",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_lulc.csv": {
+      "status": "MATCH",
+      "sha256": "2e73c8615c3dffd4e13138c791d854e9b92a276eb5fe8b9dda0294d84f48de78",
+      "expected_prefix": "2e73c8615c3dffd4",
+      "matches": true
+    },
+    "data/processed/landslides/landslide_training_samples_proximity.csv": {
+      "status": "MATCH",
+      "sha256": "46e36425ab899fd471ad3ee7460f0ef6061e23a5c9273c2f84b7b64c0b0e0239",
+      "expected_prefix": "46e36425ab899fd4",
+      "matches": true
+    },
+    "data/processed/cwc_rainfall_features.csv": {
+      "status": "MATCH",
+      "sha256": "a60f971f7b01e7539d6487f160ced588f052bc26d13851c8e6e063b9e9861bce",
+      "expected_prefix": "a60f971f7b01e753",
+      "matches": true
+    },
+    "data/processed/rainfall/rainfall_daily_integrated.csv": {
+      "status": "MATCH",
+      "sha256": "f058109ef6d8b6d46e531e2e858df8f28bc470b2189cd4e2c4b20c24d21ff0d6",
+      "expected_prefix": "f058109ef6d8b6d4",
+      "matches": true
+    }
+  },
+  "smoke_tests_total": 17,
+  "smoke_tests_passed": 17,
+  "smoke_tests": [
+    {
+      "test": "Dashboard HTML Root",
+      "method": "GET",
+      "path": "/dashboard/",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 129.66,
+      "passed": true
+    },
+    {
+      "test": "Tactical Dark CSS",
+      "method": "GET",
+      "path": "/dashboard/css/styles.css",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 10.75,
+      "passed": true
+    },
+    {
+      "test": "Bilingual Translation Dict",
+      "method": "GET",
+      "path": "/dashboard/js/i18n.js",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 9.44,
+      "passed": true
+    },
+    {
+      "test": "SIH Demo Presets Script",
+      "method": "GET",
+      "path": "/dashboard/js/demo_presets.js",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 9.73,
+      "passed": true
+    },
+    {
+      "test": "Leaflet Map Controller",
+      "method": "GET",
+      "path": "/dashboard/js/map.js",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 9.89,
+      "passed": true
+    },
+    {
+      "test": "Main App Controller",
+      "method": "GET",
+      "path": "/dashboard/js/app.js",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 9.31,
+      "passed": true
+    },
+    {
+      "test": "NER 8-State GeoJSON",
+      "method": "GET",
+      "path": "/dashboard/assets/ner_states.geojson",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 13.31,
+      "passed": true
+    },
+    {
+      "test": "CWC 73 Station Coordinates",
+      "method": "GET",
+      "path": "/dashboard/assets/cwc_stations.json",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 12.99,
+      "passed": true
+    },
+    {
+      "test": "HTML Root Redirect to /dashboard/",
+      "method": "GET",
+      "path": "/",
+      "status_code": 307,
+      "expected_status": 307,
+      "duration_ms": 14.77,
+      "passed": true
+    },
+    {
+      "test": "API JSON Root with dashboard_url",
+      "method": "GET",
+      "path": "/",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 9.13,
+      "passed": true
+    },
+    {
+      "test": "Preset: Guwahati Urban",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 5675.08,
+      "passed": true
+    },
+    {
+      "test": "Preset: Tawang Alpine",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 447.75,
+      "passed": true
+    },
+    {
+      "test": "Preset: Mangan Sikkim",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 380.29,
+      "passed": true
+    },
+    {
+      "test": "Preset: Cherrapunji",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 373.3,
+      "passed": true
+    },
+    {
+      "test": "Preset: Aizawl Ridge",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 361.51,
+      "passed": true
+    },
+    {
+      "test": "Preset: Out-of-Domain Delhi",
+      "method": "POST",
+      "path": "/api/v1/predict",
+      "status_code": 400,
+      "expected_status": 400,
+      "duration_ms": 110.98,
+      "passed": true
+    },
+    {
+      "test": "Profile Endpoint: Tawang",
+      "method": "POST",
+      "path": "/api/v1/profile",
+      "status_code": 200,
+      "expected_status": 200,
+      "duration_ms": 294.53,
+      "passed": true
+    }
+  ],
+  "benchmarks": {
+    "index_html_ms": {
+      "p50": 13.43,
+      "mean": 13.57,
+      "min": 10.75,
+      "max": 17.12
+    },
+    "ner_geojson_ms": {
+      "p50": 11.97,
+      "mean": 11.77,
+      "min": 10.46,
+      "max": 12.82
+    }
+  },
+  "dashboard_features": {
+    "gis_map": {
+      "library": "Leaflet.js 1.9.4",
+      "center": [
+        25.8,
+        93.0
+      ],
+      "default_zoom": 7,
+      "basemaps": [
+        "Dark Matter (CartoDB)",
+        "OpenStreetMap",
+        "OpenTopoMap"
+      ],
+      "layers": [
+        "NER 8-State Boundaries",
+        "73 CWC Telemetry Stations"
+      ],
+      "interactivity": [
+        "Click-to-query",
+        "Pulsing risk marker",
+        "50km station radius circle"
+      ]
+    },
+    "operational_panel": {
+      "decision_tier": "LOW / WATCH / HIGH / CRITICAL with emergency badge and pulse",
+      "operational_action": "Actionable emergency response recommendation",
+      "operational_fusion_score": "Continuous ordering synthesis with non-probabilistic disclaimer",
+      "susceptibility": "Score [0, 1], category, uncalibrated physical predisposition disclaimer",
+      "rainfall_telemetry": {
+        "source": "Central Water Commission (CWC)",
+        "windows": [
+          "1h",
+          "24h",
+          "3d",
+          "7d"
+        ],
+        "station_distance_cap": "50.0 km",
+        "freshness_tracking": "FRESH (<=6h), STALE (>6h), SPARSE, NO DATA",
+        "imd_macro_context": "State/District administrative context without localized point fabrication"
+      },
+      "environmental_inspector": {
+        "terrain": "Copernicus DEM (Elevation, Slope, Aspect, Relief 5x5)",
+        "soil": "SoilGrids (Class, Clay %, Sand %, Silt %, Bulk Density)",
+        "landcover": "ESA WorldCover 10m (11 classes)"
+      },
+      "explainability": "Deterministic reason codes ('Why this risk?')"
+    },
+    "demo_presets": [
+      "Guwahati Urban (Assam) - Low risk baseline",
+      "Tawang Alpine (Arunachal) - High susceptibility, distant station (>50km)",
+      "Mangan / Chungthang (Sikkim) - Steep Himalayas, high relief",
+      "Cherrapunji / Sohra (Meghalaya) - Extreme rainfall plateau",
+      "Aizawl Ridge City (Mizoram) - Ridge urban hazard",
+      "New Delhi (Out of Domain) - Validation & rejection test"
+    ],
+    "localization": {
+      "supported_languages": [
+        "en (English)",
+        "ta (Tamil)"
+      ],
+      "mode": "Instant client-side i18n dictionary toggle"
+    }
+  }
+}

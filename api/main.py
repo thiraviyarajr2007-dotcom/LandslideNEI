@@ -26,7 +26,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 # Add project root to sys.path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +119,11 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# Mount static files for Phase 8J Operational GIS Dashboard
+dashboard_dir = PROJECT_ROOT / "dashboard"
+if dashboard_dir.exists():
+    app.mount("/dashboard", StaticFiles(directory=str(dashboard_dir), html=True), name="dashboard")
 
 
 # ==============================================================================
@@ -239,12 +245,17 @@ def validate_and_parse_timestamp(raw_ts: Optional[str]) -> Tuple[datetime, str]:
 # ==============================================================================
 
 @app.get("/", tags=["General"])
-def root() -> Dict[str, Any]:
-    """API identification and operational overview."""
+def root(request: Request) -> Any:
+    """API identification, operational overview, and browser dashboard redirect."""
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        return RedirectResponse(url="/dashboard/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+
     return {
         "name": API_CONFIG.get("title", "LandslideNEI Operational Landslide Risk Prediction API"),
         "status": "online",
         "api_version": API_VERSION,
+        "dashboard_url": "/dashboard/",
         "docs_url": "/docs",
         "health_url": "/api/v1/health",
         "info_url": "/api/v1/info",

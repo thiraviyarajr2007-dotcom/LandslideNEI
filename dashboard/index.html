@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandslideNEI — Operational GIS Risk Dashboard</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ==============================================================================
+       HEADER COMMAND BAR
+       ============================================================================== -->
+  <header class="header-bar">
+    <div class="header-left">
+      <div class="brand-logo">
+        <div class="brand-icon">🏔️</div>
+        <div>
+          <div class="brand-title">
+            <span data-i18n="appTitle">LandslideNEI</span>
+            <span class="badge-sih">SIH 2024</span>
+          </div>
+          <div class="brand-subtitle" data-i18n="appSubtitle">AI Early Warning & Operational Decision Support System</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div id="sys-status-pill" class="status-pill">
+        <span class="pulse-dot-green"></span>
+        <span data-i18n="systemStatus">System Online</span>
+      </div>
+
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ta">தமிழ்</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==============================================================================
+       SUB-BAR: SIH DEMO PRESETS
+       ============================================================================== -->
+  <nav class="presets-bar">
+    <div class="presets-label" data-i18n="presetsTitle">SIH Demo Scenarios:</div>
+    <div id="presets-container" class="presets-container">
+      <!-- Dynamically injected via demo_presets.js -->
+    </div>
+  </nav>
+
+  <!-- ==============================================================================
+       MAIN WORKSPACE
+       ============================================================================== -->
+  <main class="main-layout">
+    
+    <!-- LEFT: GIS MAP CONTAINER -->
+    <section class="map-container">
+      <div id="gis-map"></div>
+
+      <!-- Floating Map Query Control -->
+      <div class="map-floating-controls">
+        <div class="query-box-card">
+          <div class="query-title">
+            <span data-i18n="queryTitle">Location Query</span>
+            <span style="font-size:10px; color:#94a3b8;">Click map or enter:</span>
+          </div>
+
+          <div class="coord-inputs-flex">
+            <div class="input-group">
+              <label>Latitude (°N)</label>
+              <input id="input-lat" type="number" step="0.0001" placeholder="27.5925" data-i18n-placeholder="latPlaceholder" />
+            </div>
+            <div class="input-group">
+              <label>Longitude (°E)</label>
+              <input id="input-lon" type="number" step="0.0001" placeholder="91.6087" data-i18n-placeholder="lonPlaceholder" />
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button id="btn-evaluate" class="btn-primary" data-i18n="queryBtn">Evaluate Risk</button>
+            <button id="btn-profile" class="btn-secondary" data-i18n="profileOnlyBtn" title="Static LSM Only">Profile</button>
+            <button id="btn-reset" class="btn-secondary" data-i18n="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <!-- Layer Toggles -->
+        <div class="map-layers-toggle">
+          <div>
+            <select id="select-basemap">
+              <option value="Dark Matter">Dark Matter</option>
+              <option value="OpenStreetMap">OpenStreetMap</option>
+              <option value="OpenTopoMap">OpenTopoMap</option>
+            </select>
+          </div>
+          <label>
+            <input id="chk-layer-states" type="checkbox" checked />
+            <span data-i18n="layerStates">NER States</span>
+          </label>
+          <label>
+            <input id="chk-layer-stations" type="checkbox" checked />
+            <span data-i18n="layerStations">CWC Stations</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: OPERATIONAL DECISION PANEL -->
+    <aside class="operational-panel">
+      <div class="panel-header">
+        <span data-i18n="riskVerdictTitle">Operational Decision Panel</span>
+        <span style="font-size: 11px; color: var(--accent-sky); font-family: var(--font-mono);">Phase 8I API</span>
+      </div>
+
+      <div id="operational-panel-body" class="panel-body">
+        <!-- Default Empty State -->
+        <div class="empty-state">
+          <div class="empty-icon">📍</div>
+          <div class="empty-title">No Location Selected</div>
+          <div class="empty-desc">Click anywhere on the Northeast India map or select a demo preset above to evaluate real-time landslide risk.</div>
+        </div>
+      </div>
+
+      <!-- Loading Spinner Overlay -->
+      <div id="loading-spinner" class="loading-spinner-overlay">
+        <div class="spinner"></div>
+        <div style="font-size:12px; color:#38bdf8; font-weight:600;" data-i18n="loadingEvaluating">
+          Extracting terrain, soil, landcover & querying telemetry...
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ==============================================================================
+       ERROR & DIAGNOSTIC MODAL
+       ============================================================================== -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div id="modal-title" class="modal-title">Evaluation Error</div>
+        <div id="modal-code" class="modal-code"></div>
+      </div>
+      <div id="modal-message" class="modal-message"></div>
+      <pre id="modal-details" class="modal-details" style="display:none;"></pre>
+      <button id="modal-close-btn" class="modal-btn">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Dashboard Application Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/demo_presets.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

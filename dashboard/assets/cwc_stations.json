@@ -1,0 +1,594 @@
+[
+  {
+    "key": "Arunachal Pradesh::BILLE",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.45861,
+    "longitude": 94.68417,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Bhalukpong",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.0175,
+    "longitude": 92.6375,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Kibithu",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.25722,
+    "longitude": 97.02583,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Lemeking",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.37278,
+    "longitude": 93.55972,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::MAGIGAON",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.72,
+    "longitude": 94.64222,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Miao",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.49361,
+    "longitude": 96.21917,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Namsai",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.63556,
+    "longitude": 95.84806,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Passighat",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.07778,
+    "longitude": 95.33556,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::ROING",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.15833,
+    "longitude": 95.845,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::ROUTANG",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.1425,
+    "longitude": 95.16306,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Seppa",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.35861,
+    "longitude": 93.03972,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Tezu",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 27.91083,
+    "longitude": 96.17056,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::Tuting",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.995,
+    "longitude": 94.88694,
+    "elevation_m": null
+  },
+  {
+    "key": "Arunachal Pradesh::bamdo",
+    "name": "Unknown Station",
+    "state": "Arunachal Pradesh",
+    "latitude": 28.75361,
+    "longitude": 94.90083,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::AP Ghat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 24.83194,
+    "longitude": 92.79611,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::BAHALPUR",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.31949,
+    "longitude": 90.46949,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Badatighat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.94889,
+    "longitude": 93.96222,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Basudevthan",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.37472,
+    "longitude": 94.55472,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Beki Road bridge",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.49413,
+    "longitude": 90.9179,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Bihubar",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.85333,
+    "longitude": 94.80056,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Bokajan",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.01944,
+    "longitude": 93.78972,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Chenimari (Khowang)",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.31222,
+    "longitude": 94.88167,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Chouldhowaghat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.44889,
+    "longitude": 94.25,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::DRF",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.77501,
+    "longitude": 91.69289,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Desangpani",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.04667,
+    "longitude": 94.91222,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dharamtul",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.16833,
+    "longitude": 92.35861,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dholabazar",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.76361,
+    "longitude": 95.56611,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dholai",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 24.59361,
+    "longitude": 92.84528,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dhubri",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 25.99099,
+    "longitude": 90.03249,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dibrugarh",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.48861,
+    "longitude": 94.90972,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Dillighat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.14,
+    "longitude": 95.37,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Gelabil",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.24444,
+    "longitude": 93.97278,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Gharmura",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 24.28528,
+    "longitude": 92.51611,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Goalpara",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.18472,
+    "longitude": 90.63389,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Golaghat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.50361,
+    "longitude": 93.95167,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Golokganj",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.10722,
+    "longitude": 89.82361,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Guwahati(D.C.Court)",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.1947,
+    "longitude": 91.7431,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::KANGKUBASTI",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.64972,
+    "longitude": 94.60806,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Kampur",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.15278,
+    "longitude": 92.65333,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Karimganj",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 24.87861,
+    "longitude": 92.35667,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Kheronighat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 25.84861,
+    "longitude": 92.885,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Kokrajhar",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.39757,
+    "longitude": 90.25406,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Lakhipur",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 24.67222,
+    "longitude": 93.10306,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Manas N H Crossing",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.46422,
+    "longitude": 90.75003,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Margherita",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.28361,
+    "longitude": 95.66278,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Mathanguri",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.78288,
+    "longitude": 90.95657,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Mathanguri",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.78278,
+    "longitude": 90.95667,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Melabazar",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.80417,
+    "longitude": 91.52917,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::NH RD Xing(Puthimari)",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.3469,
+    "longitude": 91.6486,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::NT Road Crossing Jia-Bharali",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.81,
+    "longitude": 92.87972,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::NT Road Crossing(Jiabharali)",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.8097,
+    "longitude": 92.8789,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Neharkatia",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.31889,
+    "longitude": 95.31056,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Nematighat",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.8603,
+    "longitude": 94.2522,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Numaligarh",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.63111,
+    "longitude": 93.73056,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Sivasagar",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.98167,
+    "longitude": 94.57917,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::Tezpur",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 26.61583,
+    "longitude": 92.79694,
+    "elevation_m": null
+  },
+  {
+    "key": "Assam::ghilamora",
+    "name": "Unknown Station",
+    "state": "Assam",
+    "latitude": 27.31667,
+    "longitude": 94.41639,
+    "elevation_m": null
+  },
+  {
+    "key": "Manipur::Amraghat",
+    "name": "Unknown Station",
+    "state": "Manipur",
+    "latitude": 24.58333,
+    "longitude": 93.96667,
+    "elevation_m": null
+  },
+  {
+    "key": "Nagaland::Doyang Hep Reservoir",
+    "name": "Unknown Station",
+    "state": "Nagaland",
+    "latitude": 26.23,
+    "longitude": 94.26083,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Dentam",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.26333,
+    "longitude": 88.13028,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Dickchu(GOR)",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.42139,
+    "longitude": 88.51417,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Majitar",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.10722,
+    "longitude": 88.32222,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Rangit Nagar",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.29972,
+    "longitude": 88.3075,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Rangpo",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.17167,
+    "longitude": 88.52972,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Rangpo Dam",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.24,
+    "longitude": 88.71,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Reshi",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.22556,
+    "longitude": 88.30444,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Rongli Dam",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.2,
+    "longitude": 88.71,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Sankalan",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.50833,
+    "longitude": 88.525,
+    "elevation_m": null
+  },
+  {
+    "key": "Sikkim::Sankalang",
+    "name": "Unknown Station",
+    "state": "Sikkim",
+    "latitude": 27.51722,
+    "longitude": 88.53222,
+    "elevation_m": null
+  },
+  {
+    "key": "Tripura::Amarpur",
+    "name": "Unknown Station",
+    "state": "Tripura",
+    "latitude": 23.52833,
+    "longitude": 91.65278,
+    "elevation_m": null
+  },
+  {
+    "key": "Tripura::GUMTI HYDRO DAM",
+    "name": "Unknown Station",
+    "state": "Tripura",
+    "latitude": 23.42917,
+    "longitude": 91.82222,
+    "elevation_m": null
+  },
+  {
+    "key": "Tripura::Kallashahar",
+    "name": "Unknown Station",
+    "state": "Tripura",
+    "latitude": 24.31611,
+    "longitude": 91.99417,
+    "elevation_m": null
+  },
+  {
+    "key": "Tripura::Manughat",
+    "name": "Unknown Station",
+    "state": "Tripura",
+    "latitude": 23.99611,
+    "longitude": 91.98944,
+    "elevation_m": null
+  },
+  {
+    "key": "Tripura::Sonamura",
+    "name": "Unknown Station",
+    "state": "Tripura",
+    "latitude": 23.47222,
+    "longitude": 91.26278,
+    "elevation_m": null
+  }
+]
