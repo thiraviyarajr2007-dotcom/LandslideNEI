@@ -1,0 +1,74 @@
+================================================================================
+PHASE 8H — DYNAMIC RAINFALL & RISK FUSION VALIDATION REPORT
+================================================================================
+Generated UTC: 2026-09-06T06:38:18.667810+00:00
+Status:        VALIDATION_PASSED
+
+CRITICAL SCIENTIFIC STATEMENT:
+  The rainfall trigger thresholds used in this prototype are operational configuration values and are not calibrated against historical 2014 landslide event rainfall.
+
+SCORE SEMANTICS:
+  The operational_fusion_score is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate. The categorical risk_level is the authoritative operational decision.
+
+1. ARCHITECTURE & SOURCE HIERARCHY
+--------------------------------------------------------------------------------
+  * Static Layer:       Copernicus DEM 30m + SoilGrids + WorldCover -> Model A Random Forest (Susceptibility [0, 1])
+  * Dynamic Layer:      CWC Telemetry Stations (within <=50km radius, freshness <=6h) + IMD Macro Integration
+  * Fusion Layer:       Deterministic Decision Matrix (Susceptibility Category x Trigger Level -> LOW/WATCH/HIGH/CRITICAL)
+
+  Source Hierarchy & Spatial Rules:
+    1. Primary Operational Source: CWC Station Telemetry (73 unique stations in NER).
+    2. Spatial Capping: Geodesic distance must be <=50.0 km for local slope attribution.
+    3. Rejection Policy: If nearest station >50.0 km, status is NO_RELIABLE_LOCAL_STATION; rainfall remains unobserved (None); no zeros invented.
+    4. IMD Macro Context: IMD Statewise and Districtwise tables are indexed and queryable as macro administrative context, but no unvalidated station-to-IMD coordinate mapping is assumed for point queries.
+
+2. OPERATIONAL RAINFALL THRESHOLDS (DEMO DEFAULTS)
+--------------------------------------------------------------------------------
+  * 1-Hour Accumulation:   Watch = 20.0 mm | High = 40.0 mm
+  * 24-Hour Accumulation:  Watch = 50.0 mm | High = 100.0 mm
+  * 3-Day (72h) Total:     Watch = 100.0 mm | High = 200.0 mm
+  * 7-Day (168h) Total:    Watch = 150.0 mm | High = 300.0 mm
+  * Max Station Distance:  50.0 km (engineering limit; distant stations rejected as local)
+  * Max Telemetry Age:     6.0 hours (older observations flagged STALE)
+  * Min Window Coverage:   75.0% (incomplete windows flagged PARTIAL)
+
+3. DETERMINISTIC RISK FUSION MATRIX
+--------------------------------------------------------------------------------
+Susceptibility Tier  | NORMAL Rain  | WATCH Rain   | HIGH Rain    | NO_DATA Rain
+--------------------------------------------------------------------------------
+LOW                  | LOW          | WATCH        | WATCH        | LOW         
+MODERATE             | LOW          | WATCH        | HIGH         | WATCH       
+HIGH                 | WATCH        | HIGH         | CRITICAL     | WATCH       
+VERY_HIGH            | WATCH        | HIGH         | CRITICAL     | HIGH        
+--------------------------------------------------------------------------------
+
+4. DETERMINISTIC SOFTWARE DEMONSTRATION SCENARIOS (5 SCENARIOS)
+--------------------------------------------------------------------------------
+  [SCENARIO_1] LOW Susceptibility + Normal Rainfall       -> Result: LOW      Operational Fusion Score: 0.1380 (PASS)
+  [SCENARIO_2] HIGH Susceptibility + Rainfall WATCH       -> Result: HIGH     Operational Fusion Score: 0.6035 (PASS)
+  [SCENARIO_3] VERY_HIGH Susceptibility + Rainfall HIGH   -> Result: CRITICAL Operational Fusion Score: 0.8350 (PASS)
+  [SCENARIO_4] HIGH Susceptibility + STALE Rainfall       -> Result: WATCH    Operational Fusion Score: 0.5160 (PASS)
+  [SCENARIO_5] HIGH Susceptibility + No Reliable Station  -> Result: WATCH    Operational Fusion Score: 0.7200 (PASS)
+
+5. SOURCE DATA & MODEL INTEGRITY VERIFICATION
+--------------------------------------------------------------------------------
+  * model/static_lsm_pipeline.joblib                               :  1,357,549 bytes | SHA: 412fce6336883055
+  * model/static_lsm_metadata.json                                 :      2,648 bytes | SHA: fe53d7a69c6ea207
+  * data/processed/landslides/landslide_training_samples.csv       :    741,139 bytes | SHA: 8b0e9b86648c8b06
+  * data/processed/landslides/landslide_training_samples_gadm_corrected.csv :    744,111 bytes | SHA: 591d5eca157f6d1f
+  * data/processed/landslides/landslide_training_samples_terrain.csv :  1,221,837 bytes | SHA: 304658e1a9f0e375
+  * data/processed/landslides/landslide_training_samples_soil.csv  :  1,349,649 bytes | SHA: 6a34c167c52ac24b
+  * data/processed/landslides/landslide_training_samples_lulc.csv  :  1,418,114 bytes | SHA: 2e73c8615c3dffd4
+  * data/processed/landslides/landslide_training_samples_proximity.csv :  1,522,736 bytes | SHA: 46e36425ab899fd4
+  * data/processed/cwc_rainfall_features.csv                       : 72,117,394 bytes | SHA: a60f971f7b01e753
+  * data/processed/rainfall/rainfall_daily_integrated.csv          :  9,429,124 bytes | SHA: f058109ef6d8b6d4
+
+6. KNOWN SCIENTIFIC LIMITATIONS & SAFEGUARDS
+--------------------------------------------------------------------------------
+  1. Static susceptibility != current event hazard: High static score indicates failure predisposition, not active slope movement.
+  2. Decoupled 2014 rainfall: As established in Phase 8E.3.1 audit, CWC begins in 2019 and IMD in 2026; rainfall is strictly excluded from historical ML training.
+  3. Operational demo thresholds: The thresholds (1h: 20/40 mm, 24h: 50/100 mm, 3d: 100/200 mm, 7d: 150/300 mm) are engineering rules, requiring future empirical calibration against radar/rain-gauge event networks.
+  4. Operational fusion score: operational_fusion_score is an engineering ordering synthesis, not a calibrated statistical probability.
+  5. Spatial representative limits: A station 30 km away in an adjacent valley may experience significantly different rainfall than the target mountain slope.
+  6. Quality flags: PARTIAL, MISSING, or STALE observations must be explicitly handled by emergency operations.
+================================================================================

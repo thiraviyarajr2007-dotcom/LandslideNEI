@@ -1,0 +1,68 @@
+{
+  "rainfall": {
+    "operational_defaults": true,
+    "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+    "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+    "1h_mm": {
+      "watch": 20.0,
+      "high": 40.0
+    },
+    "24h_mm": {
+      "watch": 50.0,
+      "high": 100.0
+    },
+    "3d_mm": {
+      "watch": 100.0,
+      "high": 200.0
+    },
+    "7d_mm": {
+      "watch": 150.0,
+      "high": 300.0
+    },
+    "max_station_distance_km": 50.0,
+    "max_rainfall_age_hours": 6.0,
+    "min_coverage_ratio": 0.75
+  },
+  "risk_fusion": {
+    "description": "Deterministic rule matrix combining static susceptibility tier and dynamic rainfall trigger level.",
+    "disclaimer": "Operational risk level and score represent a deterministic engineering synthesis; not a calibrated statistical event probability.",
+    "levels": [
+      "LOW",
+      "WATCH",
+      "HIGH",
+      "CRITICAL"
+    ],
+    "matrix": {
+      "LOW": {
+        "NORMAL": "LOW",
+        "WATCH": "WATCH",
+        "HIGH": "WATCH",
+        "NO_DATA": "LOW"
+      },
+      "MODERATE": {
+        "NORMAL": "LOW",
+        "WATCH": "WATCH",
+        "HIGH": "HIGH",
+        "NO_DATA": "WATCH"
+      },
+      "HIGH": {
+        "NORMAL": "WATCH",
+        "WATCH": "HIGH",
+        "HIGH": "CRITICAL",
+        "NO_DATA": "WATCH"
+      },
+      "VERY_HIGH": {
+        "NORMAL": "WATCH",
+        "WATCH": "HIGH",
+        "HIGH": "CRITICAL",
+        "NO_DATA": "HIGH"
+      }
+    },
+    "scoring": {
+      "score_metric": "operational_fusion_score",
+      "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate. The categorical risk_level is the authoritative operational decision.",
+      "susceptibility_weight": 0.5,
+      "trigger_weight": 0.5
+    }
+  }
+}

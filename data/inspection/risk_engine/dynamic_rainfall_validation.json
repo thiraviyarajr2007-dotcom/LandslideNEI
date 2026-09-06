@@ -1,0 +1,709 @@
+{
+  "phase": "Phase 8H \u2014 Dynamic Rainfall & Risk Fusion Layer",
+  "status": "VALIDATION_PASSED",
+  "generated_timestamp_utc": "2026-09-06T06:38:18.667810+00:00",
+  "scientific_disclaimer": "The rainfall trigger thresholds used in this prototype are operational configuration values and are not calibrated against historical 2014 landslide event rainfall.",
+  "score_semantics": "The operational_fusion_score is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate. The categorical risk_level is the authoritative operational decision.",
+  "architecture_summary": {
+    "static_layer": "Copernicus DEM 30m + SoilGrids + WorldCover -> Model A Random Forest (Susceptibility [0, 1])",
+    "dynamic_layer": "CWC Telemetry Stations (within <=50km radius, freshness <=6h) + IMD Macro Integration",
+    "fusion_layer": "Deterministic Decision Matrix (Susceptibility Category x Trigger Level -> LOW/WATCH/HIGH/CRITICAL)"
+  },
+  "rainfall_source_hierarchy": [
+    "1. Primary Operational Source: CWC Station Telemetry (73 unique stations in NER).",
+    "2. Spatial Capping: Geodesic distance must be <=50.0 km for local slope attribution.",
+    "3. Rejection Policy: If nearest station >50.0 km, status is NO_RELIABLE_LOCAL_STATION; rainfall remains unobserved (None); no zeros invented.",
+    "4. IMD Macro Context: IMD Statewise and Districtwise tables are indexed and queryable as macro administrative context, but no unvalidated station-to-IMD coordinate mapping is assumed for point queries."
+  ],
+  "operational_threshold_configuration": {
+    "rainfall": {
+      "operational_defaults": true,
+      "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+      "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+      "1h_mm": {
+        "watch": 20.0,
+        "high": 40.0
+      },
+      "24h_mm": {
+        "watch": 50.0,
+        "high": 100.0
+      },
+      "3d_mm": {
+        "watch": 100.0,
+        "high": 200.0
+      },
+      "7d_mm": {
+        "watch": 150.0,
+        "high": 300.0
+      },
+      "max_station_distance_km": 50.0,
+      "max_rainfall_age_hours": 6.0,
+      "min_coverage_ratio": 0.75
+    },
+    "risk_fusion": {
+      "description": "Deterministic rule matrix combining static susceptibility tier and dynamic rainfall trigger level.",
+      "disclaimer": "Operational risk level and score represent a deterministic engineering synthesis; not a calibrated statistical event probability.",
+      "levels": [
+        "LOW",
+        "WATCH",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "matrix": {
+        "LOW": {
+          "NORMAL": "LOW",
+          "WATCH": "WATCH",
+          "HIGH": "WATCH",
+          "NO_DATA": "LOW"
+        },
+        "MODERATE": {
+          "NORMAL": "LOW",
+          "WATCH": "WATCH",
+          "HIGH": "HIGH",
+          "NO_DATA": "WATCH"
+        },
+        "HIGH": {
+          "NORMAL": "WATCH",
+          "WATCH": "HIGH",
+          "HIGH": "CRITICAL",
+          "NO_DATA": "WATCH"
+        },
+        "VERY_HIGH": {
+          "NORMAL": "WATCH",
+          "WATCH": "HIGH",
+          "HIGH": "CRITICAL",
+          "NO_DATA": "HIGH"
+        }
+      },
+      "scoring": {
+        "score_metric": "operational_fusion_score",
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate. The categorical risk_level is the authoritative operational decision.",
+        "susceptibility_weight": 0.5,
+        "trigger_weight": 0.5
+      }
+    }
+  },
+  "demonstration_scenarios": [
+    {
+      "scenario_id": "SCENARIO_1",
+      "name": "LOW Susceptibility + Normal Rainfall",
+      "static_input": {
+        "susceptibility": {
+          "score": 0.12,
+          "category": "LOW",
+          "category_label": "Low Susceptibility"
+        }
+      },
+      "rainfall_input": {
+        "status": "OK",
+        "quality": "GOOD",
+        "station": "Station_A",
+        "distance_km": 8.5,
+        "rainfall_1h": 4.0,
+        "rainfall_24h": 18.0,
+        "rainfall_3d": 35.0,
+        "rainfall_7d": 60.0,
+        "freshness": {
+          "age_hours": 1.2,
+          "freshness_status": "FRESH"
+        }
+      },
+      "trigger_output": {
+        "trigger_level": "NORMAL",
+        "trigger_score": 0.156,
+        "trigger_reasons": [],
+        "observed_windows": {
+          "rainfall_1h": 4.0,
+          "rainfall_24h": 18.0,
+          "rainfall_3d": 35.0,
+          "rainfall_7d": 60.0
+        },
+        "thresholds": {
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          }
+        },
+        "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+        "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+        "data_quality": {
+          "status": "GOOD",
+          "station": "Station_A",
+          "distance_km": 8.5,
+          "is_stale": false,
+          "age_hours": 1.2
+        }
+      },
+      "fusion_output": {
+        "risk_level": "LOW",
+        "risk_label": "Low Operational Risk",
+        "operational_fusion_score": 0.138,
+        "risk_score": 0.138,
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+        "scoring_mode": "DUAL_LAYER_WEIGHTED_SYNTHESIS",
+        "susceptibility_score": 0.12,
+        "susceptibility_category": "LOW",
+        "rainfall_trigger_level": "NORMAL",
+        "rainfall_trigger_score": 0.156,
+        "reasons": [
+          {
+            "code": "STATIC_LOW_SUSCEPTIBILITY",
+            "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate LOW static susceptibility (score: 0.1200)."
+          },
+          {
+            "code": "RAINFALL_NORMAL_TRIGGER",
+            "description": "Current meteorological telemetry indicates NORMAL operational rainfall trigger level."
+          }
+        ],
+        "operational_action": "Routine monitoring; baseline susceptibility is low and no severe rainfall trigger observed.",
+        "matrix_lookup": {
+          "susceptibility_tier": "LOW",
+          "rainfall_trigger_tier": "NORMAL",
+          "resulting_risk_tier": "LOW"
+        },
+        "scientific_limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ]
+      },
+      "expected_risk": "LOW",
+      "passed": true
+    },
+    {
+      "scenario_id": "SCENARIO_2",
+      "name": "HIGH Susceptibility + Rainfall WATCH",
+      "static_input": {
+        "susceptibility": {
+          "score": 0.72,
+          "category": "HIGH",
+          "category_label": "High Susceptibility"
+        }
+      },
+      "rainfall_input": {
+        "status": "OK",
+        "quality": "GOOD",
+        "station": "Station_B",
+        "distance_km": 14.2,
+        "rainfall_1h": 10.0,
+        "rainfall_24h": 65.0,
+        "rainfall_3d": 80.0,
+        "rainfall_7d": 110.0,
+        "freshness": {
+          "age_hours": 2.0,
+          "freshness_status": "FRESH"
+        }
+      },
+      "trigger_output": {
+        "trigger_level": "WATCH",
+        "trigger_score": 0.487,
+        "trigger_reasons": [
+          {
+            "code": "RAINFALL_24H_WATCH_THRESHOLD",
+            "description": "24H rainfall accumulation (65.0 mm) exceeded Watch trigger threshold (50.0 mm)."
+          }
+        ],
+        "observed_windows": {
+          "rainfall_1h": 10.0,
+          "rainfall_24h": 65.0,
+          "rainfall_3d": 80.0,
+          "rainfall_7d": 110.0
+        },
+        "thresholds": {
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          }
+        },
+        "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+        "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+        "data_quality": {
+          "status": "GOOD",
+          "station": "Station_B",
+          "distance_km": 14.2,
+          "is_stale": false,
+          "age_hours": 2.0
+        }
+      },
+      "fusion_output": {
+        "risk_level": "HIGH",
+        "risk_label": "High Operational Risk",
+        "operational_fusion_score": 0.6035,
+        "risk_score": 0.6035,
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+        "scoring_mode": "DUAL_LAYER_WEIGHTED_SYNTHESIS",
+        "susceptibility_score": 0.72,
+        "susceptibility_category": "HIGH",
+        "rainfall_trigger_level": "WATCH",
+        "rainfall_trigger_score": 0.487,
+        "reasons": [
+          {
+            "code": "STATIC_HIGH_SUSCEPTIBILITY",
+            "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate HIGH static susceptibility (score: 0.7200)."
+          },
+          {
+            "code": "RAINFALL_WATCH_TRIGGER",
+            "description": "Current meteorological telemetry indicates WATCH operational rainfall trigger level."
+          },
+          {
+            "code": "RAINFALL_24H_WATCH_THRESHOLD",
+            "description": "24H rainfall accumulation (65.0 mm) exceeded Watch trigger threshold (50.0 mm)."
+          }
+        ],
+        "operational_action": "Operational alert; significant slope failure predisposition combined with active rainfall.",
+        "matrix_lookup": {
+          "susceptibility_tier": "HIGH",
+          "rainfall_trigger_tier": "WATCH",
+          "resulting_risk_tier": "HIGH"
+        },
+        "scientific_limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ]
+      },
+      "expected_risk": "HIGH",
+      "passed": true
+    },
+    {
+      "scenario_id": "SCENARIO_3",
+      "name": "VERY_HIGH Susceptibility + Rainfall HIGH",
+      "static_input": {
+        "susceptibility": {
+          "score": 0.91,
+          "category": "VERY_HIGH",
+          "category_label": "Very High Susceptibility"
+        }
+      },
+      "rainfall_input": {
+        "status": "OK",
+        "quality": "GOOD",
+        "station": "Station_C",
+        "distance_km": 6.8,
+        "rainfall_1h": 35.0,
+        "rainfall_24h": 140.0,
+        "rainfall_3d": 260.0,
+        "rainfall_7d": 420.0,
+        "freshness": {
+          "age_hours": 0.5,
+          "freshness_status": "FRESH"
+        }
+      },
+      "trigger_output": {
+        "trigger_level": "HIGH",
+        "trigger_score": 0.76,
+        "trigger_reasons": [
+          {
+            "code": "RAINFALL_1H_WATCH_THRESHOLD",
+            "description": "1H rainfall accumulation (35.0 mm) exceeded Watch trigger threshold (20.0 mm)."
+          },
+          {
+            "code": "RAINFALL_24H_HIGH_THRESHOLD",
+            "description": "24H rainfall accumulation (140.0 mm) exceeded High trigger threshold (100.0 mm)."
+          },
+          {
+            "code": "RAINFALL_3D_HIGH_THRESHOLD",
+            "description": "3D rainfall accumulation (260.0 mm) exceeded High trigger threshold (200.0 mm)."
+          },
+          {
+            "code": "RAINFALL_7D_HIGH_THRESHOLD",
+            "description": "7D rainfall accumulation (420.0 mm) exceeded High trigger threshold (300.0 mm)."
+          }
+        ],
+        "observed_windows": {
+          "rainfall_1h": 35.0,
+          "rainfall_24h": 140.0,
+          "rainfall_3d": 260.0,
+          "rainfall_7d": 420.0
+        },
+        "thresholds": {
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          }
+        },
+        "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+        "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+        "data_quality": {
+          "status": "GOOD",
+          "station": "Station_C",
+          "distance_km": 6.8,
+          "is_stale": false,
+          "age_hours": 0.5
+        }
+      },
+      "fusion_output": {
+        "risk_level": "CRITICAL",
+        "risk_label": "Critical Operational Risk",
+        "operational_fusion_score": 0.835,
+        "risk_score": 0.835,
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+        "scoring_mode": "DUAL_LAYER_WEIGHTED_SYNTHESIS",
+        "susceptibility_score": 0.91,
+        "susceptibility_category": "VERY_HIGH",
+        "rainfall_trigger_level": "HIGH",
+        "rainfall_trigger_score": 0.76,
+        "reasons": [
+          {
+            "code": "STATIC_VERY_HIGH_SUSCEPTIBILITY",
+            "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate VERY_HIGH static susceptibility (score: 0.9100)."
+          },
+          {
+            "code": "RAINFALL_HIGH_TRIGGER",
+            "description": "Current meteorological telemetry indicates HIGH operational rainfall trigger level."
+          },
+          {
+            "code": "RAINFALL_1H_WATCH_THRESHOLD",
+            "description": "1H rainfall accumulation (35.0 mm) exceeded Watch trigger threshold (20.0 mm)."
+          },
+          {
+            "code": "RAINFALL_24H_HIGH_THRESHOLD",
+            "description": "24H rainfall accumulation (140.0 mm) exceeded High trigger threshold (100.0 mm)."
+          },
+          {
+            "code": "RAINFALL_3D_HIGH_THRESHOLD",
+            "description": "3D rainfall accumulation (260.0 mm) exceeded High trigger threshold (200.0 mm)."
+          },
+          {
+            "code": "RAINFALL_7D_HIGH_THRESHOLD",
+            "description": "7D rainfall accumulation (420.0 mm) exceeded High trigger threshold (300.0 mm)."
+          }
+        ],
+        "operational_action": "Emergency alert; very high susceptibility terrain coupled with intense rainfall trigger.",
+        "matrix_lookup": {
+          "susceptibility_tier": "VERY_HIGH",
+          "rainfall_trigger_tier": "HIGH",
+          "resulting_risk_tier": "CRITICAL"
+        },
+        "scientific_limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ]
+      },
+      "expected_risk": "CRITICAL",
+      "passed": true
+    },
+    {
+      "scenario_id": "SCENARIO_4",
+      "name": "HIGH Susceptibility + STALE Rainfall",
+      "static_input": {
+        "susceptibility": {
+          "score": 0.72,
+          "category": "HIGH",
+          "category_label": "High Susceptibility"
+        }
+      },
+      "rainfall_input": {
+        "status": "STALE",
+        "quality": "STALE",
+        "station": "Station_D",
+        "distance_km": 12.0,
+        "rainfall_1h": 8.0,
+        "rainfall_24h": 40.0,
+        "rainfall_3d": 60.0,
+        "rainfall_7d": 80.0,
+        "freshness": {
+          "age_hours": 14.5,
+          "freshness_status": "STALE",
+          "max_acceptable_age_hours": 6.0
+        }
+      },
+      "trigger_output": {
+        "trigger_level": "NORMAL",
+        "trigger_score": 0.312,
+        "trigger_reasons": [
+          {
+            "code": "RAINFALL_DATA_STALE",
+            "description": "Rainfall observation is older than maximum freshness limit (6.0h). Hazard assessment may not reflect real-time conditions."
+          }
+        ],
+        "observed_windows": {
+          "rainfall_1h": 8.0,
+          "rainfall_24h": 40.0,
+          "rainfall_3d": 60.0,
+          "rainfall_7d": 80.0
+        },
+        "thresholds": {
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          }
+        },
+        "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+        "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+        "data_quality": {
+          "status": "STALE",
+          "station": "Station_D",
+          "distance_km": 12.0,
+          "is_stale": true,
+          "age_hours": 14.5
+        }
+      },
+      "fusion_output": {
+        "risk_level": "WATCH",
+        "risk_label": "Watch Operational Risk",
+        "operational_fusion_score": 0.516,
+        "risk_score": 0.516,
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+        "scoring_mode": "DUAL_LAYER_WEIGHTED_SYNTHESIS",
+        "susceptibility_score": 0.72,
+        "susceptibility_category": "HIGH",
+        "rainfall_trigger_level": "NORMAL",
+        "rainfall_trigger_score": 0.312,
+        "reasons": [
+          {
+            "code": "STATIC_HIGH_SUSCEPTIBILITY",
+            "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate HIGH static susceptibility (score: 0.7200)."
+          },
+          {
+            "code": "RAINFALL_NORMAL_TRIGGER",
+            "description": "Current meteorological telemetry indicates NORMAL operational rainfall trigger level."
+          },
+          {
+            "code": "RAINFALL_DATA_STALE",
+            "description": "Rainfall observation is older than maximum freshness limit (6.0h). Hazard assessment may not reflect real-time conditions."
+          }
+        ],
+        "operational_action": "Advisory vigilance; elevated static terrain predisposition or moderate rainfall trigger.",
+        "matrix_lookup": {
+          "susceptibility_tier": "HIGH",
+          "rainfall_trigger_tier": "NORMAL",
+          "resulting_risk_tier": "WATCH"
+        },
+        "scientific_limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ]
+      },
+      "expected_risk": "WATCH",
+      "passed": true
+    },
+    {
+      "scenario_id": "SCENARIO_5",
+      "name": "HIGH Susceptibility + No Reliable Station",
+      "static_input": {
+        "susceptibility": {
+          "score": 0.72,
+          "category": "HIGH",
+          "category_label": "High Susceptibility"
+        }
+      },
+      "rainfall_input": {
+        "status": "NO_RELIABLE_LOCAL_STATION",
+        "quality": "NO_RELIABLE_STATION",
+        "station": "DistantStation",
+        "distance_km": 78.4,
+        "rainfall_1h": null,
+        "rainfall_24h": null,
+        "rainfall_3d": null,
+        "rainfall_7d": null,
+        "quality_notes": "Nearest station is 78.4 km away."
+      },
+      "trigger_output": {
+        "trigger_level": "NO_DATA",
+        "trigger_score": null,
+        "trigger_score_normalized": null,
+        "trigger_reasons": [
+          {
+            "code": "RAINFALL_NO_RELIABLE_STATION",
+            "description": "Nearest station is 78.4 km away."
+          }
+        ],
+        "observed_windows": {
+          "rainfall_1h": null,
+          "rainfall_24h": null,
+          "rainfall_3d": null,
+          "rainfall_7d": null
+        },
+        "thresholds": {
+          "1h_mm": {
+            "watch": 20.0,
+            "high": 40.0
+          },
+          "24h_mm": {
+            "watch": 50.0,
+            "high": 100.0
+          },
+          "3d_mm": {
+            "watch": 100.0,
+            "high": 200.0
+          },
+          "7d_mm": {
+            "watch": 150.0,
+            "high": 300.0
+          }
+        },
+        "threshold_type": "DEMO_OPERATIONAL_DEFAULT",
+        "disclaimer": "Operational demonstration thresholds \u2014 not calibrated against historical landslide event rainfall.",
+        "data_quality": {
+          "status": "NO_RELIABLE_STATION",
+          "station": "DistantStation",
+          "distance_km": 78.4,
+          "is_stale": false
+        }
+      },
+      "fusion_output": {
+        "risk_level": "WATCH",
+        "risk_label": "Watch Operational Risk",
+        "operational_fusion_score": 0.72,
+        "risk_score": 0.72,
+        "score_semantics": "This is an engineering synthesis score used for ordering/visualization. It is not a probability, calibrated hazard score, or empirically validated landslide risk estimate.",
+        "scoring_mode": "STATIC_BASELINE_ONLY_RAINFALL_UNOBSERVED",
+        "susceptibility_score": 0.72,
+        "susceptibility_category": "HIGH",
+        "rainfall_trigger_level": "NO_DATA",
+        "rainfall_trigger_score": null,
+        "reasons": [
+          {
+            "code": "STATIC_HIGH_SUSCEPTIBILITY",
+            "description": "Physical terrain factors (elevation, slope, aspect, relief, soil, LULC) indicate HIGH static susceptibility (score: 0.7200)."
+          },
+          {
+            "code": "STATIC_HIGH_SUSCEPTIBILITY_RAINFALL_UNOBSERVED",
+            "description": "HIGH static susceptibility maintains elevated baseline vigilance despite unobserved local rainfall."
+          },
+          {
+            "code": "RAINFALL_NO_RELIABLE_STATION",
+            "description": "Nearest station is 78.4 km away."
+          }
+        ],
+        "operational_action": "Advisory vigilance; elevated static terrain predisposition or moderate rainfall trigger.",
+        "matrix_lookup": {
+          "susceptibility_tier": "HIGH",
+          "rainfall_trigger_tier": "NO_DATA",
+          "resulting_risk_tier": "WATCH"
+        },
+        "scientific_limitations": [
+          "1. Static susceptibility is not an event-time warning: A high static score indicates terrain predisposition to failure based on historical baseline features, not that a landslide is occurring.",
+          "2. Rainfall thresholds are operational/demo defaults: The rainfall thresholds (1h, 24h, 3d, 7d) are engineering demonstration defaults and are NOT calibrated against historical 2014 landslide events.",
+          "3. Rainfall data represents telemetry station location: Sensor observations may differ from rainfall at the exact query coordinates due to montane micro-climates.",
+          "4. Telemetry data may be incomplete or stale: Observations with <75% window coverage or age >6h introduce operational uncertainty into the dynamic trigger.",
+          "5. Operational fusion score is not a calibrated event probability: The operational_fusion_score is an engineering synthesis score used for ordering and visualization, and must not be interpreted as a percentage likelihood or calibrated probability of slope failure. The categorical risk_level is the authoritative operational decision."
+        ]
+      },
+      "expected_risk": "WATCH",
+      "passed": true
+    }
+  ],
+  "source_data_integrity": {
+    "status": "PASS",
+    "files_audited": {
+      "model/static_lsm_pipeline.joblib": {
+        "exists": true,
+        "size_bytes": 1357549,
+        "sha256_16": "412fce6336883055"
+      },
+      "model/static_lsm_metadata.json": {
+        "exists": true,
+        "size_bytes": 2648,
+        "sha256_16": "fe53d7a69c6ea207"
+      },
+      "data/processed/landslides/landslide_training_samples.csv": {
+        "exists": true,
+        "size_bytes": 741139,
+        "sha256_16": "8b0e9b86648c8b06"
+      },
+      "data/processed/landslides/landslide_training_samples_gadm_corrected.csv": {
+        "exists": true,
+        "size_bytes": 744111,
+        "sha256_16": "591d5eca157f6d1f"
+      },
+      "data/processed/landslides/landslide_training_samples_terrain.csv": {
+        "exists": true,
+        "size_bytes": 1221837,
+        "sha256_16": "304658e1a9f0e375"
+      },
+      "data/processed/landslides/landslide_training_samples_soil.csv": {
+        "exists": true,
+        "size_bytes": 1349649,
+        "sha256_16": "6a34c167c52ac24b"
+      },
+      "data/processed/landslides/landslide_training_samples_lulc.csv": {
+        "exists": true,
+        "size_bytes": 1418114,
+        "sha256_16": "2e73c8615c3dffd4"
+      },
+      "data/processed/landslides/landslide_training_samples_proximity.csv": {
+        "exists": true,
+        "size_bytes": 1522736,
+        "sha256_16": "46e36425ab899fd4"
+      },
+      "data/processed/cwc_rainfall_features.csv": {
+        "exists": true,
+        "size_bytes": 72117394,
+        "sha256_16": "a60f971f7b01e753"
+      },
+      "data/processed/rainfall/rainfall_daily_integrated.csv": {
+        "exists": true,
+        "size_bytes": 9429124,
+        "sha256_16": "f058109ef6d8b6d4"
+      }
+    }
+  },
+  "known_limitations": [
+    "1. Static susceptibility != current event hazard: High static score indicates failure predisposition, not active slope movement.",
+    "2. Decoupled 2014 rainfall: As established in Phase 8E.3.1 audit, CWC begins in 2019 and IMD in 2026; rainfall is strictly excluded from historical ML training.",
+    "3. Operational demo thresholds: The thresholds (1h: 20/40 mm, 24h: 50/100 mm, 3d: 100/200 mm, 7d: 150/300 mm) are engineering rules, requiring future empirical calibration against radar/rain-gauge event networks.",
+    "4. Operational fusion score: operational_fusion_score is an engineering ordering synthesis, not a calibrated statistical probability.",
+    "5. Spatial representative limits: A station 30 km away in an adjacent valley may experience significantly different rainfall than the target mountain slope.",
+    "6. Quality flags: PARTIAL, MISSING, or STALE observations must be explicitly handled by emergency operations."
+  ]
+}
