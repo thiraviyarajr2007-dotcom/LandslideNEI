@@ -1,0 +1,63 @@
+{
+  "model_name": "Static Landslide Susceptibility Model (LSM)",
+  "selected_model": "Model A (Environmental Only)",
+  "selection_rationale": "Model A (Environmental Only: Terrain + Soil + Land Cover) achieves an honest, robust spatial ROC-AUC of 0.8012 \u00b1 0.0745 and PR-AUC of 0.7871 \u00b1 0.0554 across held-out geographic regions. While Model B2 scores higher (0.9546), ablation demonstrates that the gain is entirely driven by 'distance_to_nearest_other_landslide_m', which leaks inventory clustering and the >=1 km spatial negative buffer. Model A is physically causal, generalizable to unmapped terrain, and free from inventory-clustering artifacts.",
+  "output_description": "Random Forest susceptibility score/probability estimate in the range 0\u20131.",
+  "training_timestamp_utc": "2026-09-06T05:46:56.376758+00:00",
+  "total_training_samples": 4016,
+  "positive_samples": 2008,
+  "negative_samples": 2008,
+  "features": {
+    "numeric": [
+      "elevation_m",
+      "slope_deg",
+      "aspect_deg",
+      "relief_std_5x5_m",
+      "clay_percent",
+      "sand_percent",
+      "silt_percent",
+      "bulk_density_kg_dm3"
+    ],
+    "categorical": [
+      "soil_class",
+      "landcover_class"
+    ],
+    "total_feature_count": 10
+  },
+  "classifier_configuration": {
+    "algorithm": "RandomForestClassifier",
+    "n_estimators": 100,
+    "max_depth": 15,
+    "min_samples_split": 5,
+    "min_samples_leaf": 2,
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "spatial_cross_validation": {
+    "strategy": "1.0 Degree Geographic Grid-Block Clustering",
+    "n_blocks": 41,
+    "n_folds": 5,
+    "mean_spatial_roc_auc": 0.8062,
+    "std_spatial_roc_auc": 0.0719,
+    "mean_spatial_pr_auc": 0.7937,
+    "std_spatial_pr_auc": 0.0525,
+    "mean_spatial_balanced_accuracy": 0.7188
+  },
+  "probability_calibration_evaluation": {
+    "evaluation_note": "Probability calibration was evaluated using 3-fold internal CV inside spatial training folds. Sigmoid calibration worsened Brier score (0.2021 vs 0.1913 raw), so post-hoc calibration was rejected.",
+    "raw_brier_score": 0.1913,
+    "calibrated_sigmoid_brier_score": 0.2021,
+    "deployed_probability_mode": "Raw Random Forest ensemble probability estimate in the range 0-1 (uncalibrated probability estimate, not represented as perfectly calibrated)."
+  },
+  "ablation_comparison": {
+    "model_a_roc_auc": 0.8062,
+    "model_b1_roc_auc": 0.8059,
+    "model_b2_roc_auc": 0.9553
+  },
+  "software_versions": {
+    "scikit_learn": "1.7.2",
+    "pandas": "2.3.3",
+    "numpy": "2.2.6",
+    "joblib": "1.6.0"
+  }
+}

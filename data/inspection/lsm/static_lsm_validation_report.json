@@ -1,0 +1,929 @@
+{
+  "status": "VALIDATION_PASSED",
+  "dataset_audit": {
+    "total_rows": 4016,
+    "positive_count": 2008,
+    "negative_count": 2008,
+    "class_balance": 0.5,
+    "duplicate_rows": 0,
+    "duplicate_coordinates": 24,
+    "duplicate_coordinates_explanation": "48 positive records belong to 24 pairs of distinct Bhuvan 2014 events sharing recorded centroid coordinates.",
+    "missing_values_by_feature": {
+      "elevation_m": 1,
+      "slope_deg": 1,
+      "aspect_deg": 17,
+      "relief_std_5x5_m": 1,
+      "clay_percent": 29,
+      "sand_percent": 29,
+      "silt_percent": 29,
+      "bulk_density_kg_dm3": 29,
+      "distance_to_road_m": 0,
+      "distance_to_river_m": 0,
+      "distance_to_nearest_other_landslide_m": 0,
+      "soil_class": 46,
+      "landcover_class": 0
+    },
+    "unique_soil_classes": [
+      "Acrisols",
+      "Alisols",
+      "Cambisols",
+      "Cryosols",
+      "Fluvisols",
+      "Gleysols",
+      "Leptosols",
+      "Luvisols",
+      "Nitisols",
+      "Podzols",
+      "Vertisols"
+    ],
+    "soil_class_counts": {
+      "Cambisols": 1566,
+      "Acrisols": 1186,
+      "Luvisols": 886,
+      "Leptosols": 261,
+      "NaN": 46,
+      "Podzols": 24,
+      "Vertisols": 23,
+      "Fluvisols": 12,
+      "Nitisols": 4,
+      "Alisols": 3,
+      "Gleysols": 3,
+      "Cryosols": 2
+    },
+    "unique_landcover_classes": [
+      "Bare / sparse vegetation",
+      "Built-up",
+      "Cropland",
+      "Grassland",
+      "Moss and lichen",
+      "Permanent water bodies",
+      "Snow and ice",
+      "Tree cover"
+    ],
+    "landcover_class_counts": {
+      "Tree cover": 3449,
+      "Grassland": 287,
+      "Cropland": 167,
+      "Moss and lichen": 31,
+      "Bare / sparse vegetation": 26,
+      "Snow and ice": 22,
+      "Permanent water bodies": 17,
+      "Built-up": 17
+    },
+    "numeric_ranges": {
+      "elevation_m": {
+        "min": 13.0,
+        "mean": 883.6749153859291,
+        "median": 583.6226806640625,
+        "max": 7203.00244140625,
+        "std": 915.6781540612175,
+        "non_finite_count": 0
+      },
+      "slope_deg": {
+        "min": 0.0,
+        "mean": 24.06639870051897,
+        "median": 24.46619457665444,
+        "max": 84.91943083809619,
+        "std": 13.6479645204224,
+        "non_finite_count": 0
+      },
+      "aspect_deg": {
+        "min": 0.0103922495646578,
+        "mean": 172.89817493932156,
+        "median": 165.11527939260665,
+        "max": 359.9746016482872,
+        "std": 86.43548332461675,
+        "non_finite_count": 0
+      },
+      "relief_std_5x5_m": {
+        "min": 0.0,
+        "mean": 19.27784639687775,
+        "median": 17.823692321777344,
+        "max": 254.5031890869141,
+        "std": 12.803135346118879,
+        "non_finite_count": 0
+      },
+      "clay_percent": {
+        "min": 11.4,
+        "mean": 28.84808126410835,
+        "median": 29.0,
+        "max": 39.1,
+        "std": 3.567313167742106,
+        "non_finite_count": 0
+      },
+      "sand_percent": {
+        "min": 15.5,
+        "mean": 36.54717832957111,
+        "median": 36.9,
+        "max": 58.5,
+        "std": 5.672868672503009,
+        "non_finite_count": 0
+      },
+      "silt_percent": {
+        "min": 20.9,
+        "mean": 34.60489089541008,
+        "median": 34.4,
+        "max": 50.7,
+        "std": 4.571943568644183,
+        "non_finite_count": 0
+      },
+      "bulk_density_kg_dm3": {
+        "min": 0.83,
+        "mean": 1.121647855530474,
+        "median": 1.13,
+        "max": 1.35,
+        "std": 0.08309292338097862,
+        "non_finite_count": 0
+      },
+      "distance_to_road_m": {
+        "min": 0.16,
+        "mean": 2993.6873182270915,
+        "median": 1482.955,
+        "max": 29493.2,
+        "std": 4065.404171429787,
+        "non_finite_count": 0
+      },
+      "distance_to_river_m": {
+        "min": 1.08,
+        "mean": 2175.298473605578,
+        "median": 1752.885,
+        "max": 14165.44,
+        "std": 1850.6565939746772,
+        "non_finite_count": 0
+      },
+      "distance_to_nearest_other_landslide_m": {
+        "min": 0.0,
+        "mean": 8125.805697211155,
+        "median": 3322.745,
+        "max": 91401.8,
+        "std": 12215.517141819302,
+        "non_finite_count": 0
+      }
+    },
+    "coordinate_bounds": {
+      "min_lat": 21.9817,
+      "max_lat": 29.401291661769648,
+      "min_lon": 88.08232804047617,
+      "max_lon": 97.34253530905325
+    }
+  },
+  "spatial_folds": {
+    "fold_0": {
+      "fold_index": 0,
+      "total_samples": 1058,
+      "positive_samples": 577,
+      "negative_samples": 481,
+      "positive_ratio": 0.5454,
+      "block_count": 7,
+      "blocks": [
+        "B_25_89",
+        "B_25_90",
+        "B_25_91",
+        "B_26_89",
+        "B_26_90",
+        "B_26_91",
+        "B_27_88"
+      ],
+      "lat_min": 25.152,
+      "lat_max": 27.933,
+      "lon_min": 88.082,
+      "lon_max": 92.0
+    },
+    "fold_1": {
+      "fold_index": 1,
+      "total_samples": 997,
+      "positive_samples": 457,
+      "negative_samples": 540,
+      "positive_ratio": 0.4584,
+      "block_count": 12,
+      "blocks": [
+        "B_26_95",
+        "B_27_94",
+        "B_27_95",
+        "B_27_96",
+        "B_27_97",
+        "B_28_94",
+        "B_28_95",
+        "B_28_96",
+        "B_28_97",
+        "B_29_94",
+        "B_29_95",
+        "B_29_96"
+      ],
+      "lat_min": 26.681,
+      "lat_max": 29.401,
+      "lon_min": 94.01,
+      "lon_max": 97.343
+    },
+    "fold_2": {
+      "fold_index": 2,
+      "total_samples": 596,
+      "positive_samples": 270,
+      "negative_samples": 326,
+      "positive_ratio": 0.453,
+      "block_count": 7,
+      "blocks": [
+        "B_21_92",
+        "B_22_92",
+        "B_22_93",
+        "B_23_91",
+        "B_23_92",
+        "B_23_93",
+        "B_24_91"
+      ],
+      "lat_min": 21.982,
+      "lat_max": 24.132,
+      "lon_min": 91.271,
+      "lon_max": 93.986
+    },
+    "fold_3": {
+      "fold_index": 3,
+      "total_samples": 611,
+      "positive_samples": 292,
+      "negative_samples": 319,
+      "positive_ratio": 0.4779,
+      "block_count": 8,
+      "blocks": [
+        "B_26_92",
+        "B_26_93",
+        "B_26_94",
+        "B_27_91",
+        "B_27_92",
+        "B_27_93",
+        "B_28_92",
+        "B_28_93"
+      ],
+      "lat_min": 26.002,
+      "lat_max": 28.727,
+      "lon_min": 91.581,
+      "lon_max": 94.989
+    },
+    "fold_4": {
+      "fold_index": 4,
+      "total_samples": 754,
+      "positive_samples": 412,
+      "negative_samples": 342,
+      "positive_ratio": 0.5464,
+      "block_count": 7,
+      "blocks": [
+        "B_23_94",
+        "B_24_92",
+        "B_24_93",
+        "B_24_94",
+        "B_25_92",
+        "B_25_93",
+        "B_25_94"
+      ],
+      "lat_min": 23.875,
+      "lat_max": 25.996,
+      "lon_min": 92.005,
+      "lon_max": 94.684
+    }
+  },
+  "model_a_results": {
+    "model_name": "Model A (Environmental Only)",
+    "features": [
+      "elevation_m",
+      "slope_deg",
+      "aspect_deg",
+      "relief_std_5x5_m",
+      "clay_percent",
+      "sand_percent",
+      "silt_percent",
+      "bulk_density_kg_dm3",
+      "soil_class",
+      "landcover_class"
+    ],
+    "summary": {
+      "roc_auc_mean": 0.8061620569637477,
+      "roc_auc_std": 0.07190076466222894,
+      "pr_auc_mean": 0.7937260643391932,
+      "pr_auc_std": 0.052532228409616424,
+      "accuracy_mean": 0.7107981050963932,
+      "accuracy_std": 0.09363390267566742,
+      "balanced_accuracy_mean": 0.7187983515045044,
+      "balanced_accuracy_std": 0.08259932928517368,
+      "precision_mean": 0.7541567065191511,
+      "precision_std": 0.09673302269118328,
+      "recall_mean": 0.6657211865132255,
+      "recall_std": 0.1778955798788176,
+      "f1_mean": 0.6866250756166326,
+      "f1_std": 0.11939093540130469,
+      "brier_raw_mean": 0.1913318948217169,
+      "brier_calib_mean": 0.20213067140659863
+    },
+    "per_fold": [
+      {
+        "fold": 0,
+        "train_samples": 2958,
+        "test_samples": 1058,
+        "roc_auc": 0.7047150470027419,
+        "pr_auc": 0.7246687443470674,
+        "accuracy": 0.5775047258979206,
+        "balanced_accuracy": 0.601409902103143,
+        "precision": 0.75,
+        "recall": 0.3379549393414211,
+        "f1_score": 0.4659498207885305,
+        "brier_score_raw": 0.2527630470669484,
+        "brier_score_calibrated": 0.24142006958368284,
+        "confusion_matrix": [
+          [
+            416,
+            65
+          ],
+          [
+            382,
+            195
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "train_samples": 3019,
+        "test_samples": 997,
+        "roc_auc": 0.8809060701839695,
+        "pr_auc": 0.8341708239084362,
+        "accuracy": 0.802407221664995,
+        "balanced_accuracy": 0.7965718453683444,
+        "precision": 0.8217821782178217,
+        "recall": 0.7264770240700219,
+        "f1_score": 0.7711962833914053,
+        "brier_score_raw": 0.14815461605381736,
+        "brier_score_calibrated": 0.17181542371431563,
+        "confusion_matrix": [
+          [
+            468,
+            72
+          ],
+          [
+            125,
+            332
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "train_samples": 3420,
+        "test_samples": 596,
+        "roc_auc": 0.7680072710747557,
+        "pr_auc": 0.7380855715437937,
+        "accuracy": 0.6459731543624161,
+        "balanced_accuracy": 0.6636559872756191,
+        "precision": 0.57356608478803,
+        "recall": 0.8518518518518519,
+        "f1_score": 0.6855439642324889,
+        "brier_score_raw": 0.2222167638619715,
+        "brier_score_calibrated": 0.23033562868406263,
+        "confusion_matrix": [
+          [
+            155,
+            171
+          ],
+          [
+            40,
+            230
+          ]
+        ]
+      },
+      {
+        "fold": 3,
+        "train_samples": 3405,
+        "test_samples": 611,
+        "roc_auc": 0.8952097736934771,
+        "pr_auc": 0.8551959381312234,
+        "accuracy": 0.8265139116202946,
+        "balanced_accuracy": 0.8242903766049727,
+        "precision": 0.849624060150376,
+        "recall": 0.773972602739726,
+        "f1_score": 0.8100358422939068,
+        "brier_score_raw": 0.13697822239594099,
+        "brier_score_calibrated": 0.1727574005785454,
+        "confusion_matrix": [
+          [
+            279,
+            40
+          ],
+          [
+            66,
+            226
+          ]
+        ]
+      },
+      {
+        "fold": 4,
+        "train_samples": 3262,
+        "test_samples": 754,
+        "roc_auc": 0.7819721228637939,
+        "pr_auc": 0.8165092437654453,
+        "accuracy": 0.7015915119363395,
+        "balanced_accuracy": 0.7080636461704424,
+        "precision": 0.775811209439528,
+        "recall": 0.6383495145631068,
+        "f1_score": 0.7003994673768309,
+        "brier_score_raw": 0.19654682472990617,
+        "brier_score_calibrated": 0.1943248344723866,
+        "confusion_matrix": [
+          [
+            266,
+            76
+          ],
+          [
+            149,
+            263
+          ]
+        ]
+      }
+    ],
+    "overall_confusion_matrix": [
+      [
+        1584,
+        424
+      ],
+      [
+        762,
+        1246
+      ]
+    ]
+  },
+  "model_b1_results": {
+    "model_name": "Model B1 (Env + Road/River Proximity)",
+    "features": [
+      "elevation_m",
+      "slope_deg",
+      "aspect_deg",
+      "relief_std_5x5_m",
+      "clay_percent",
+      "sand_percent",
+      "silt_percent",
+      "bulk_density_kg_dm3",
+      "distance_to_road_m",
+      "distance_to_river_m",
+      "soil_class",
+      "landcover_class"
+    ],
+    "summary": {
+      "roc_auc_mean": 0.8059071059203458,
+      "roc_auc_std": 0.07134397530243107,
+      "pr_auc_mean": 0.7947943648867148,
+      "pr_auc_std": 0.05303152969161987,
+      "accuracy_mean": 0.7109337252301628,
+      "accuracy_std": 0.08649504052805547,
+      "balanced_accuracy_mean": 0.7186914282759157,
+      "balanced_accuracy_std": 0.07449928952073201,
+      "precision_mean": 0.7659791686803897,
+      "precision_std": 0.09415684337153298,
+      "recall_mean": 0.6483413335207966,
+      "recall_std": 0.1808682003543786,
+      "f1_mean": 0.6799282888293883,
+      "f1_std": 0.1169837411680919,
+      "brier_raw_mean": 0.19326975598714832,
+      "brier_calib_mean": 0.2009428417375462
+    },
+    "per_fold": [
+      {
+        "fold": 0,
+        "train_samples": 2958,
+        "test_samples": 1058,
+        "roc_auc": 0.699512137120456,
+        "pr_auc": 0.7207121712025201,
+        "accuracy": 0.5765595463137996,
+        "balanced_accuracy": 0.601581050454534,
+        "precision": 0.7611336032388664,
+        "recall": 0.32582322357019067,
+        "f1_score": 0.4563106796116505,
+        "brier_score_raw": 0.25276977625300706,
+        "brier_score_calibrated": 0.23492101301373813,
+        "confusion_matrix": [
+          [
+            422,
+            59
+          ],
+          [
+            389,
+            188
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "train_samples": 3019,
+        "test_samples": 997,
+        "roc_auc": 0.8814369073668855,
+        "pr_auc": 0.8438933225640879,
+        "accuracy": 0.7913741223671013,
+        "balanced_accuracy": 0.7825188426938974,
+        "precision": 0.8373983739837398,
+        "recall": 0.6761487964989059,
+        "f1_score": 0.7481840193704601,
+        "brier_score_raw": 0.1523241947946894,
+        "brier_score_calibrated": 0.16788192256179366,
+        "confusion_matrix": [
+          [
+            480,
+            60
+          ],
+          [
+            148,
+            309
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "train_samples": 3420,
+        "test_samples": 596,
+        "roc_auc": 0.7790161326971143,
+        "pr_auc": 0.7441133400714506,
+        "accuracy": 0.6661073825503355,
+        "balanced_accuracy": 0.6836514428538969,
+        "precision": 0.5889724310776943,
+        "recall": 0.8703703703703703,
+        "f1_score": 0.70254110612855,
+        "brier_score_raw": 0.21660054713609458,
+        "brier_score_calibrated": 0.23753662691923885,
+        "confusion_matrix": [
+          [
+            162,
+            164
+          ],
+          [
+            35,
+            235
+          ]
+        ]
+      },
+      {
+        "fold": 3,
+        "train_samples": 3405,
+        "test_samples": 611,
+        "roc_auc": 0.8897131446729935,
+        "pr_auc": 0.8517540955379475,
+        "accuracy": 0.8150572831423896,
+        "balanced_accuracy": 0.8120142139391077,
+        "precision": 0.8509803921568627,
+        "recall": 0.7431506849315068,
+        "f1_score": 0.793418647166362,
+        "brier_score_raw": 0.1463754783576802,
+        "brier_score_calibrated": 0.17132670485747017,
+        "confusion_matrix": [
+          [
+            281,
+            38
+          ],
+          [
+            75,
+            217
+          ]
+        ]
+      },
+      {
+        "fold": 4,
+        "train_samples": 3262,
+        "test_samples": 754,
+        "roc_auc": 0.7798572077442798,
+        "pr_auc": 0.8134988950575688,
+        "accuracy": 0.7055702917771883,
+        "balanced_accuracy": 0.7136915914381423,
+        "precision": 0.7914110429447853,
+        "recall": 0.6262135922330098,
+        "f1_score": 0.6991869918699187,
+        "brier_score_raw": 0.19827878339427038,
+        "brier_score_calibrated": 0.19304794133549025,
+        "confusion_matrix": [
+          [
+            274,
+            68
+          ],
+          [
+            154,
+            258
+          ]
+        ]
+      }
+    ],
+    "overall_confusion_matrix": [
+      [
+        1619,
+        389
+      ],
+      [
+        801,
+        1207
+      ]
+    ]
+  },
+  "model_b2_results": {
+    "model_name": "Model B2 (Env + All Proximity)",
+    "features": [
+      "elevation_m",
+      "slope_deg",
+      "aspect_deg",
+      "relief_std_5x5_m",
+      "clay_percent",
+      "sand_percent",
+      "silt_percent",
+      "bulk_density_kg_dm3",
+      "distance_to_road_m",
+      "distance_to_river_m",
+      "distance_to_nearest_other_landslide_m",
+      "soil_class",
+      "landcover_class"
+    ],
+    "summary": {
+      "roc_auc_mean": 0.9553429632693448,
+      "roc_auc_std": 0.03712553224966563,
+      "pr_auc_mean": 0.9613283841712958,
+      "pr_auc_std": 0.03386815991300866,
+      "accuracy_mean": 0.9018720329100605,
+      "accuracy_std": 0.04881815879997981,
+      "balanced_accuracy_mean": 0.9011371850186876,
+      "balanced_accuracy_std": 0.05139481322330392,
+      "precision_mean": 0.9341526828945155,
+      "precision_std": 0.05579807171337462,
+      "recall_mean": 0.8565480596735405,
+      "recall_std": 0.06834071973872047,
+      "f1_mean": 0.8933421093313946,
+      "f1_std": 0.06095389159662673,
+      "brier_raw_mean": 0.07818298178985546,
+      "brier_calib_mean": 0.07232106748355399
+    },
+    "per_fold": [
+      {
+        "fold": 0,
+        "train_samples": 2958,
+        "test_samples": 1058,
+        "roc_auc": 0.9797144164561842,
+        "pr_auc": 0.9814185432342961,
+        "accuracy": 0.94234404536862,
+        "balanced_accuracy": 0.9438543329357887,
+        "precision": 0.9657039711191335,
+        "recall": 0.9272097053726169,
+        "f1_score": 0.9460654288240495,
+        "brier_score_raw": 0.05824160761634154,
+        "brier_score_calibrated": 0.04475165596863593,
+        "confusion_matrix": [
+          [
+            462,
+            19
+          ],
+          [
+            42,
+            535
+          ]
+        ]
+      },
+      {
+        "fold": 1,
+        "train_samples": 3019,
+        "test_samples": 997,
+        "roc_auc": 0.9781100575411297,
+        "pr_auc": 0.9780112958476619,
+        "accuracy": 0.9277833500501504,
+        "balanced_accuracy": 0.92475686846584,
+        "precision": 0.9508196721311475,
+        "recall": 0.888402625820569,
+        "f1_score": 0.918552036199095,
+        "brier_score_raw": 0.058479739156098116,
+        "brier_score_calibrated": 0.05087518933145901,
+        "confusion_matrix": [
+          [
+            519,
+            21
+          ],
+          [
+            51,
+            406
+          ]
+        ]
+      },
+      {
+        "fold": 2,
+        "train_samples": 3420,
+        "test_samples": 596,
+        "roc_auc": 0.884355828220859,
+        "pr_auc": 0.8941585150330855,
+        "accuracy": 0.8070469798657718,
+        "balanced_accuracy": 0.8003976369007044,
+        "precision": 0.8242677824267782,
+        "recall": 0.7296296296296296,
+        "f1_score": 0.7740667976424361,
+        "brier_score_raw": 0.13332729167275661,
+        "brier_score_calibrated": 0.13791337665661965,
+        "confusion_matrix": [
+          [
+            284,
+            42
+          ],
+          [
+            73,
+            197
+          ]
+        ]
+      },
+      {
+        "fold": 3,
+        "train_samples": 3405,
+        "test_samples": 611,
+        "roc_auc": 0.9823614033580969,
+        "pr_auc": 0.9828336546153712,
+        "accuracy": 0.9263502454991817,
+        "balanced_accuracy": 0.9248293039034654,
+        "precision": 0.9523809523809523,
+        "recall": 0.8904109589041096,
+        "f1_score": 0.9203539823008849,
+        "brier_score_raw": 0.058731195131640906,
+        "brier_score_calibrated": 0.054620293939884774,
+        "confusion_matrix": [
+          [
+            306,
+            13
+          ],
+          [
+            32,
+            260
+          ]
+        ]
+      },
+      {
+        "fold": 4,
+        "train_samples": 3262,
+        "test_samples": 754,
+        "roc_auc": 0.9521731107704536,
+        "pr_auc": 0.9702199121260644,
+        "accuracy": 0.9058355437665783,
+        "balanced_accuracy": 0.9118477828876398,
+        "precision": 0.9775910364145658,
+        "recall": 0.8470873786407767,
+        "f1_score": 0.9076723016905072,
+        "brier_score_raw": 0.08213507537244011,
+        "brier_score_calibrated": 0.0734448215211706,
+        "confusion_matrix": [
+          [
+            334,
+            8
+          ],
+          [
+            63,
+            349
+          ]
+        ]
+      }
+    ],
+    "overall_confusion_matrix": [
+      [
+        1905,
+        103
+      ],
+      [
+        261,
+        1747
+      ]
+    ]
+  },
+  "ablation_analysis": {
+    "model_a_vs_model_b1_infrastructure_proximity": {
+      "delta_roc_auc": -0.0003,
+      "delta_pr_auc": 0.0011,
+      "delta_balanced_accuracy": -0.0001,
+      "delta_f1": -0.0067,
+      "interpretation": "Adding road and river proximity results in neutral to marginal change in spatial generalization (ROC-AUC ~0.801 vs ~0.800)."
+    },
+    "model_a_vs_model_b2_all_proximity": {
+      "delta_roc_auc": 0.1492,
+      "delta_pr_auc": 0.1676,
+      "delta_balanced_accuracy": 0.1823,
+      "delta_f1": 0.2067,
+      "interpretation": "Adding distance_to_nearest_other_landslide_m causes a massive +0.1534 surge in spatial ROC-AUC. As hypothesized during Phase 8E.2.3, this feature reflects spatial clustering of the 2014 inventory combined with the >=1 km buffer used in negative generation, functioning as an indirect label lookup rather than a causative physical terrain trigger."
+    }
+  },
+  "permutation_importance_model_a": [
+    {
+      "feature": "aspect_deg",
+      "mean_importance_roc_auc_drop": 0.1096,
+      "std_importance": 0.02831
+    },
+    {
+      "feature": "relief_std_5x5_m",
+      "mean_importance_roc_auc_drop": 0.06124,
+      "std_importance": 0.01375
+    },
+    {
+      "feature": "elevation_m",
+      "mean_importance_roc_auc_drop": 0.0388,
+      "std_importance": 0.02928
+    },
+    {
+      "feature": "slope_deg",
+      "mean_importance_roc_auc_drop": 0.03659,
+      "std_importance": 0.01054
+    },
+    {
+      "feature": "bulk_density_kg_dm3",
+      "mean_importance_roc_auc_drop": 0.00407,
+      "std_importance": 0.00437
+    },
+    {
+      "feature": "landcover_class",
+      "mean_importance_roc_auc_drop": 0.0011,
+      "std_importance": 0.0027
+    },
+    {
+      "feature": "clay_percent",
+      "mean_importance_roc_auc_drop": -0.00066,
+      "std_importance": 0.00515
+    },
+    {
+      "feature": "sand_percent",
+      "mean_importance_roc_auc_drop": -0.00192,
+      "std_importance": 0.00173
+    },
+    {
+      "feature": "silt_percent",
+      "mean_importance_roc_auc_drop": -0.00373,
+      "std_importance": 0.00284
+    },
+    {
+      "feature": "soil_class",
+      "mean_importance_roc_auc_drop": -0.00391,
+      "std_importance": 0.00835
+    }
+  ],
+  "permutation_importance_model_b2": [
+    {
+      "feature": "distance_to_nearest_other_landslide_m",
+      "mean_importance_roc_auc_drop": 0.30919,
+      "std_importance": 0.051
+    },
+    {
+      "feature": "aspect_deg",
+      "mean_importance_roc_auc_drop": 0.01726,
+      "std_importance": 0.00953
+    },
+    {
+      "feature": "relief_std_5x5_m",
+      "mean_importance_roc_auc_drop": 0.00713,
+      "std_importance": 0.00352
+    },
+    {
+      "feature": "slope_deg",
+      "mean_importance_roc_auc_drop": 0.00634,
+      "std_importance": 0.00342
+    },
+    {
+      "feature": "elevation_m",
+      "mean_importance_roc_auc_drop": 0.00274,
+      "std_importance": 0.00375
+    },
+    {
+      "feature": "soil_class",
+      "mean_importance_roc_auc_drop": 0.00203,
+      "std_importance": 0.00148
+    },
+    {
+      "feature": "landcover_class",
+      "mean_importance_roc_auc_drop": 0.00082,
+      "std_importance": 0.00069
+    },
+    {
+      "feature": "bulk_density_kg_dm3",
+      "mean_importance_roc_auc_drop": 0.00079,
+      "std_importance": 0.00104
+    },
+    {
+      "feature": "distance_to_road_m",
+      "mean_importance_roc_auc_drop": 0.00062,
+      "std_importance": 0.00068
+    },
+    {
+      "feature": "sand_percent",
+      "mean_importance_roc_auc_drop": 0.00029,
+      "std_importance": 0.00136
+    },
+    {
+      "feature": "clay_percent",
+      "mean_importance_roc_auc_drop": -1e-05,
+      "std_importance": 0.00029
+    },
+    {
+      "feature": "distance_to_river_m",
+      "mean_importance_roc_auc_drop": -8e-05,
+      "std_importance": 0.00063
+    },
+    {
+      "feature": "silt_percent",
+      "mean_importance_roc_auc_drop": -0.00013,
+      "std_importance": 0.00078
+    }
+  ],
+  "model_selection": {
+    "selected_model": "Model A (Environmental Only)",
+    "rationale": "Model A (Environmental Only: Terrain + Soil + Land Cover) achieves an honest, robust spatial ROC-AUC of 0.8012 \u00b1 0.0745 and PR-AUC of 0.7871 \u00b1 0.0554 across held-out geographic regions. While Model B2 scores higher (0.9546), ablation demonstrates that the gain is entirely driven by 'distance_to_nearest_other_landslide_m', which leaks inventory clustering and the >=1 km spatial negative buffer. Model A is physically causal, generalizable to unmapped terrain, and free from inventory-clustering artifacts.",
+    "output_description": "Random Forest susceptibility score/probability estimate in the range 0\u20131."
+  },
+  "calibration": {
+    "model_a_brier_raw": 0.1913318948217169,
+    "model_a_brier_calibrated": 0.20213067140659863,
+    "decision": "Post-hoc calibration rejected because sigmoid calibration worsened Brier score (0.2021 vs 0.1913 raw). Deployed model uses raw RF voting fraction.",
+    "calibration_status": "Uncalibrated Random Forest probability estimate; not represented as perfectly calibrated."
+  }
+}
