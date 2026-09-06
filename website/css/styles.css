@@ -1,0 +1,97 @@
+/* LANDSLIDENEI - Public Product Website Stylesheet */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+  body {
+    background-color: #101417;
+    color: #e0e3e7;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Tactical Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f12;
+}
+::-webkit-scrollbar-thumb {
+  background: #262a2e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Modal Animations */
+.modal-backdrop {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-dialog {
+  transform: scale(0.95) translateY(12px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-backdrop.active .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+/* Mobile Drawer */
+#mobile-drawer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  opacity: 0;
+}
+#mobile-drawer.open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* Tactical Pulse and Glow */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Topographic Contour Background */
+.topographic-grid {
+  background-image: radial-gradient(#10b981 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Print Styles for EOC Advisory Brief */
+@media print {
+  header, footer, #mobile-drawer, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .modal-dialog {
+    transform: none !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+  }
+}

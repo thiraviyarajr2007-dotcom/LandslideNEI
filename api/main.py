@@ -125,6 +125,12 @@ dashboard_dir = PROJECT_ROOT / "dashboard"
 if dashboard_dir.exists():
     app.mount("/dashboard", StaticFiles(directory=str(dashboard_dir), html=True), name="dashboard")
 
+# Mount static files for LANDSLIDENEI Public Product Website
+website_dir = PROJECT_ROOT / "website"
+if website_dir.exists():
+    app.mount("/website", StaticFiles(directory=str(website_dir), html=True), name="website")
+
+
 
 # ==============================================================================
 # 2. ERROR HANDLING & EXCEPTION CLASSES
@@ -246,27 +252,59 @@ def validate_and_parse_timestamp(raw_ts: Optional[str]) -> Tuple[datetime, str]:
 
 @app.get("/", tags=["General"])
 def root(request: Request) -> Any:
-    """API identification, operational overview, and browser dashboard redirect."""
+    """API identification, operational overview, and browser dashboard/website redirect."""
     accept = request.headers.get("accept", "")
     if "text/html" in accept:
+        if request.query_params.get("view") == "website" or request.headers.get("x-view") == "website":
+            return RedirectResponse(url="/website/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
         return RedirectResponse(url="/dashboard/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
     return {
         "name": API_CONFIG.get("title", "LandslideNEI Operational Landslide Risk Prediction API"),
         "status": "online",
         "api_version": API_VERSION,
+        "website_url": "/website/",
         "dashboard_url": "/dashboard/",
         "docs_url": "/docs",
         "health_url": "/api/v1/health",
         "info_url": "/api/v1/info",
         "predict_url": "/api/v1/predict",
         "profile_url": "/api/v1/profile",
+        "download_url": "/download/windows",
         "architecture": "FastAPI -> Model A Static LSM + CWC/IMD Telemetry Tier -> Deterministic Risk Fusion",
         "scientific_disclaimer": (
             "Operational risk levels and operational fusion scores are an engineering synthesis "
             "for ordering and decision-support. They are not calibrated statistical event probabilities."
         ),
     }
+
+
+@app.get("/download/windows", tags=["Product"])
+def download_windows_workstation():
+    """Operational workstation package manifest and download distribution route."""
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={
+            "product": "LANDSLIDENEI Desktop Workstation",
+            "release": "v2.4.0-GA",
+            "target_os": "Windows 10 / Windows 11 (64-bit)",
+            "package_name": "LANDSLIDENEI_Setup_x64.exe",
+            "status": "release_candidate",
+            "build_timestamp": "2026-09-06T12:00:00Z",
+            "sha256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+            "minimum_requirements": {
+                "os": "Windows 10 Build 19041+ or Windows 11",
+                "architecture": "x86_64",
+                "directx": "DirectX 11+ runtime",
+                "python": "Python 3.10+ (bundled in standalone executable)",
+                "disk_space_mb": 500,
+            },
+            "installation_notes": (
+                "Workstation operates against local or networked LandslideNEI Unified Risk API. "
+                "CWC river stage telemetry and IMD Doppler feeds cache locally for offline continuity."
+            ),
+        },
+    )
 
 
 @app.get(

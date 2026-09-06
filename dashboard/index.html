@@ -1,169 +1,937 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LandslideNEI — Operational GIS Risk Dashboard</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>LandslideNEI // EOC Command Workstation</title>
   
-  <!-- Inter & JetBrains Mono Fonts -->
+  <!-- Fonts: Space Grotesk, JetBrains Mono, Material Symbols Outlined -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   
-  <!-- Leaflet CSS -->
+  <!-- Leaflet GIS Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
-<body>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0b1325",
+            "surface-dim": "#0b1325",
+            "surface-bright": "#31394d",
+            "surface-container-lowest": "#060e1f",
+            "surface-container-low": "#131b2d",
+            "surface-container": "#171f32",
+            "surface-container-high": "#222a3d",
+            "surface-container-highest": "#2d3448",
+            "on-surface": "#dbe2fb",
+            "on-surface-variant": "#bac9cc",
+            "outline": "#849396",
+            "outline-variant": "#3b494c",
+            "primary": "#c3f5ff",
+            "primary-container": "#00e5ff",
+            "on-primary": "#00363d",
+            "on-primary-container": "#00626e",
+            "secondary": "#7bd0ff",
+            "secondary-container": "#00a6e0",
+            "tertiary": "#cdf3ff",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error": "#690005"
+          },
+          fontFamily: {
+            "sans": ["Space Grotesk", "system-ui", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
 
-  <!-- ==============================================================================
-       HEADER COMMAND BAR
-       ============================================================================== -->
-  <header class="header-bar">
-    <div class="header-left">
-      <div class="brand-logo">
-        <div class="brand-icon">🏔️</div>
-        <div>
-          <div class="brand-title">
-            <span data-i18n="appTitle">LandslideNEI</span>
-            <span class="badge-sih">SIH 2024</span>
-          </div>
-          <div class="brand-subtitle" data-i18n="appSubtitle">AI Early Warning & Operational Decision Support System</div>
-        </div>
+  <!-- Tactical Dark Theme Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-surface font-sans text-on-surface select-none antialiased flex flex-col h-screen overflow-hidden">
+
+  <!-- 1. WINDOWS TITLE BAR -->
+  <div class="window-titlebar">
+    <div class="flex items-center gap-2.5 overflow-hidden">
+      <span class="material-symbols-outlined text-primary-container text-[16px]">grid_view</span>
+      <span class="font-mono text-xs text-on-surface tracking-tight font-semibold">LANDSLIDENEI // EOC TERMINAL</span>
+      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+        <span class="font-mono text-[10px] text-primary tracking-wider uppercase font-bold">NODE-01 // SYNCED</span>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <button id="sys-btn-minimize" aria-label="Minimize" onclick="window.minimizeWindow ? window.minimizeWindow() : alert('LANDSLIDENEI EOC Terminal: Minimized to tray.')" class="h-8 w-10 flex items-center justify-center hover:bg-surface-container-highest hover:text-on-surface transition-colors" type="button">
+        <span class="font-mono text-xs">—</span>
+      </button>
+      <button id="sys-btn-maximize" aria-label="Maximize" onclick="window.toggleMaximize ? window.toggleMaximize() : null" class="h-8 w-10 flex items-center justify-center hover:bg-surface-container-highest hover:text-on-surface transition-colors" type="button">
+        <span class="font-mono text-xs">□</span>
+      </button>
+      <button id="sys-btn-close" aria-label="Close" onclick="window.closeWindow ? window.closeWindow() : null" class="h-8 w-10 flex items-center justify-center hover:bg-error-container hover:text-on-error transition-colors" type="button">
+        <span class="font-mono text-xs">✕</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. WORKSTATION TOP HEADER -->
+  <header class="workstation-header">
+    <div class="flex items-center gap-3">
+      <div class="w-7 h-7 rounded bg-primary-container/20 border border-primary-container flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary-container text-lg">terrain</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-sm font-bold tracking-tight text-on-surface leading-tight font-sans">LANDSLIDENEI</span>
+        <span class="font-mono text-[9px] text-on-surface-variant leading-none tracking-wider uppercase">Risk Intelligence Workstation</span>
       </div>
     </div>
 
-    <div class="header-right">
-      <div id="sys-status-pill" class="status-pill">
-        <span class="pulse-dot-green"></span>
-        <span data-i18n="systemStatus">System Online</span>
+    <div class="hidden xl:flex items-center gap-2">
+      <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+        <span class="font-mono text-[11px] text-primary-container font-semibold">ONLINE</span>
+      </div>
+      <div class="flex items-center gap-1 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 font-mono text-[11px] text-secondary">
+        <span class="material-symbols-outlined text-[13px]">satellite_alt</span>
+        <span>CWC • IMD • COPERNICUS</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 font-mono text-[11px]">
+        <span class="text-on-surface-variant text-[10px]">REGION:</span>
+        <span class="text-on-surface font-semibold">NE INDIA</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 font-mono text-[11px] text-tertiary">
+        <span class="material-symbols-outlined text-[13px]">schedule</span>
+        <span id="workstation-clock">14:22:08Z</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button data-navigate="alerts" aria-label="Alerts" class="relative p-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" type="button">
+        <span class="material-symbols-outlined text-[18px]">notifications</span>
+        <span class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-error text-on-error font-mono text-[9px] font-bold ring-2 ring-surface">3</span>
+      </button>
+
+      <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant/30">
+        <div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+          <span class="material-symbols-outlined text-[15px]">person</span>
+        </div>
+        <div class="flex flex-col text-left">
+          <span id="header-user-name" class="font-mono text-xs font-semibold text-on-surface leading-tight">Duty Officer</span>
+          <span class="font-mono text-[9px] text-on-surface-variant leading-none uppercase">OPS SECTION</span>
+        </div>
       </div>
 
-      <div class="lang-switch">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="ta">தமிழ்</button>
-      </div>
+      <button data-navigate="settings" aria-label="Settings" class="p-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" type="button">
+        <span class="material-symbols-outlined text-[18px]">settings</span>
+      </button>
+
+      <button id="btn-header-logout" onclick="handleLogout()" data-action="logout" title="Lock & Logout" class="p-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors" type="button">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+      </button>
     </div>
   </header>
 
-  <!-- ==============================================================================
-       SUB-BAR: SIH DEMO PRESETS
-       ============================================================================== -->
-  <nav class="presets-bar">
-    <div class="presets-label" data-i18n="presetsTitle">SIH Demo Scenarios:</div>
-    <div id="presets-container" class="presets-container">
-      <!-- Dynamically injected via demo_presets.js -->
-    </div>
-  </nav>
-
-  <!-- ==============================================================================
-       MAIN WORKSPACE
-       ============================================================================== -->
-  <main class="main-layout">
+  <!-- 3. MAIN WORKSTATION SHELL -->
+  <div class="app-shell">
     
-    <!-- LEFT: GIS MAP CONTAINER -->
-    <section class="map-container">
-      <div id="gis-map"></div>
-
-      <!-- Floating Map Query Control -->
-      <div class="map-floating-controls">
-        <div class="query-box-card">
-          <div class="query-title">
-            <span data-i18n="queryTitle">Location Query</span>
-            <span style="font-size:10px; color:#94a3b8;">Click map or enter:</span>
-          </div>
-
-          <div class="coord-inputs-flex">
-            <div class="input-group">
-              <label>Latitude (°N)</label>
-              <input id="input-lat" type="number" step="0.0001" placeholder="27.5925" data-i18n-placeholder="latPlaceholder" />
+    <!-- LEFT SIDEBAR NAVIGATION -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <div class="flex flex-col py-3">
+        <div class="px-4 pb-2 text-[10px] font-mono text-on-surface-variant tracking-wider uppercase opacity-75">
+          Operations Modules
+        </div>
+        <nav class="flex flex-col gap-0.5">
+          <a class="sidebar-nav-item active" data-path="overview-map" data-navigate="home" href="#">
+            <span class="material-symbols-outlined text-[18px]">layers</span>
+            <span>Home / Overview</span>
+          </a>
+          <a class="sidebar-nav-item" data-path="risk-map" data-navigate="risk-map" href="#">
+            <span class="material-symbols-outlined text-[18px]">public</span>
+            <span>Risk Map</span>
+          </a>
+          <a class="sidebar-nav-item" data-path="location-analysis" data-navigate="location-analysis" href="#">
+            <span class="material-symbols-outlined text-[18px]">travel_explore</span>
+            <span>Location Analysis</span>
+          </a>
+          <a class="sidebar-nav-item" data-path="rainfall-telemetry" data-navigate="rainfall-telemetry" href="#">
+            <span class="material-symbols-outlined text-[18px]">rainy</span>
+            <span>Rainfall Telemetry</span>
+          </a>
+          <a class="sidebar-nav-item justify-between" data-path="alerts" data-navigate="alerts" href="#">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px]">warning</span>
+              <span>Alerts</span>
             </div>
-            <div class="input-group">
-              <label>Longitude (°E)</label>
-              <input id="input-lon" type="number" step="0.0001" placeholder="91.6087" data-i18n-placeholder="lonPlaceholder" />
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button id="btn-evaluate" class="btn-primary" data-i18n="queryBtn">Evaluate Risk</button>
-            <button id="btn-profile" class="btn-secondary" data-i18n="profileOnlyBtn" title="Static LSM Only">Profile</button>
-            <button id="btn-reset" class="btn-secondary" data-i18n="clearBtn">Clear</button>
-          </div>
-        </div>
-
-        <!-- Layer Toggles -->
-        <div class="map-layers-toggle">
-          <div>
-            <select id="select-basemap">
-              <option value="Dark Matter">Dark Matter</option>
-              <option value="OpenStreetMap">OpenStreetMap</option>
-              <option value="OpenTopoMap">OpenTopoMap</option>
-            </select>
-          </div>
-          <label>
-            <input id="chk-layer-states" type="checkbox" checked />
-            <span data-i18n="layerStates">NER States</span>
-          </label>
-          <label>
-            <input id="chk-layer-stations" type="checkbox" checked />
-            <span data-i18n="layerStations">CWC Stations</span>
-          </label>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIGHT: OPERATIONAL DECISION PANEL -->
-    <aside class="operational-panel">
-      <div class="panel-header">
-        <span data-i18n="riskVerdictTitle">Operational Decision Panel</span>
-        <span style="font-size: 11px; color: var(--accent-sky); font-family: var(--font-mono);">Phase 8I API</span>
+            <span class="px-1.5 py-0.5 rounded bg-error-container text-on-error font-mono text-[9px] font-bold">3</span>
+          </a>
+          <a class="sidebar-nav-item" data-path="reports-export" data-navigate="reports" href="#">
+            <span class="material-symbols-outlined text-[18px]">assignment</span>
+            <span>Reports &amp; Briefs</span>
+          </a>
+          <a class="sidebar-nav-item" data-path="workstation-settings" data-navigate="settings" href="#">
+            <span class="material-symbols-outlined text-[18px]">tune</span>
+            <span>Settings</span>
+          </a>
+        </nav>
       </div>
 
-      <div id="operational-panel-body" class="panel-body">
-        <!-- Default Empty State -->
-        <div class="empty-state">
-          <div class="empty-icon">📍</div>
-          <div class="empty-title">No Location Selected</div>
-          <div class="empty-desc">Click anywhere on the Northeast India map or select a demo preset above to evaluate real-time landslide risk.</div>
+      <!-- Offline GIS Cache Status Widget -->
+      <div class="p-3 m-2 rounded bg-surface-container border border-outline-variant/30 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[9px] text-on-surface-variant tracking-wider uppercase">OFFLINE GIS REPOSITORY</span>
+          <span class="material-symbols-outlined text-secondary text-[14px]">cloud_done</span>
         </div>
-      </div>
-
-      <!-- Loading Spinner Overlay -->
-      <div id="loading-spinner" class="loading-spinner-overlay">
-        <div class="spinner"></div>
-        <div style="font-size:12px; color:#38bdf8; font-weight:600;" data-i18n="loadingEvaluating">
-          Extracting terrain, soil, landcover & querying telemetry...
+        <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+          <div class="bg-primary-container h-full rounded-full" style="width: 98.4%"></div>
+        </div>
+        <div class="flex justify-between items-center font-mono text-[10px] text-on-surface-variant">
+          <span>Local: 42.8 GB</span>
+          <span class="text-primary font-medium">98.4% Synced</span>
         </div>
       </div>
     </aside>
 
-  </main>
+    <!-- RIGHT: MULTI-SCREEN WORKSPACE CONTENT -->
+    <main class="workspace-content">
 
-  <!-- ==============================================================================
-       ERROR & DIAGNOSTIC MODAL
-       ============================================================================== -->
-  <div id="modal-overlay" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div id="modal-title" class="modal-title">Evaluation Error</div>
-        <div id="modal-code" class="modal-code"></div>
-      </div>
-      <div id="modal-message" class="modal-message"></div>
-      <pre id="modal-details" class="modal-details" style="display:none;"></pre>
-      <button id="modal-close-btn" class="modal-btn">Dismiss</button>
-    </div>
+      <!-- SCREEN 1: SETUP / FIRST LAUNCH -->
+      <section id="view-setup" class="view-screen items-center justify-center p-6 bg-surface-container-lowest">
+        <div class="max-w-xl w-full bg-surface-container border border-outline-variant rounded-xl p-8 shadow-2xl">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-primary-container text-3xl">build_circle</span>
+            <div>
+              <h2 class="font-headline-lg text-xl font-bold text-on-surface">Workstation Initial Setup</h2>
+              <span class="font-mono text-xs text-secondary">First Launch Diagnostic &amp; Environmental Verification</span>
+            </div>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed mb-6">
+            LANDSLIDENEI operates in high-integrity disaster management environments. Verify that required local raster caches, telemetry buffers, and sovereign data feeds are initialized.
+          </p>
+
+          <div class="space-y-3 font-mono text-xs mb-8">
+            <div class="flex items-center justify-between p-3 bg-surface-container-low rounded border border-outline-variant/30">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+                <span>Copernicus 30m DEM &amp; SoilGrids Cache (42.8 GB)</span>
+              </div>
+              <span class="text-emerald-400 font-bold">READY</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-surface-container-low rounded border border-outline-variant/30">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+                <span>CWC 73 Gauges &amp; IMD Doppler Telemetry Feeds</span>
+              </div>
+              <span class="text-emerald-400 font-bold">CONNECTED</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-surface-container-low rounded border border-outline-variant/30">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+                <span>DirectX 11+ / WebGL GPU Map Acceleration</span>
+              </div>
+              <span class="text-emerald-400 font-bold">ENABLED</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-surface-container-low rounded border border-outline-variant/30">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+                <span>Offline Data Sovereignty (Strict Local Operation)</span>
+              </div>
+              <span class="text-emerald-400 font-bold">VERIFIED</span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-outline-variant/40">
+            <button onclick="showToast('Diagnostic self-test completed. All 4 subsystems verified.')" class="btn-tactical-secondary" type="button">
+              <span class="material-symbols-outlined text-sm">sync</span>
+              <span>Re-Test Subsystems</span>
+            </button>
+            <button data-navigate="login" class="btn-tactical-primary" type="button">
+              <span>Continue to Authentication</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: LOGIN -->
+      <section id="view-login" class="view-screen items-center justify-center p-6 bg-surface-container-lowest">
+        <div class="max-w-md w-full bg-surface-container border border-outline-variant rounded-xl p-8 shadow-2xl">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded bg-primary-container/20 border border-primary-container flex items-center justify-center text-primary-container">
+              <span class="material-symbols-outlined text-xl">security</span>
+            </div>
+            <div>
+              <h2 class="font-headline-lg text-lg font-bold text-on-surface">Workstation Authentication</h2>
+              <span class="font-mono text-[10px] text-on-surface-variant uppercase">LANDSLIDENEI // EOC TERMINAL</span>
+            </div>
+          </div>
+          <p class="text-xs text-on-surface-variant mb-6 leading-relaxed">
+            Enter duty officer credentials to unlock regional disaster early-warning controls.
+          </p>
+
+          <form class="space-y-4" onsubmit="return false;">
+            <div>
+              <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1.5">Official Agency Email</label>
+              <input id="login-email" class="tactical-input" type="email" value="duty.officer@landslidenei.gov.in" placeholder="officer@eoc.gov.in" required>
+            </div>
+            <div>
+              <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1.5">Security Passphrase</label>
+              <input id="login-password" class="tactical-input" type="password" value="••••••••••••" placeholder="••••••••••••" required>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <label class="flex items-center gap-2 cursor-pointer font-mono text-[11px] text-on-surface-variant">
+                <input type="checkbox" checked class="rounded bg-surface-container-lowest border-outline-variant">
+                <span>Remember Session</span>
+              </label>
+              <button data-action="forgot-password" class="text-primary hover:underline font-mono text-[11px]" type="button">
+                Forgot password?
+              </button>
+            </div>
+
+            <button id="btn-login-submit" class="w-full btn-tactical-primary justify-center py-2.5 mt-2" type="button">
+              <span class="material-symbols-outlined text-base">lock_open</span>
+              <span>Sign In</span>
+            </button>
+
+            <div class="relative flex py-2 items-center">
+              <div class="flex-grow border-t border-outline-variant/40"></div>
+              <span class="flex-shrink mx-3 font-mono text-[10px] text-outline uppercase">OR</span>
+              <div class="flex-grow border-t border-outline-variant/40"></div>
+            </div>
+
+            <button data-action="google-sso" class="w-full btn-tactical-secondary justify-center py-2" type="button">
+              <span class="material-symbols-outlined text-base text-secondary">account_circle</span>
+              <span>Continue with Google Workspace</span>
+            </button>
+
+            <div class="text-center pt-2">
+              <button data-navigate="register" class="text-xs text-on-surface-variant hover:text-primary transition-colors" type="button">
+                Don't have credentials? <span class="text-primary font-semibold underline">Register for an account</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: REGISTER -->
+      <section id="view-register" class="view-screen items-center justify-center p-6 bg-surface-container-lowest">
+        <div class="max-w-lg w-full bg-surface-container border border-outline-variant rounded-xl p-8 shadow-2xl">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 rounded bg-primary-container/20 border border-primary-container flex items-center justify-center text-primary-container">
+              <span class="material-symbols-outlined text-xl">badge</span>
+            </div>
+            <div>
+              <h2 class="font-headline-lg text-lg font-bold text-on-surface">Register Duty Officer</h2>
+              <span class="font-mono text-[10px] text-on-surface-variant uppercase">Credential Provisioning</span>
+            </div>
+          </div>
+          <p class="text-xs text-on-surface-variant mb-6 leading-relaxed">
+            Provision authorized officer access for corridor telemetry and emergency advisory compilation.
+          </p>
+
+          <form class="space-y-3.5" onsubmit="return false;">
+            <div>
+              <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1">Full Name &amp; Title</label>
+              <input id="reg-name" class="tactical-input" type="text" value="Dr. S. K. Roy" placeholder="Dr. S. K. Roy" required>
+            </div>
+            <div>
+              <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1">Official Agency Email</label>
+              <input id="reg-email" class="tactical-input" type="email" value="s.roy@eoc.gov.in" placeholder="s.roy@eoc.gov.in" required>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1">Password</label>
+                <input id="reg-password" class="tactical-input" type="password" value="••••••••••••" required>
+              </div>
+              <div>
+                <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1">Confirm Password</label>
+                <input id="reg-password-confirm" class="tactical-input" type="password" value="••••••••••••" required>
+              </div>
+            </div>
+            <div>
+              <label class="block font-mono text-[11px] text-on-surface-variant uppercase mb-1">Operating Authority / Station</label>
+              <select id="reg-agency" class="tactical-input bg-surface-container-lowest">
+                <option>Nagaland State Disaster Management Authority (NSDMA)</option>
+                <option>Assam State Disaster Management Authority (ASDMA)</option>
+                <option>Sikkim State Disaster Management Authority (SSDMA)</option>
+                <option>Central Water Commission (CWC) Regional Basin Cell</option>
+                <option>Border Roads Organisation (BRO) Highway Corridor Cell</option>
+              </select>
+            </div>
+
+            <button id="btn-register-submit" class="w-full btn-tactical-primary justify-center py-2.5 mt-2" type="button">
+              <span class="material-symbols-outlined text-base">check</span>
+              <span>Create Account</span>
+            </button>
+
+            <div class="text-center pt-2">
+              <button data-navigate="login" class="text-xs text-on-surface-variant hover:text-primary transition-colors" type="button">
+                Already have credentials? <span class="text-primary font-semibold underline">Sign In</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: HOME / EOC DASHBOARD -->
+      <section id="view-home" class="view-screen active flex-col h-full">
+        
+        <!-- Command Strip Toolbar -->
+        <div class="command-toolbar">
+          <div class="flex items-center gap-2 min-w-0">
+            <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface">
+              <span class="material-symbols-outlined text-primary-container text-[16px]">location_searching</span>
+              <select id="sector-select" class="bg-transparent font-sans text-xs text-primary font-semibold focus:outline-none cursor-pointer pr-1">
+                <option value="nagaland" class="bg-surface-container-high text-on-surface">Nagaland Corridor — Kohima &amp; Zubza Axis (NH-29)</option>
+                <option value="sikkim" class="bg-surface-container-high text-on-surface">Sikkim Transit — NH-10 Teesta Gorge Corridor</option>
+                <option value="meghalaya" class="bg-surface-container-high text-on-surface">Meghalaya Plateau — Cherrapunji-Shella Escarpment</option>
+                <option value="arunachal" class="bg-surface-container-high text-on-surface">Arunachal Western Axis — Bhalukpong-Tawang Spur</option>
+                <option value="assam" class="bg-surface-container-high text-on-surface">Assam Urban Foothills — Guwahati</option>
+                <option value="mizoram" class="bg-surface-container-high text-on-surface">Mizoram Ridge — Aizawl</option>
+              </select>
+            </div>
+            <div class="hidden lg:flex items-center gap-2 px-2 py-1 rounded bg-surface-container border border-outline-variant/30 font-mono text-[11px] text-on-surface-variant">
+              <span class="text-secondary font-medium">COORD:</span>
+              <span id="hud-coord-display" class="text-on-surface">25°40'12" N, 94°06'35" E</span>
+              <span class="text-outline">|</span>
+              <span class="text-secondary font-medium">ELEV:</span>
+              <span id="hud-elev-display" class="text-on-surface">1,428 m</span>
+            </div>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container/10 border border-primary-container/30 text-primary font-mono text-[10px] tracking-wider">
+              <span class="material-symbols-outlined text-[12px]">verified</span>
+              NER DOMAIN VALIDATED
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <button onclick="window.mapInstance && window.mapInstance.zoomIn()" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-primary" title="Zoom In" type="button">
+              <span class="material-symbols-outlined text-[15px]">add</span>
+            </button>
+            <button onclick="window.mapInstance && window.mapInstance.zoomOut()" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-primary" title="Zoom Out" type="button">
+              <span class="material-symbols-outlined text-[15px]">remove</span>
+            </button>
+            <button id="btn-buffer-indicator" onclick="showToast('CWC Hydro-station proximity buffer: 50km radius active.')" class="px-2 py-1 rounded bg-primary-container text-on-primary-container font-mono text-[11px] font-bold flex items-center gap-1 shadow-sm" type="button">
+              <span class="material-symbols-outlined text-[13px]">adjust</span>
+              <span>50KM BUFFER: ACTIVE</span>
+            </button>
+            <button data-navigate="rainfall-telemetry" class="hidden sm:flex items-center gap-1 px-2 py-1 rounded bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high text-secondary font-mono text-[11px]" type="button">
+              <span class="material-symbols-outlined text-[13px]">sensors</span>
+              <span>CWC TELEMETRY</span>
+            </button>
+            <button onclick="evaluateLocation(window.currentCoordinates.lat, window.currentCoordinates.lon)" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-primary" title="Refresh Telemetry" type="button">
+              <span class="material-symbols-outlined text-[15px]">sync</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Workspace: Split Canvas (Left: Map, Right: Operational Panel) -->
+        <div class="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+          
+          <!-- LEFT: Map Canvas (8 Cols) -->
+          <div class="lg:col-span-8 relative h-full bg-surface-container-lowest overflow-hidden">
+            <div id="gis-map" class="w-full h-full"></div>
+          </div>
+
+          <!-- RIGHT: Operational Telemetry Panel (4 Cols) -->
+          <div id="operational-panel" class="operational-panel lg:col-span-4 p-4 overflow-y-auto space-y-4">
+            
+            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/40">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container text-lg">analytics</span>
+                <span class="font-mono text-xs font-bold uppercase tracking-wider text-on-surface">01 // OPERATIONAL RISK SYNTHESIS</span>
+              </div>
+              <span id="verdict-pill" class="px-2 py-0.5 rounded text-xs font-mono font-bold uppercase bg-error-container text-error">CRITICAL</span>
+            </div>
+
+            <div id="verdict-banner" class="p-3 rounded border font-mono font-bold text-sm text-center bg-error-container text-error border-error/50">
+              OPERATIONAL VERDICT: CRITICAL
+            </div>
+
+            <div class="tactical-card">
+              <div class="flex justify-between items-baseline mb-1">
+                <span class="font-mono text-[11px] text-on-surface-variant uppercase">Operational Fusion Score:</span>
+                <span id="verdict-score" class="font-mono text-lg font-bold text-primary">0.88 / 1.00</span>
+              </div>
+              <p class="font-mono text-[10px] text-outline leading-tight">
+                Engineering synthesis score; not a probability of landslide occurrence.
+              </p>
+            </div>
+
+            <div class="tactical-card">
+              <div class="flex justify-between items-baseline mb-1.5">
+                <span class="font-mono text-[11px] text-on-surface-variant uppercase">Static Susceptibility:</span>
+                <span id="susc-score-val" class="font-mono text-sm font-bold text-amber-400">0.78 (VERY HIGH)</span>
+              </div>
+              <div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden mb-2">
+                <div id="susc-progress-bar" class="bg-amber-400 h-full rounded-full" style="width: 78%"></div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-1 border-t border-outline-variant/30">
+                <div>
+                  <span class="text-outline block text-[9px]">SLOPE ANGLE</span>
+                  <span id="terrain-slope-val" class="text-error font-bold">38.4° (Critical)</span>
+                </div>
+                <div>
+                  <span class="text-outline block text-[9px]">CURVATURE</span>
+                  <span id="terrain-curvature-val" class="text-on-surface">-0.12 (Concave)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tactical-card">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-mono text-[11px] text-on-surface-variant uppercase">Rainfall Telemetry:</span>
+                <span id="rain-quality-val" class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 font-mono text-[9px] font-bold">VALID</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono mb-2">
+                <div class="p-2 bg-surface-container-lowest rounded border border-outline-variant/30">
+                  <span class="text-outline block text-[9px]">24H PRECIPITATION</span>
+                  <span id="rain-24h-val" class="text-error font-bold text-sm">114.6 mm</span>
+                </div>
+                <div class="p-2 bg-surface-container-lowest rounded border border-outline-variant/30">
+                  <span class="text-outline block text-[9px]">72H SATURATION</span>
+                  <span id="rain-72h-val" class="text-amber-400 font-bold text-sm">242.0 mm</span>
+                </div>
+              </div>
+              <div class="text-[10px] font-mono text-on-surface-variant flex justify-between">
+                <span>CWC Station:</span>
+                <span id="rain-station-val" class="text-secondary font-semibold">Zubza #3412 (12 km)</span>
+              </div>
+            </div>
+
+            <div class="tactical-card">
+              <span class="font-mono text-[10px] text-outline uppercase block mb-1.5">ATTRIBUTION BREAKDOWN</span>
+              <div id="attribution-reasons-list" class="space-y-1">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button data-navigate="location-analysis" class="btn-tactical-secondary justify-center text-xs" type="button">
+                <span class="material-symbols-outlined text-sm">travel_explore</span>
+                <span>Analyze Location</span>
+              </button>
+              <button data-navigate="reports" class="btn-tactical-primary justify-center text-xs" type="button">
+                <span class="material-symbols-outlined text-sm">assignment</span>
+                <span>Generate Brief</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: LOCATION ANALYSIS -->
+      <section id="view-location-analysis" class="view-screen flex-col p-6 bg-surface">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-outline-variant">
+          <div>
+            <h2 class="font-headline-lg text-xl font-bold text-on-surface">Geotechnical Location Analysis</h2>
+            <p class="text-xs text-on-surface-variant mt-0.5">Extract multi-raster physics, soil plasticity, canopy cohesion, and live hydrometric triggers.</p>
+          </div>
+          <button data-action="back" class="btn-tactical-secondary" type="button">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Back</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-4 bg-surface-container rounded-lg border border-outline-variant mb-6">
+          <div class="md:col-span-4">
+            <label class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Target Latitude (°N)</label>
+            <input id="input-analysis-lat" class="tactical-input" type="number" step="0.0001" value="25.6740">
+          </div>
+          <div class="md:col-span-4">
+            <label class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Target Longitude (°E)</label>
+            <input id="input-analysis-lon" class="tactical-input" type="number" step="0.0001" value="94.1120">
+          </div>
+          <div class="md:col-span-4 flex items-end gap-2">
+            <button id="btn-run-analysis" class="btn-tactical-primary flex-1 justify-center py-2" type="button">
+              <span class="material-symbols-outlined text-sm">analytics</span>
+              <span>Evaluate Risk</span>
+            </button>
+            <button id="btn-run-profile-only" class="btn-tactical-secondary justify-center py-2" type="button">
+              <span>Profile Only</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-primary mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">terrain</span>
+              PHYSICAL TERRAIN &amp; SOIL MATRIX
+            </h3>
+            <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">DEM 30M SLOPE GRADIENT</span>
+                <span class="text-error font-bold text-base">38.4°</span>
+                <span class="text-outline text-[9px] block mt-0.5">Critical failure threshold exceeded (&gt;30°)</span>
+              </div>
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">PROFILE / PLAN CURVATURE</span>
+                <span class="text-on-surface font-bold text-base">-0.18 Concave</span>
+                <span class="text-secondary text-[9px] block mt-0.5">Water flow convergence axis</span>
+              </div>
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">SOIL CLAY FRACTION (SOILGRIDS)</span>
+                <span class="text-amber-400 font-bold text-base">28.4%</span>
+                <span class="text-outline text-[9px] block mt-0.5">High plasticity / water retention</span>
+              </div>
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">WORLDCOVER 10M CANOPY</span>
+                <span class="text-on-surface font-bold text-base">Shrubland / Cut</span>
+                <span class="text-outline text-[9px] block mt-0.5">Low mechanical root cohesion</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-secondary mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">water_drop</span>
+              HYDROLOGICAL TRIGGER &amp; ATTRIBUTION
+            </h3>
+            <div class="grid grid-cols-2 gap-3 font-mono text-xs mb-4">
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">24H ACCUMULATED PRECIP</span>
+                <span class="text-error font-bold text-base">114.6 mm</span>
+                <span class="text-error text-[9px] block mt-0.5">Threshold breached (&gt;80 mm)</span>
+              </div>
+              <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+                <span class="text-outline block text-[9px] uppercase">7-DAY ANTECEDENT SATURATION</span>
+                <span class="text-amber-400 font-bold text-base">242.0 mm</span>
+                <span class="text-amber-400 text-[9px] block mt-0.5">Soil moisture storage saturated</span>
+              </div>
+            </div>
+            <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30 font-mono text-xs">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-outline uppercase text-[10px]">Nearest Sovereign Station:</span>
+                <span class="text-secondary font-bold">CWC #3412 (Zubza Spur)</span>
+              </div>
+              <div class="flex justify-between items-center text-[10px]">
+                <span class="text-outline">Station Proximity:</span>
+                <span class="text-on-surface">12.4 km (Within 50km strict boundary)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: DEDICATED FULL-SCREEN RISK MAP -->
+      <section id="view-risk-map" class="view-screen relative flex-col h-full bg-surface-container-lowest">
+        <div class="command-toolbar">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container text-lg">public</span>
+            <span class="font-sans text-xs font-bold uppercase text-on-surface">Full-Screen Tactical Risk Map // Northeast India Domain</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button data-navigate="home" class="btn-tactical-secondary text-xs" type="button">
+              <span class="material-symbols-outlined text-sm">dashboard</span>
+              <span>EOC Dashboard</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 relative w-full h-full">
+          <div id="risk-gis-map" class="w-full h-full"></div>
+
+          <!-- Tactical Legend HUD -->
+          <div class="absolute bottom-4 left-4 z-20 p-3 bg-surface-container/95 backdrop-blur border border-outline-variant rounded-lg shadow-2xl font-mono text-xs w-64">
+            <span class="text-outline text-[10px] uppercase font-bold block mb-2">Authoritative Risk Tiers</span>
+            <div class="space-y-1.5 text-[11px]">
+              <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-error animate-pulse"></span><span>CRITICAL</span></span><span class="text-outline">0.85 – 1.00</span></div>
+              <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>VERY HIGH</span></span><span class="text-outline">0.70 – 0.84</span></div>
+              <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span><span>HIGH</span></span><span class="text-outline">0.55 – 0.69</span></div>
+              <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span><span>MODERATE</span></span><span class="text-outline">0.35 – 0.54</span></div>
+              <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>LOW</span></span><span class="text-outline">0.00 – 0.34</span></div>
+            </div>
+            <div class="mt-2 pt-2 border-t border-outline-variant/30 text-[9px] text-outline">
+              Engineering synthesis; not an event probability.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: RAINFALL & TELEMETRY MONITORING CENTER -->
+      <section id="view-rainfall-telemetry" class="view-screen flex-col p-6 bg-surface">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline-variant">
+          <div>
+            <h2 class="font-headline-lg text-xl font-bold text-on-surface">Sovereign Hydrometric Telemetry</h2>
+            <p class="text-xs text-on-surface-variant mt-0.5">Central Water Commission (CWC) automated river gauges and IMD Doppler gridded radar precipitation.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="cwc-search-input" class="tactical-input w-64 text-xs" type="text" placeholder="Filter by station, state, or river...">
+            <button data-action="back" class="btn-tactical-secondary text-xs" type="button">
+              <span>Back</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="p-3 bg-surface-container rounded border border-outline-variant font-mono text-xs">
+            <span class="text-outline text-[10px] block uppercase">CWC GAUGE NETWORK</span>
+            <span class="text-primary font-bold text-lg">73 Stations Synced</span>
+            <span class="text-emerald-400 text-[10px] block mt-0.5">• Sovereign Real-Time Telemetry Active</span>
+          </div>
+          <div class="p-3 bg-surface-container rounded border border-outline-variant font-mono text-xs">
+            <span class="text-outline text-[10px] block uppercase">IMD DOPPLER RADAR OVERLAY</span>
+            <span class="text-secondary font-bold text-lg">Agartala &amp; Mohanbari</span>
+            <span class="text-secondary text-[10px] block mt-0.5">• Regional Gridded Isohyets Synced</span>
+          </div>
+          <div class="p-3 bg-surface-container rounded border border-outline-variant font-mono text-xs">
+            <span class="text-outline text-[10px] block uppercase">DISTANCE REJECTION THRESHOLD</span>
+            <span class="text-tertiary font-bold text-lg">&gt; 50 km Strict Cap</span>
+            <span class="text-outline text-[10px] block mt-0.5">• Distant stations rejected for integrity</span>
+          </div>
+        </div>
+
+        <div class="flex-1 bg-surface-container rounded-lg border border-outline-variant overflow-hidden flex flex-col">
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-surface-container-high border-b border-outline-variant font-mono text-[10px] text-outline uppercase sticky top-0">
+                <tr>
+                  <th class="p-2.5">Station ID</th>
+                  <th class="p-2.5">Station Name</th>
+                  <th class="p-2.5">State</th>
+                  <th class="p-2.5 text-right">Coordinates</th>
+                  <th class="p-2.5 text-right">24h Precip</th>
+                  <th class="p-2.5 text-right">72h Precip</th>
+                  <th class="p-2.5 text-center">Data Quality</th>
+                </tr>
+              </thead>
+              <tbody id="cwc-table-body" class="divide-y divide-outline-variant/10">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 8: ALERTS SCREEN -->
+      <section id="view-alerts" class="view-screen flex-col p-6 bg-surface">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline-variant">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-error text-2xl">warning</span>
+            <div>
+              <h2 class="font-headline-lg text-xl font-bold text-on-surface">Emergency Operations Alerts</h2>
+              <span class="px-2 py-0.5 rounded bg-surface-container-high text-amber-400 font-mono text-[10px] uppercase font-bold">DEMO MODE — OPERATIONAL SIMULATION</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button data-alert-filter="ALL" class="btn-tactical-secondary text-xs active" type="button">All Alerts</button>
+            <button data-alert-filter="CRITICAL" class="btn-tactical-secondary text-xs text-error" type="button">Critical</button>
+            <button data-alert-filter="HIGH" class="btn-tactical-secondary text-xs text-orange-400" type="button">High</button>
+            <button data-alert-filter="WATCH" class="btn-tactical-secondary text-xs text-amber-400" type="button">Watch</button>
+          </div>
+        </div>
+
+        <div class="space-y-4 overflow-y-auto pr-1">
+          <div class="alert-feed-card p-4 bg-surface-container rounded-xl border border-error/50 shadow-md" data-severity="CRITICAL">
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-error text-on-error font-mono text-[10px] font-bold uppercase">CRITICAL ALERT</span>
+                <span class="font-mono text-xs font-bold text-on-surface">NH-29 Km 14+200 (Kohima–Zubza Spur, Nagaland)</span>
+              </div>
+              <span class="font-mono text-[11px] text-tertiary">Today 14:15 UTC</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-3">
+              72h cumulative rainfall breach (114.6 mm) on 38.4° steep colluvial slope mantle. Intrinsic susceptibility is 0.78 (Very High). Operational fusion score evaluates at 0.88.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/30 text-xs font-mono">
+              <span class="text-outline text-[11px]">Action: Evacuate debris path; pre-position loaders at Zubza depot.</span>
+              <button onclick="navigateTo('home')" class="btn-tactical-primary text-[11px] py-1 px-3" type="button">
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                <span>Inspect in EOC Terminal</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="alert-feed-card p-4 bg-surface-container rounded-xl border border-orange-500/50 shadow-md" data-severity="HIGH">
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-orange-600 text-white font-mono text-[10px] font-bold uppercase">HIGH RISK WARNING</span>
+                <span class="font-mono text-xs font-bold text-on-surface">NH-10 Km 42+500 (Teesta Low Dam / Kali Jhora, Sikkim/WB border)</span>
+              </div>
+              <span class="font-mono text-[11px] text-tertiary">Today 13:40 UTC</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-3">
+              Sustained river scour combined with 89.2 mm 72h precipitation along fractured young Himalayan gneiss cut. Static susceptibility 0.72.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/30 text-xs font-mono">
+              <span class="text-outline text-[11px]">Action: Issue corridor caution for heavy freight transit.</span>
+              <button onclick="navigateTo('home')" class="btn-tactical-secondary text-[11px] py-1 px-3" type="button">
+                <span>Inspect</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="alert-feed-card p-4 bg-surface-container rounded-xl border border-amber-500/40 shadow-md" data-severity="WATCH">
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-amber-600 text-white font-mono text-[10px] font-bold uppercase">WATCH ADVISORY</span>
+                <span class="font-mono text-xs font-bold text-on-surface">Cherrapunji–Shella Escarpment (Meghalaya Plateau)</span>
+              </div>
+              <span class="font-mono text-[11px] text-tertiary">Today 11:20 UTC</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-3">
+              High antecedent saturation (242 mm 7-day volume) on karstic limestone/sandstone slope face.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/30 text-xs font-mono">
+              <span class="text-outline text-[11px]">Action: Routine slope patrol monitoring.</span>
+              <button onclick="navigateTo('home')" class="btn-tactical-secondary text-[11px] py-1 px-3" type="button">
+                <span>Inspect</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 9: REPORTS & ADVISORIES COMPILATION -->
+      <section id="view-reports" class="view-screen flex-col p-6 bg-surface">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline-variant no-print">
+          <div>
+            <h2 class="font-headline-lg text-xl font-bold text-on-surface">Location Assessment Reports</h2>
+            <p class="text-xs text-on-surface-variant mt-0.5">Compile verified physical geotechnics, telemetry, and deterministic risk into operational briefs.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-generate-report" class="btn-tactical-secondary text-xs" type="button">
+              <span class="material-symbols-outlined text-sm">refresh</span>
+              <span>Re-Compile</span>
+            </button>
+            <button id="btn-export-report-json" class="btn-tactical-secondary text-xs" type="button">
+              <span class="material-symbols-outlined text-sm">download</span>
+              <span>Export JSON</span>
+            </button>
+            <button id="btn-print-report" class="btn-tactical-primary text-xs" type="button">
+              <span class="material-symbols-outlined text-sm">print</span>
+              <span>Print / Save PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 bg-surface-container-low rounded-xl border border-outline-variant p-8 overflow-y-auto shadow-inner">
+          <div id="report-document-body" class="max-w-3xl mx-auto bg-surface-container p-8 rounded-lg border border-outline-variant/40 shadow-xl">
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 10: WORKSTATION SETTINGS -->
+      <section id="view-settings" class="view-screen flex-col p-6 bg-surface">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-outline-variant">
+          <div>
+            <h2 class="font-headline-lg text-xl font-bold text-on-surface">Workstation Settings</h2>
+            <p class="text-xs text-on-surface-variant mt-0.5">Configure workstation session, API endpoint, raster cache, and telemetry preferences.</p>
+          </div>
+          <button id="btn-save-settings" class="btn-tactical-primary text-xs" type="button">
+            <span class="material-symbols-outlined text-sm">save</span>
+            <span>Save Settings</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-primary mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">person</span>
+              DUTY OFFICER ACCOUNT
+            </h3>
+            <div class="space-y-3 font-mono text-xs">
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Officer Name:</span>
+                <span class="text-on-surface font-semibold text-sm">Dr. S. K. Roy</span>
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Assigned Role:</span>
+                <span class="text-secondary">Operations Section Chief (Duty Shift A)</span>
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Terminal Node ID:</span>
+                <span class="text-primary">NODE-01 // KOHIMA-EOC-WORKSTATION</span>
+              </div>
+              <div class="pt-2">
+                <button data-action="logout" class="btn-tactical-secondary text-xs text-error hover:bg-error-container/30" type="button">
+                  <span class="material-symbols-outlined text-sm">lock</span>
+                  <span>Lock &amp; Logout Workstation</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-secondary mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">desktop_windows</span>
+              WORKSTATION ENVIRONMENT
+            </h3>
+            <div class="space-y-3 font-mono text-xs">
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Theme Profile:</span>
+                <span class="text-on-surface">Dark Geospatial EOC (Theme Locked)</span>
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Coordinate Format:</span>
+                <select class="tactical-input text-xs py-1 mt-1 bg-surface-container-lowest">
+                  <option>WGS84 Degrees Decimal (25.6740° N, 94.1120° E)</option>
+                  <option>WGS84 Degrees Minutes Seconds (25°40'12" N, 94°06'35" E)</option>
+                  <option>UTM Zone 46N Metric Grid</option>
+                </select>
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Telemetry Refresh Rate:</span>
+                <select class="tactical-input text-xs py-1 mt-1 bg-surface-container-lowest">
+                  <option>Every 15 minutes (Standard EOC Interval)</option>
+                  <option>Every 30 minutes</option>
+                  <option>Every 1 hour</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-tertiary mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">cloud_sync</span>
+              UNIFIED RISK API CONFIGURATION
+            </h3>
+            <div class="space-y-3 font-mono text-xs">
+              <div>
+                <span class="text-outline text-[10px] block uppercase">API Service Endpoint:</span>
+                <input class="tactical-input text-xs py-1 mt-1" type="text" value="http://127.0.0.1:8000">
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Inference Backend:</span>
+                <span class="text-primary">FastAPI REST + Model A Static LSM + CWC Fusion</span>
+              </div>
+              <div>
+                <span class="text-outline text-[10px] block uppercase">Local Raster Cache:</span>
+                <span class="text-emerald-400">42.8 GB Verified (Copernicus 30m, SoilGrids, WorldCover)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 bg-surface-container rounded-xl border border-outline-variant">
+            <h3 class="font-mono text-xs font-bold uppercase text-on-surface mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">info</span>
+              ABOUT &amp; SCIENTIFIC TRANSPARENCY
+            </h3>
+            <div class="space-y-2 text-xs text-on-surface-variant leading-relaxed">
+              <p><strong class="text-on-surface">LANDSLIDENEI Workstation v2.4.0-GA</strong></p>
+              <p class="text-[11px]">Engineered specifically for Emergency Operations Centers across the 8 Northeast Indian states.</p>
+              <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 font-mono text-[10px] text-outline mt-2">
+                Operational fusion scores are an engineering synthesis for decision-support; not an uncalibrated probability of landslide occurrence.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
   </div>
 
-  <!-- Leaflet JS -->
+  <!-- SCRIPTS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- Dashboard Application Scripts -->
   <script src="js/i18n.js"></script>
   <script src="js/demo_presets.js"></script>
   <script src="js/map.js"></script>
   <script src="js/app.js"></script>
-
 </body>
 </html>
