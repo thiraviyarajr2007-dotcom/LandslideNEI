@@ -130,24 +130,26 @@ function closeModal(modal) {
  * Generates verified release artifact stub for Windows
  */
 function downloadPlaceholderPackage() {
-  const manifest = ======================================================================
-LANDSLIDENEI DESKTOP WORKSTATION - WINDOWS x64 RELEASE
-======================================================================
-Version: 2.4.0-GA
-Architecture: x86_64 / Windows 10 & 11
-Build Date: 2026-09-06
-SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
-Engine: Unified FastAPI + Model A Static LSM + CWC Telemetry
-
-INSTALLATION & RUNTIME INSTRUCTIONS:
-1. Ensure Python 3.10+ and DirectX 11+ runtime are available.
-2. In PowerShell, activate repository environment:
-   .\venv\Scripts\Activate.ps1
-3. Launch API & Dashboard backend:
-   python -m uvicorn api.main:app --host 127.0.0.1 --port 8000
-4. Access Desktop UI in browser or native WebView:
-   http://127.0.0.1:8000/
-======================================================================;
+  const manifest = [
+    "======================================================================",
+    "LANDSLIDENEI DESKTOP WORKSTATION - WINDOWS x64 RELEASE",
+    "======================================================================",
+    "Version: 2.4.0-GA",
+    "Architecture: x86_64 / Windows 10 & 11",
+    "Build Date: 2026-09-06",
+    "SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+    "Engine: Unified FastAPI + Model A Static LSM + CWC Telemetry",
+    "",
+    "INSTALLATION & RUNTIME INSTRUCTIONS:",
+    "1. Ensure Python 3.10+ and DirectX 11+ runtime are available.",
+    "2. In PowerShell, activate repository environment:",
+    "   .\\venv\\Scripts\\Activate.ps1",
+    "3. Launch API & Dashboard backend:",
+    "   python -m uvicorn api.main:app --host 127.0.0.1 --port 8000",
+    "4. Access Desktop UI in browser or native WebView:",
+    "   http://127.0.0.1:8000/",
+    "======================================================================"
+  ].join("\n");
 
   const blob = new Blob([manifest], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
