@@ -1,0 +1,85 @@
+================================================================================
+PHASE 8E.3.1 — RAINFALL SOURCE & TEMPORAL AUDIT REPORT
+================================================================================
+Generated UTC: 2026-09-06T05:30:09.158514+00:00
+Status: AUDIT_COMPLETE
+
+1. CWC HOURLY TELEMETRY AUDIT
+   - File: C:\SIH Landslide\data\processed\cwc_rainfall_features.csv
+   - Total Records: 298,359
+   - Timestamp Range: 2019-02-05 01:30:00 to 2026-09-02 09:00:00
+   - Unique Stations: 73 across 6 states
+   - States Covered: Arunachal Pradesh, Assam, Manipur, Nagaland, Sikkim, Tripura
+   - Stations by State: {'Assam': 43, 'Arunachal Pradesh': 14, 'Sikkim': 10, 'Tripura': 5, 'Nagaland': 1, 'Manipur': 1}
+   - Missing Coordinates: Lat 0, Lon 0
+   - Missingness: rainfall_1h=184,683 (61.9%), rainfall_24h=277,683 (93.1%)
+   - Source Periods: {'2021_2025_source': 161679, '1991_2020_source': 134523, '2026_2030_source': 2157}
+   - Key Finding: CWC telemetry starts on 2019-02-05. Zero observations exist for 2014.
+
+2. INTEGRATED DAILY RAINFALL AUDIT
+   - File: C:\SIH Landslide\data\processed\rainfall\rainfall_daily_integrated.csv
+   - Total Station-Days: 31,129
+   - Date Range: 2019-02-05 to 2026-09-02
+   - Stations: 73
+   - Source Distribution: {'CWC_ONLY': 31120, 'CWC_PLUS_IMD': 9}
+   - Overlap: Only 9 station-days have CWC+IMD overlap (August 2026). Zero 2014 data.
+
+3. IMD OPERATIONAL DATA AUDIT
+   - Statewise Date Range: 2026-08-19 to 2026-09-04 (17 days, 136 records)
+   - Districtwise Date Range: 2026-08-19 to 2026-09-04 (17 days, 1,666 records)
+   - States Covered: 8/8 NER States; Districts Covered: 98
+   - Historical 2014 Data Exists: False
+   - Operational Usability for 2014 Training: False
+   - Key Finding: Data is strictly operational current monitoring from Aug-Sep 2026. Cannot be used for 2014 training.
+
+4. TRAINING SAMPLES TEMPORAL AUDIT
+   - Total Samples: 4016 (2,008 positives, 2,008 negatives)
+   - Positive Year Distribution: {'2014.0': 2008}
+   - Negative Year Distribution: {'nan': 2008}
+   - Exact Event Dates Exist: False
+   - Temporal Details: Positives contain only annual year 2014.0 (no month/day/hour). Negatives have Year=NaN.
+
+5. TEMPORAL LEAKAGE ANALYSIS
+   - Feasible to Reconstruct Antecedent Windows (24h, 3d, 7d): False
+   - Reason: Complete temporal disconnect between 2014 landslide inventory and available rainfall datasets.
+   - Impossible Cases: 4016/4016 (100.0%)
+
+6. SPATIAL MATCHING ANALYSIS (UTM Zone 46N)
+   - Distance to Nearest CWC Station:
+     * Min:    0.16 km
+     * 25%:    24.02 km
+     * Median: 40.50 km
+     * Mean:   49.09 km
+     * 75%:    65.36 km
+     * Max:    200.50 km
+   - Distance Thresholds:
+     * <= 10 km:  257 (6.4%)
+     * <= 25 km:  1081 (26.92%)
+     * <= 50 km:  2473 (61.58%)
+     * > 50 km:   1543 (38.42%)
+     * > 100 km:  380 (9.46%)
+   - State Coverage Gaps:
+     * Arunachal Pradesh :  723 samples | Median  24.73 km | Max  89.46 km
+     * ArunachalPradesh  :  723 samples | Median  34.36 km | Max 130.13 km
+     * Assam             :  504 samples | Median  21.77 km | Max  80.80 km
+     * Manipur           :  262 samples | Median  47.71 km | Max 100.99 km
+     * Meghalaya         : 1014 samples | Median  53.62 km | Max 118.28 km
+     * Mizoram           :  708 samples | Median  92.70 km | Max 200.50 km
+     * Nagaland          :   16 samples | Median  44.78 km | Max  67.35 km
+     * Sikkim            :   42 samples | Median  13.24 km | Max  49.03 km
+     * Tripura           :   24 samples | Median  29.31 km | Max  52.77 km
+
+7. FINAL RECOMMENDATION
+   - Outcome: C (2014 rainfall cannot be reconstructed reliably from current datasets)
+   - Key Justifications:
+     1. Temporal incompatibility: Bhuvan landslides occurred in 2014, while available CWC data begins in February 2019 and IMD operational data begins in August 2026. Zero historical 2014 rainfall data exists in the project repository.
+     2. Lack of event timestamps: The Bhuvan 2014 catalog provides only the year (2014), not the specific day or hour of slope failure. Event-relative antecedent windows (24h, 3d, 7d) cannot be computed.
+     3. Spatial coverage gaps: 42.88% of all training samples (Meghalaya and Mizoram) have zero CWC telemetry stations in their states, resulting in nearest-station distances of 50 to 200 km.
+     4. Negative sample temporal neutrality: Negatives are spatial background candidates with no temporal date. Imputing an arbitrary date creates artificial spatial-temporal leakage.
+   - Recommended Architecture:
+     * ML Training (Phase 8F): Train the baseline Landslide Susceptibility Model (LSM) purely on static conditioning factors: Terrain (elevation, slope, aspect, relief), Soil (WRB soil class, clay, sand, silt, bulk density), Land Cover (ESA WorldCover), and Infrastructure Proximity (road, river distance). This establishes a rigorous, scientifically valid static susceptibility model with zero temporal leakage.
+     * Dynamic Trigger: Rainfall should be treated as a real-time operational dynamic trigger rather than a forced static training feature. The early-warning system operates as a Two-Tier Decision Support System:
+  - Tier 1 (Static): P(Susceptibility) from the Random Forest / LightGBM model trained on terrain, soil, land cover, and proximity.
+  - Tier 2 (Dynamic): Rainfall Hazard Alerting from real-time CWC/IMD telemetry using Intensity-Duration / Cumulative Rainfall thresholds (e.g. 24h > 100mm or 72h > 200mm) intersecting with high-susceptibility zones to produce early warnings (Normal, Advisory, Watch, Warning).
+
+================================================================================

@@ -1,0 +1,385 @@
+{
+  "status": "AUDIT_COMPLETE",
+  "audit_timestamp_utc": "2026-09-06T05:30:09.158514+00:00",
+  "section_1_cwc": {
+    "dataset_name": "CWC Hourly & Windowed Telemetry Features",
+    "file_path": "C:\\SIH Landslide\\data\\processed\\cwc_rainfall_features.csv",
+    "total_records": 298359,
+    "min_timestamp": "2019-02-05 01:30:00",
+    "max_timestamp": "2026-09-02 09:00:00",
+    "unique_stations_count": 73,
+    "unique_station_keys_count": 73,
+    "states_covered": [
+      "Arunachal Pradesh",
+      "Assam",
+      "Manipur",
+      "Nagaland",
+      "Sikkim",
+      "Tripura"
+    ],
+    "station_count_by_state": {
+      "Assam": 43,
+      "Arunachal Pradesh": 14,
+      "Sikkim": 10,
+      "Tripura": 5,
+      "Nagaland": 1,
+      "Manipur": 1
+    },
+    "district_count_by_state": {
+      "Arunachal Pradesh": 11,
+      "Assam": 22,
+      "Manipur": 1,
+      "Nagaland": 1,
+      "Sikkim": 5,
+      "Tripura": 5
+    },
+    "missing_coordinates": {
+      "latitude_null": 0,
+      "longitude_null": 0
+    },
+    "coordinate_bounds": {
+      "min_lat": 23.42916667,
+      "max_lat": 28.995,
+      "min_lon": 88.13027778,
+      "max_lon": 97.02583333
+    },
+    "rainfall_window_columns": [
+      "rainfall_1h",
+      "rainfall_24h",
+      "rainfall_3d",
+      "rainfall_7d",
+      "rainfall_24h_sum",
+      "rainfall_3d_sum",
+      "rainfall_7d_sum"
+    ],
+    "coverage_columns": [
+      "rainfall_obs_24h",
+      "rainfall_obs_3d",
+      "rainfall_obs_7d",
+      "coverage_24h",
+      "coverage_3d",
+      "coverage_7d",
+      "missing_24h",
+      "missing_3d",
+      "missing_7d"
+    ],
+    "quality_columns": [
+      "rainfall_quality",
+      "quality_flag",
+      "timestamp_collision"
+    ],
+    "quality_flag_distribution": {
+      "LOW_24H_COVERAGE": 277683,
+      "OK": 19484,
+      "EXTREME_REVIEW": 1192
+    },
+    "rainfall_quality_distribution": {
+      "MISSING": 184683,
+      "VALID": 109210,
+      "EXTREME_REVIEW": 3174,
+      "HIGH_REVIEW": 1292
+    },
+    "mean_coverage": {
+      "coverage_24h": 0.15438532103941896,
+      "coverage_3d": 0.12011164030208202,
+      "coverage_7d": 0.09998210050244676
+    },
+    "missingness_counts": {
+      "rainfall_1h": 184683,
+      "rainfall_24h": 277683,
+      "rainfall_3d": 287392,
+      "rainfall_7d": 291673
+    },
+    "source_period_distribution": {
+      "2021_2025_source": 161679,
+      "1991_2020_source": 134523,
+      "2026_2030_source": 2157
+    }
+  },
+  "section_2_integrated_daily": {
+    "dataset_name": "Integrated Daily Rainfall (CWC + IMD)",
+    "file_path": "C:\\SIH Landslide\\data\\processed\\rainfall\\rainfall_daily_integrated.csv",
+    "total_station_days": 31129,
+    "min_date": "2019-02-05",
+    "max_date": "2026-09-02",
+    "unique_stations_count": 73,
+    "states_covered": [
+      "Arunachal Pradesh",
+      "Assam",
+      "Manipur",
+      "Nagaland",
+      "Sikkim",
+      "Tripura"
+    ],
+    "available_rainfall_variables": [
+      "CWC_Rainfall_mm",
+      "CWC_Rainfall_24h_mm",
+      "CWC_Rainfall_72h_mm",
+      "CWC_Rainfall_168h_mm",
+      "IMD_State_Daily_Actual_mm",
+      "IMD_State_Daily_Normal_mm",
+      "IMD_State_Daily_Departure_pct"
+    ],
+    "spatial_metadata": [
+      "State_Normalized",
+      "station",
+      "station_key",
+      "state",
+      "district",
+      "latitude",
+      "longitude"
+    ],
+    "temporal_metadata": [
+      "CWC_Date",
+      "source_period"
+    ],
+    "source_distribution": {
+      "CWC_ONLY": 31120,
+      "CWC_PLUS_IMD": 9
+    },
+    "integration_level": {
+      "STATE_DATE": 31129
+    },
+    "cwc_only_count": 31120,
+    "cwc_plus_imd_count": 9,
+    "imd_overlap_notes": "Only 9 station-days overlap between CWC and IMD (from recent 2026 operational collection). 31,120 station-days have CWC only."
+  },
+  "section_3_imd": {
+    "dataset_name": "IMD Operational Rainfall Data",
+    "statewise": {
+      "file_path": "C:\\SIH Landslide\\data\\processed\\imd\\imd_statewise_ner.csv",
+      "total_records": 136,
+      "min_date": "2026-08-19",
+      "max_date": "2026-09-04",
+      "unique_states_count": 8,
+      "states_covered": [
+        "ARUNACHAL PRADESH",
+        "ASSAM",
+        "MANIPUR",
+        "MEGHALAYA",
+        "MIZORAM",
+        "NAGALAND",
+        "SIKKIM",
+        "TRIPURA"
+      ],
+      "columns": [
+        "State",
+        "Date",
+        "Daily Actual",
+        "Daily Normal",
+        "Daily Departure Per",
+        "Daily Category",
+        "Week Date",
+        "Weekly Actual",
+        "Weekly \nNormal",
+        "Weekly Departure Per",
+        "Weekly Category",
+        "Cumulative Date",
+        "Cumulative \nActual",
+        "Cumulative Normal",
+        "Cumulative Departue Per",
+        "Cumulative Category",
+        "Monthly Date",
+        "Monthly Acutual",
+        "Monthly Normal",
+        "Monthly Departure Per",
+        "Monthly Category",
+        "State_Normalized"
+      ]
+    },
+    "districtwise": {
+      "file_path": "C:\\SIH Landslide\\data\\processed\\imd\\imd_districtwise_ner.csv",
+      "total_records": 1666,
+      "min_date": "2026-08-19",
+      "max_date": "2026-09-04",
+      "unique_states_count": 8,
+      "unique_districts_count": 98,
+      "districts_per_state": {
+        "ARUNACHAL PRADESH": 16,
+        "ASSAM": 33,
+        "MANIPUR": 9,
+        "MEGHALAYA": 11,
+        "MIZORAM": 8,
+        "NAGALAND": 11,
+        "SIKKIM": 2,
+        "TRIPURA": 8
+      },
+      "columns": [
+        "State",
+        "District",
+        "Date",
+        "Daily Actual",
+        "Daily Normal",
+        "Daily Departure Per",
+        "Daily Category",
+        "Week Date",
+        "Weekly \nActual",
+        "Weekly Normal",
+        "Weekly Departure Per",
+        "Weekly Category",
+        "Cumulative Date",
+        "Cumulative Actual",
+        "Cumulative Normal",
+        "Cumulative Departue Per",
+        "Cumulative \nCategory",
+        "Monthly Date",
+        "Monthly Acutual",
+        "Monthly Normal",
+        "Monthly \nDeparture Per",
+        "Monthly Category",
+        "State_Normalized"
+      ]
+    },
+    "historical_2014_data_exists": false,
+    "operational_usability_for_2014_training": false,
+    "notes": "IMD datasets cover only a 17-day operational window from 2026-08-19 to 2026-09-04. Zero historical 2014 observations exist. Using 2026 operational data for 2014 events would introduce severe temporal distortion."
+  },
+  "section_4_training_samples": {
+    "dataset_name": "Landslide Training Samples (Proximity Layer)",
+    "file_path": "C:\\SIH Landslide\\data\\processed\\landslides\\landslide_training_samples_proximity.csv",
+    "total_samples": 4016,
+    "positives_count": 2008,
+    "negatives_count": 2008,
+    "date_year_columns_present": [
+      "year"
+    ],
+    "year_distribution_positives": {
+      "2014.0": 2008
+    },
+    "year_distribution_negatives": {
+      "nan": 2008
+    },
+    "has_exact_event_dates": false,
+    "positive_event_temporal_resolution": "Annual year only (2014.0). No month, day, or time stamp is recorded in the Bhuvan catalog.",
+    "negative_event_temporal_resolution": "None (NaN). Negative samples are spatial background points sampled within GADM boundaries and have no reference date.",
+    "can_establish_temporal_alignment": false,
+    "notes": "Because positives lack specific event dates and negatives have no reference date, constructing event-relative temporal rainfall windows (e.g., 24h before event) is mathematically undefined without external date assumptions."
+  },
+  "section_5_temporal_leakage_analysis": {
+    "event_relative_reconstruction_feasible": false,
+    "reason_summary": "Complete temporal disconnect between 2014 landslide inventory and available rainfall datasets.",
+    "detailed_factors": {
+      "factor_1_inventory_resolution": "ISRO Bhuvan 2014 inventory records only 'Year: 2014'. Exact event date (day/month/hour) is unknown. Antecedent windows (24h, 3d, 7d prior to failure) cannot be computed without a reference trigger timestamp.",
+      "factor_2_negative_sampling": "Spatial negative samples are background geographic coordinates with Year=NaN. They have no natural reference timestamp. Assigning arbitrary dates would inject severe label-dependent bias.",
+      "factor_3_cwc_coverage": "CWC telemetry data in the repository starts on 2019-02-05 and runs to 2026-09-02. Zero records exist for 2014 (5-year gap). Using 2019-2026 CWC data would represent post-event temporal leakage.",
+      "factor_4_imd_coverage": "IMD statewise and districtwise data covers only 2026-08-19 to 2026-09-04 (a 17-day operational window in 2026). Zero records exist for 2014 (12-year gap)."
+    },
+    "impossible_cases": {
+      "samples_lacking_exact_event_date": 4016,
+      "samples_lacking_2014_cwc_rainfall": 4016,
+      "samples_lacking_2014_imd_rainfall": 4016,
+      "total_impossible_samples_pct": 100.0
+    }
+  },
+  "section_6_spatial_matching_analysis": {
+    "crs_used": "EPSG:32646 (WGS 84 / UTM zone 46N)",
+    "distance_unit": "kilometres",
+    "overall_statistics": {
+      "min_km": 0.16,
+      "p25_km": 24.02,
+      "median_km": 40.5,
+      "mean_km": 49.09,
+      "p75_km": 65.36,
+      "max_km": 200.5,
+      "std_km": 35.42
+    },
+    "distance_threshold_counts": {
+      "within_10km": 257,
+      "within_10km_pct": 6.4,
+      "within_25km": 1081,
+      "within_25km_pct": 26.92,
+      "within_50km": 2473,
+      "within_50km_pct": 61.58,
+      "greater_than_50km": 1543,
+      "greater_than_50km_pct": 38.42,
+      "greater_than_100km": 380,
+      "greater_than_100km_pct": 9.46
+    },
+    "state_breakdown": {
+      "Arunachal Pradesh": {
+        "sample_count": 723,
+        "min_km": 1.36,
+        "median_km": 24.73,
+        "mean_km": 25.04,
+        "max_km": 89.46
+      },
+      "ArunachalPradesh": {
+        "sample_count": 723,
+        "min_km": 0.16,
+        "median_km": 34.36,
+        "mean_km": 38.15,
+        "max_km": 130.13
+      },
+      "Assam": {
+        "sample_count": 504,
+        "min_km": 1.42,
+        "median_km": 21.77,
+        "mean_km": 24.0,
+        "max_km": 80.8
+      },
+      "Manipur": {
+        "sample_count": 262,
+        "min_km": 4.89,
+        "median_km": 47.71,
+        "mean_km": 49.33,
+        "max_km": 100.99
+      },
+      "Meghalaya": {
+        "sample_count": 1014,
+        "min_km": 10.67,
+        "median_km": 53.62,
+        "mean_km": 58.01,
+        "max_km": 118.28
+      },
+      "Mizoram": {
+        "sample_count": 708,
+        "min_km": 7.82,
+        "median_km": 92.7,
+        "mean_km": 92.57,
+        "max_km": 200.5
+      },
+      "Nagaland": {
+        "sample_count": 16,
+        "min_km": 18.69,
+        "median_km": 44.78,
+        "mean_km": 44.26,
+        "max_km": 67.35
+      },
+      "Sikkim": {
+        "sample_count": 42,
+        "min_km": 1.47,
+        "median_km": 13.24,
+        "mean_km": 17.78,
+        "max_km": 49.03
+      },
+      "Tripura": {
+        "sample_count": 24,
+        "min_km": 3.49,
+        "median_km": 29.31,
+        "mean_km": 25.61,
+        "max_km": 52.77
+      }
+    },
+    "critical_spatial_gaps": [
+      "Meghalaya has 1,014 samples (25.2% of dataset) and 0 CWC stations (median distance: 53.62 km, max: 118.28 km).",
+      "Mizoram has 708 samples (17.6% of dataset) and 0 CWC stations (median distance: 92.70 km, max: 200.50 km).",
+      "Together, 1,722 out of 4,016 samples (42.88%) are in states with zero CWC telemetry stations.",
+      "In mountainous orographic terrain, assigning telemetry observations from 40 to 90+ km away across major mountain divides introduces massive spatial error."
+    ]
+  },
+  "section_7_recommendation": {
+    "outcome": "C",
+    "outcome_title": "2014 rainfall cannot be reconstructed reliably from current datasets",
+    "technical_justification": [
+      "1. Temporal incompatibility: Bhuvan landslides occurred in 2014, while available CWC data begins in February 2019 and IMD operational data begins in August 2026. Zero historical 2014 rainfall data exists in the project repository.",
+      "2. Lack of event timestamps: The Bhuvan 2014 catalog provides only the year (2014), not the specific day or hour of slope failure. Event-relative antecedent windows (24h, 3d, 7d) cannot be computed.",
+      "3. Spatial coverage gaps: 42.88% of all training samples (Meghalaya and Mizoram) have zero CWC telemetry stations in their states, resulting in nearest-station distances of 50 to 200 km.",
+      "4. Negative sample temporal neutrality: Negatives are spatial background candidates with no temporal date. Imputing an arbitrary date creates artificial spatial-temporal leakage."
+    ],
+    "recommended_architecture": {
+      "phase_8f_model_training": "Train the baseline Landslide Susceptibility Model (LSM) purely on static conditioning factors: Terrain (elevation, slope, aspect, relief), Soil (WRB soil class, clay, sand, silt, bulk density), Land Cover (ESA WorldCover), and Infrastructure Proximity (road, river distance). This establishes a rigorous, scientifically valid static susceptibility model with zero temporal leakage.",
+      "phase_8e3_dynamic_trigger_pipeline": "Rainfall should be treated as a real-time operational dynamic trigger rather than a forced static training feature. The early-warning system operates as a Two-Tier Decision Support System:\n  - Tier 1 (Static): P(Susceptibility) from the Random Forest / LightGBM model trained on terrain, soil, land cover, and proximity.\n  - Tier 2 (Dynamic): Rainfall Hazard Alerting from real-time CWC/IMD telemetry using Intensity-Duration / Cumulative Rainfall thresholds (e.g. 24h > 100mm or 72h > 200mm) intersecting with high-susceptibility zones to produce early warnings (Normal, Advisory, Watch, Warning).\n",
+      "optional_future_extension": "If joint historical spatio-temporal training is strictly required in a future phase, acquire external 2014 gridded daily precipitation reanalysis (e.g., IMD 0.25 deg Gridded Daily Rainfall or NASA GPM IMERG 0.1 deg Final Daily for 2014), together with verified event date records from GSI landslide reports."
+    }
+  }
+}
