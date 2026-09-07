@@ -138,3 +138,38 @@ def test_desktop_software_served_via_fastapi(client):
     assert "view-home" in resp.text
     assert "view-risk-map" in resp.text
     assert "view-rainfall-telemetry" in resp.text
+
+
+def test_port80_redirect_handler():
+    """Verify scripts/port80_redirect.py handler redirects to port 8000."""
+    from scripts.port80_redirect import RedirectHandler
+    import io
+
+    class DummyHandler(RedirectHandler):
+        def __init__(self):
+            self.rfile = io.BytesIO(b"GET /dashboard/ HTTP/1.1\r\nHost: localhost\r\n\r\n")
+            self.wfile = io.BytesIO()
+            self.requestline = "GET /dashboard/ HTTP/1.1"
+            self.command = "GET"
+            self.path = "/dashboard/"
+            self.request_version = "HTTP/1.1"
+            self.close_connection = True
+
+    h = DummyHandler()
+    h.do_GET()
+    output = h.wfile.getvalue().decode("utf-8", errors="ignore")
+    assert "307" in output
+    assert "Location: http://127.0.0.1:8000/dashboard/" in output
+
+
+def test_rainfall_provider_seed_fallback(tmp_path):
+    """Verify RainfallProvider falls back to cwc_rainfall_stations_seed.csv if full features CSV is missing."""
+    from src.inference.rainfall_provider import RainfallProvider
+
+    seed_file = PROJECT_ROOT / "data" / "processed" / "cwc_rainfall_stations_seed.csv"
+    assert seed_file.exists(), "cwc_rainfall_stations_seed.csv must exist"
+
+    provider = RainfallProvider(cwc_file=seed_file)
+    res = provider.get_rainfall_for_location(27.0, 92.5)
+    assert res["status"] in ["OK", "NO_DATA"]
+

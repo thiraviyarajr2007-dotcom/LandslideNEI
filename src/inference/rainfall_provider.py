@@ -148,7 +148,11 @@ class RainfallProvider:
     def _initialize(self):
         """Load CWC telemetry features and IMD macro tables."""
         if not self.cwc_file.exists():
-            raise FileNotFoundError(f"CWC features dataset not found at {self.cwc_file}")
+            seed_file = self.cwc_file.parent / "cwc_rainfall_stations_seed.csv"
+            if seed_file.exists():
+                self.cwc_file = seed_file
+            else:
+                raise FileNotFoundError(f"CWC features dataset not found at {self.cwc_file}")
 
         cols = [
             "station_key", "station", "state", "district",

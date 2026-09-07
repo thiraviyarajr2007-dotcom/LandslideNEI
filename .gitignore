@@ -29,7 +29,10 @@ temp/
 
 # Data directories
 data/raw/
-data/processed/
+data/processed/*
+!data/processed/cwc_rainfall_stations_seed.csv
+!data/processed/dem/
+!data/processed/landslides/
 data/inspection/landslide_pdfs/
 
 # PyInstaller & Packaging Artifacts

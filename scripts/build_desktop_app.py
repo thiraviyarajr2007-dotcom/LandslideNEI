@@ -26,6 +26,15 @@ def clean_build_artifacts():
 def verify_source_assets():
     """Verify all critical runtime dependencies and model files exist."""
     print("[2/5] Verifying source assets...")
+    
+    # Auto-seed CWC features if full dataset is missing (e.g. CI or fresh git clone)
+    cwc_target = PROJECT_ROOT / "data" / "processed" / "cwc_rainfall_features.csv"
+    cwc_seed = PROJECT_ROOT / "data" / "processed" / "cwc_rainfall_stations_seed.csv"
+    if not cwc_target.exists() and cwc_seed.exists():
+        cwc_target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(cwc_seed, cwc_target)
+        print(f"  [Auto-seeded] {cwc_target.name} from {cwc_seed.name}")
+
     required = [
         PROJECT_ROOT / "desktop_app.py",
         PROJECT_ROOT / "model" / "static_lsm_pipeline.joblib",
