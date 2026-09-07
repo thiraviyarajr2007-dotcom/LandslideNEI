@@ -290,13 +290,14 @@ def download_windows_workstation(request: Request):
         status_code=status.HTTP_200_OK,
         content={
             "product": "LANDSLIDENEI Desktop Workstation",
-            "release": "v2.4.0-GA",
+            "release": "v1.0.0-GA",
             "target_os": "Windows 10 / Windows 11 (64-bit)",
             "package_name": "LANDSLIDENEI_Setup_x64.exe",
             "download_url": "/download/installer",
-            "status": "release_candidate",
-            "build_timestamp": "2026-09-06T12:00:00Z",
-            "sha256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+            "github_release_url": "https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe",
+            "status": "general_availability",
+            "build_timestamp": "2026-09-07T12:00:00Z",
+            "sha256": "bc7a6adceb87bbd2674c98e76f2e834f02ae848125fc9319b3f75c992970aaaf",
             "minimum_requirements": {
                 "os": "Windows 10 Build 19041+ or Windows 11",
                 "architecture": "x86_64",

@@ -59,7 +59,7 @@ def test_internal_anchor_links():
 
 
 def test_download_button_integrity():
-    """Requirement 14: Verify Download for Windows does not point to a fake external URL."""
+    """Verify Download for Windows points to the official GitHub Release asset and not 404 local path."""
     content = (WEBSITE_DIR / "index.html").read_text(encoding="utf-8")
 
     # Download buttons should have data-action="download-windows"
@@ -67,7 +67,10 @@ def test_download_button_integrity():
     assert len(download_buttons) >= 2, "Expected at least 2 Download for Windows trigger links"
 
     for btn in download_buttons:
-        assert 'href="http' not in btn, f"Download button points to external URL: {btn}"
+        # Must not point to non-existent local Pages downloads path
+        assert 'href="downloads/' not in btn, f"Download button points to non-existent local path: {btn}"
+        # Must point to official GitHub Release URL
+        assert 'releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe' in btn, f"Download button missing official release URL: {btn}"
 
 
 def test_js_syntax_integrity():

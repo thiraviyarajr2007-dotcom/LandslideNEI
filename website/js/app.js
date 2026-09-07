@@ -128,20 +128,32 @@ function closeModal(modal) {
 }
 
 /**
+ * Official Release and Distribution Configuration
+ */
+const RELEASE_CONFIG = {
+  version: 'v1.0.0',
+  assetName: 'LANDSLIDENEI_Setup_x64.exe',
+  repo: 'thiraviyarajr2007-dotcom/LandslideNEI',
+  sizeFormatted: '70.4 MB',
+  sha256: 'bc7a6adceb87bbd2674c98e76f2e834f02ae848125fc9319b3f75c992970aaaf',
+  releaseUrl: 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe',
+  rawFallbackUrl: 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/raw/main/installer/LANDSLIDENEI_Setup_x64.exe',
+  releasePageUrl: 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/tag/v1.0.0',
+  localApiUrl: '/download/installer'
+};
+
+/**
  * Resolves the optimal download URL for LANDSLIDENEI_Setup_x64.exe
  */
 function getOptimalDownloadUrl() {
-  if (window.location.protocol === 'file:') {
-    return 'downloads/LANDSLIDENEI_Setup_x64.exe';
+  // If running locally in FastAPI backend context
+  if (typeof window !== 'undefined' && window.location) {
+    if (window.location.port === '8000' || (window.location.origin && window.location.origin.includes(':8000'))) {
+      return RELEASE_CONFIG.localApiUrl;
+    }
   }
-  if (window.location.hostname.includes('github.io')) {
-    return 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe';
-  }
-  // In FastAPI or local web server context
-  if (window.location.port === '8000' || window.location.pathname.startsWith('/website')) {
-    return '/download/installer';
-  }
-  return 'downloads/LANDSLIDENEI_Setup_x64.exe';
+  // Default to official GitHub Release asset distribution URL
+  return RELEASE_CONFIG.releaseUrl;
 }
 
 /**
@@ -149,13 +161,14 @@ function getOptimalDownloadUrl() {
  */
 function downloadReleasePackage() {
   const downloadUrl = getOptimalDownloadUrl();
-  const fallbackUrl = 'downloads/LANDSLIDENEI_Setup_x64.exe';
-  const githubUrl = 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe';
+  const releaseAssetUrl = RELEASE_CONFIG.releaseUrl;
+  const rawFallbackUrl = RELEASE_CONFIG.rawFallbackUrl;
+  const releasePageUrl = RELEASE_CONFIG.releasePageUrl;
 
   // Trigger browser download of .exe file
   const a = document.createElement('a');
   a.href = downloadUrl;
-  a.setAttribute('download', 'LANDSLIDENEI_Setup_x64.exe');
+  a.setAttribute('download', RELEASE_CONFIG.assetName);
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -163,12 +176,12 @@ function downloadReleasePackage() {
   // Update modal status banner
   const statusEl = document.getElementById('download-status');
   if (statusEl) {
-    statusEl.innerHTML = '<span class="text-primary font-bold">Download Started:</span> <strong>LANDSLIDENEI_Setup_x64.exe</strong> (Windows 64-bit Standalone Installer, 73.8 MB).<br>' +
-      '<span class="text-on-surface-variant text-[10px]">Your download should begin automatically. If it does not:</span>' +
+    statusEl.innerHTML = '<span class="text-primary font-bold">Download Started:</span> <strong>' + RELEASE_CONFIG.assetName + '</strong> (Windows 64-bit Standalone Installer, ' + RELEASE_CONFIG.sizeFormatted + ').<br>' +
+      '<span class="text-on-surface-variant text-[10px]">Your download should begin automatically. If it does not, choose a verified distribution mirror below:</span>' +
       '<div class="mt-2 flex flex-wrap items-center justify-center gap-2 font-mono text-[11px]">' +
-      '<a href="' + downloadUrl + '" download="LANDSLIDENEI_Setup_x64.exe" class="px-2.5 py-1 bg-primary text-on-primary font-bold rounded hover:bg-inverse-primary shadow-sm">Direct Download .exe</a>' +
-      '<a href="' + fallbackUrl + '" download="LANDSLIDENEI_Setup_x64.exe" class="px-2.5 py-1 bg-surface-container-high text-on-surface rounded hover:text-primary">Static File Mirror</a>' +
-      '<a href="' + githubUrl + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-surface-container-high text-secondary rounded hover:text-primary">GitHub Mirror</a>' +
+      '<a href="' + releaseAssetUrl + '" download="' + RELEASE_CONFIG.assetName + '" class="px-2.5 py-1 bg-primary text-on-primary font-bold rounded hover:bg-inverse-primary shadow-sm">Direct Release Asset (.exe)</a>' +
+      '<a href="' + rawFallbackUrl + '" download="' + RELEASE_CONFIG.assetName + '" class="px-2.5 py-1 bg-surface-container-high text-on-surface rounded hover:text-primary">Raw Blob Mirror</a>' +
+      '<a href="' + releasePageUrl + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-surface-container-high text-secondary rounded hover:text-primary">Release Notes & Verification</a>' +
       '</div>';
     statusEl.classList.remove('hidden');
   }
