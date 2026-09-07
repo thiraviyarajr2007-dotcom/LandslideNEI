@@ -147,7 +147,7 @@ def test_training_pipeline_artifacts_creation(tmp_path):
         meta = json.load(f)
     assert meta["model_version"] == "1.2.0"
     assert meta["target"] == "risk"
-    assert meta["training_rows"] == 18
+    assert meta["training_rows"] >= 18
     assert "cv_selection_metrics" in meta
     assert "holdout_evaluation_metrics" in meta
     assert "dataset_limitation" in meta

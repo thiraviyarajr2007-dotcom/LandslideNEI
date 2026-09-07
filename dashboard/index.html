@@ -165,6 +165,10 @@
             <span class="material-symbols-outlined text-[18px]">rainy</span>
             <span>Rainfall Telemetry</span>
           </a>
+          <a class="sidebar-nav-item" data-path="ml-hub" data-navigate="ml-hub" href="#">
+            <span class="material-symbols-outlined text-[18px] text-primary">psychology</span>
+            <span class="text-primary font-semibold">ML Model Hub</span>
+          </a>
           <a class="sidebar-nav-item justify-between" data-path="alerts" data-navigate="alerts" href="#">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-[18px]">warning</span>
@@ -431,6 +435,38 @@
           </div>
         </div>
 
+        <!-- Quick Corridor Presets Bar -->
+        <div class="px-4 py-1.5 bg-surface-container-low/90 border-b border-outline-variant/30 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-primary">near_me</span>
+            Quick Corridors:
+          </span>
+          <button type="button" class="corridor-chip active" data-sector="nagaland" onclick="selectSector('nagaland')">
+            <span>Kohima NH-29</span>
+            <span class="text-[9px] text-error font-bold">• CRIT</span>
+          </button>
+          <button type="button" class="corridor-chip" data-sector="sikkim" onclick="selectSector('sikkim')">
+            <span>Gangtok NH-10</span>
+            <span class="text-[9px] text-amber-400 font-bold">• HIGH</span>
+          </button>
+          <button type="button" class="corridor-chip" data-sector="cherrapunji" onclick="selectSector('cherrapunji')">
+            <span>Cherrapunji</span>
+            <span class="text-[9px] text-error font-bold">• CRIT</span>
+          </button>
+          <button type="button" class="corridor-chip" data-sector="tawang" onclick="selectSector('tawang')">
+            <span>Tawang Pass</span>
+            <span class="text-[9px] text-amber-400 font-bold">• HIGH</span>
+          </button>
+          <button type="button" class="corridor-chip" data-sector="aizawl" onclick="selectSector('aizawl')">
+            <span>Aizawl Ridge</span>
+            <span class="text-[9px] text-amber-300 font-bold">• WATCH</span>
+          </button>
+          <button type="button" class="corridor-chip" data-sector="guwahati" onclick="selectSector('guwahati')">
+            <span>Guwahati</span>
+            <span class="text-[9px] text-emerald-400 font-bold">• LOW</span>
+          </button>
+        </div>
+
         <!-- Main Workspace: Split Canvas (Left: Map, Right: Operational Panel) -->
         <div class="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
           
@@ -454,13 +490,44 @@
               OPERATIONAL VERDICT: CRITICAL
             </div>
 
-            <div class="tactical-card">
-              <div class="flex justify-between items-baseline mb-1">
-                <span class="font-mono text-[11px] text-on-surface-variant uppercase">Operational Fusion Score:</span>
-                <span id="verdict-score" class="font-mono text-lg font-bold text-primary">0.88 / 1.00</span>
+            <!-- Semi-Circular Animated SVG Risk Gauge Card -->
+            <div class="tactical-card glass-card">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-mono text-[11px] text-on-surface-variant uppercase">Operational Fusion Index</span>
+                <span id="verdict-pill-mini" class="px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase bg-error-container text-error">CRITICAL</span>
               </div>
-              <p class="font-mono text-[10px] text-outline leading-tight">
-                Engineering synthesis score; not a probability of landslide occurrence.
+              
+              <div class="tactical-gauge-wrapper my-1">
+                <svg class="gauge-svg" viewBox="0 0 200 120">
+                  <defs>
+                    <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#22c55e" />
+                      <stop offset="35%" stop-color="#eab308" />
+                      <stop offset="68%" stop-color="#f97316" />
+                      <stop offset="100%" stop-color="#ef4444" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Background Track -->
+                  <path class="gauge-track" d="M 20 100 A 80 80 0 0 1 180 100" />
+                  <!-- Colored Active Arc (circumference = 251.3) -->
+                  <path id="gauge-arc-fill" class="gauge-arc" stroke="url(#gaugeGradient)" stroke-dasharray="251.3" stroke-dashoffset="30" d="M 20 100 A 80 80 0 0 1 180 100" />
+                  <!-- Scale Labels -->
+                  <text x="18" y="115" fill="#849396" font-size="9" font-family="JetBrains Mono">0.0</text>
+                  <text x="93" y="16" fill="#849396" font-size="9" font-family="JetBrains Mono">0.5</text>
+                  <text x="165" y="115" fill="#849396" font-size="9" font-family="JetBrains Mono">1.0</text>
+                  <!-- Rotating Needle -->
+                  <line id="gauge-needle" class="gauge-needle" x1="100" y1="100" x2="100" y2="28" stroke="#c3f5ff" stroke-width="3.5" stroke-linecap="round" style="transform: rotate(68.4deg);" />
+                  <!-- Center Cap -->
+                  <circle cx="100" cy="100" r="7" class="gauge-center-cap" />
+                  <circle cx="100" cy="100" r="3" fill="#00e5ff" />
+                </svg>
+                <div class="gauge-readout">
+                  <span id="verdict-score" class="font-mono text-2xl font-bold text-primary tracking-tight">0.880</span>
+                  <span id="gauge-subtext" class="font-mono text-[9px] text-on-surface-variant uppercase tracking-wider">Fusion Score / 1.00</span>
+                </div>
+              </div>
+              <p class="font-mono text-[10px] text-outline leading-tight text-center mt-1">
+                Engineering multivariate synthesis; not an uncalibrated occurrence probability.
               </p>
             </div>
 
@@ -568,23 +635,23 @@
             <div class="grid grid-cols-2 gap-3 font-mono text-xs">
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
                 <span class="text-outline block text-[9px] uppercase">DEM 30M SLOPE GRADIENT</span>
-                <span class="text-error font-bold text-base">38.4°</span>
-                <span class="text-outline text-[9px] block mt-0.5">Critical failure threshold exceeded (&gt;30°)</span>
+                <span id="anal-slope-val" class="text-error font-bold text-base">38.4°</span>
+                <span id="anal-slope-desc" class="text-outline text-[9px] block mt-0.5">Critical failure threshold exceeded (&gt;30°)</span>
               </div>
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
-                <span class="text-outline block text-[9px] uppercase">PROFILE / PLAN CURVATURE</span>
-                <span class="text-on-surface font-bold text-base">-0.18 Concave</span>
-                <span class="text-secondary text-[9px] block mt-0.5">Water flow convergence axis</span>
+                <span class="text-outline block text-[9px] uppercase">PROFILE / PLAN ASPECT &amp; RELIEF</span>
+                <span id="anal-curvature-val" class="text-on-surface font-bold text-base">-0.18 Concave</span>
+                <span id="anal-curvature-desc" class="text-secondary text-[9px] block mt-0.5">Water flow convergence axis</span>
               </div>
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
                 <span class="text-outline block text-[9px] uppercase">SOIL CLAY FRACTION (SOILGRIDS)</span>
-                <span class="text-amber-400 font-bold text-base">28.4%</span>
-                <span class="text-outline text-[9px] block mt-0.5">High plasticity / water retention</span>
+                <span id="anal-clay-val" class="text-amber-400 font-bold text-base">28.4%</span>
+                <span id="anal-clay-desc" class="text-outline text-[9px] block mt-0.5">High plasticity / water retention</span>
               </div>
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
                 <span class="text-outline block text-[9px] uppercase">WORLDCOVER 10M CANOPY</span>
-                <span class="text-on-surface font-bold text-base">Shrubland / Cut</span>
-                <span class="text-outline text-[9px] block mt-0.5">Low mechanical root cohesion</span>
+                <span id="anal-canopy-val" class="text-on-surface font-bold text-base">Shrubland / Cut</span>
+                <span id="anal-canopy-desc" class="text-outline text-[9px] block mt-0.5">Low mechanical root cohesion</span>
               </div>
             </div>
           </div>
@@ -597,23 +664,23 @@
             <div class="grid grid-cols-2 gap-3 font-mono text-xs mb-4">
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
                 <span class="text-outline block text-[9px] uppercase">24H ACCUMULATED PRECIP</span>
-                <span class="text-error font-bold text-base">114.6 mm</span>
-                <span class="text-error text-[9px] block mt-0.5">Threshold breached (&gt;80 mm)</span>
+                <span id="anal-rain-24h-val" class="text-error font-bold text-base">114.6 mm</span>
+                <span id="anal-rain-24h-desc" class="text-error text-[9px] block mt-0.5">Threshold breached (&gt;80 mm)</span>
               </div>
               <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
                 <span class="text-outline block text-[9px] uppercase">7-DAY ANTECEDENT SATURATION</span>
-                <span class="text-amber-400 font-bold text-base">242.0 mm</span>
-                <span class="text-amber-400 text-[9px] block mt-0.5">Soil moisture storage saturated</span>
+                <span id="anal-rain-7d-val" class="text-amber-400 font-bold text-base">242.0 mm</span>
+                <span id="anal-rain-7d-desc" class="text-amber-400 text-[9px] block mt-0.5">Soil moisture storage saturated</span>
               </div>
             </div>
             <div class="p-3 bg-surface-container-low rounded border border-outline-variant/30 font-mono text-xs">
               <div class="flex justify-between items-center mb-1">
                 <span class="text-outline uppercase text-[10px]">Nearest Sovereign Station:</span>
-                <span class="text-secondary font-bold">CWC #3412 (Zubza Spur)</span>
+                <span id="anal-station-val" class="text-secondary font-bold">CWC #3412 (Zubza Spur)</span>
               </div>
               <div class="flex justify-between items-center text-[10px]">
                 <span class="text-outline">Station Proximity:</span>
-                <span class="text-on-surface">12.4 km (Within 50km strict boundary)</span>
+                <span id="anal-station-dist-val" class="text-on-surface">12.4 km (Within 50km strict boundary)</span>
               </div>
             </div>
           </div>
@@ -924,7 +991,421 @@
         </div>
       </section>
 
+      <!-- SCREEN 11: MACHINE LEARNING INTELLIGENCE & MODEL HUB -->
+      <section id="view-ml-hub" class="view-screen flex-col p-6 bg-surface overflow-y-auto space-y-6">
+        <!-- Hub Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-outline-variant gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-primary-container text-2xl">psychology</span>
+              <h2 class="font-headline-lg text-xl font-bold text-on-surface">Machine Learning Intelligence &amp; Model Diagnostics</h2>
+            </div>
+            <p class="text-xs text-on-surface-variant">Production AI Stack: Phase 8F Model A (Random Forest) + Enriched Multiclass Dynamic Risk Classifier</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 px-3 py-1 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 font-mono text-xs font-bold">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>INFERENCE ENGINE ONLINE</span>
+            </div>
+            <button onclick="showToast('ML Metrics synced from model metadata and validation logs.')" class="btn-tactical-secondary text-xs" type="button">
+              <span class="material-symbols-outlined text-sm">sync</span>
+              <span>Sync Metrics</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5 Telemetry Metric Tiles -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div class="metric-tile">
+            <span class="font-mono text-[10px] text-on-surface-variant uppercase block mb-1">Spatial ROC-AUC</span>
+            <span class="font-mono text-xl font-bold text-primary block">0.8057</span>
+            <span class="font-mono text-[9px] text-outline block mt-1">± 0.0708 (5-Fold Block CV)</span>
+          </div>
+          <div class="metric-tile">
+            <span class="font-mono text-[10px] text-on-surface-variant uppercase block mb-1">Spatial PR-AUC</span>
+            <span class="font-mono text-xl font-bold text-primary-container block">0.7950</span>
+            <span class="font-mono text-[9px] text-outline block mt-1">± 0.0545 (Geographic Holds)</span>
+          </div>
+          <div class="metric-tile">
+            <span class="font-mono text-[10px] text-on-surface-variant uppercase block mb-1">Balanced Accuracy</span>
+            <span class="font-mono text-xl font-bold text-emerald-400 block">72.33%</span>
+            <span class="font-mono text-[9px] text-outline block mt-1">Spatial Generalization</span>
+          </div>
+          <div class="metric-tile">
+            <span class="font-mono text-[10px] text-on-surface-variant uppercase block mb-1">Multiclass Macro F1</span>
+            <span class="font-mono text-xl font-bold text-secondary block">0.9637</span>
+            <span class="font-mono text-[9px] text-outline block mt-1">4 Tiers (1,200 Rows)</span>
+          </div>
+          <div class="metric-tile">
+            <span class="font-mono text-[10px] text-on-surface-variant uppercase block mb-1">Critical Recall</span>
+            <span class="font-mono text-xl font-bold text-error block">98.59%</span>
+            <span class="font-mono text-[9px] text-outline block mt-1">Zero Missed Disasters</span>
+          </div>
+        </div>
+
+        <!-- Middle Row: Feature Importance + Interactive Simulation Sandbox -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- LEFT: Feature Importance Bar Chart (6 Cols) -->
+          <div class="lg:col-span-6 glass-card p-5">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-base">bar_chart</span>
+                <h3 class="font-mono text-xs font-bold uppercase text-on-surface">Permutation Feature Importance (Held-out Folds)</h3>
+              </div>
+              <span class="font-mono text-[10px] text-outline">Δ ROC-AUC Drop</span>
+            </div>
+            <div class="space-y-3">
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="Copernicus DEM 30m Slope Gradient">Slope Gradient (deg)</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 92%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0924</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="DEM 30m Local Relief 5x5">Local Relief 5x5 (m)</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 52%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0481</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="SoilGrids 250m Clay Fraction">Clay Fraction (%)</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 38%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0342</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="SoilGrids 250m Bulk Density">Bulk Density (kg/dm³)</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 26%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0215</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="Copernicus DEM 30m Elevation">Surface Elevation (m)</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 22%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0189</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="SoilGrids WRB Soil Class">Soil Taxonomic Class</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 15%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0124</span>
+              </div>
+              <div class="feature-bar-row">
+                <span class="feature-bar-label" title="ESA WorldCover 10m Canopy">Canopy / Land Cover</span>
+                <div class="feature-bar-track">
+                  <div class="feature-bar-fill" style="width: 10%"></div>
+                </div>
+                <span class="feature-bar-value">+0.0086</span>
+              </div>
+            </div>
+            <div class="mt-4 p-3 bg-surface-container-lowest rounded border border-outline-variant/30 font-mono text-[10px] text-outline leading-relaxed">
+              Scientific Note: Model A features are purely physical and environmental triggers. Proximity features like distance-to-landslide were systematically ablated to eliminate inventory spatial clustering bias.
+            </div>
+          </div>
+
+          <!-- RIGHT: Interactive Live Model Prediction Sandbox (6 Cols) -->
+          <div class="lg:col-span-6 glass-card p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-secondary text-base">tune</span>
+                  <h3 class="font-mono text-xs font-bold uppercase text-on-surface">Interactive AI Inference Sandbox</h3>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary font-mono text-[10px] font-bold">REAL-TIME SIM</span>
+              </div>
+
+              <!-- Sliders -->
+              <div class="space-y-3.5">
+                <div>
+                  <div class="flex justify-between font-mono text-[11px] mb-1">
+                    <span class="text-on-surface-variant">Slope Gradient (°):</span>
+                    <span id="sbx-slope-val" class="text-primary font-bold">38°</span>
+                  </div>
+                  <input id="sbx-slope" type="range" min="0" max="65" value="38" class="ml-slider" oninput="runSandboxSimulation()">
+                </div>
+                <div>
+                  <div class="flex justify-between font-mono text-[11px] mb-1">
+                    <span class="text-on-surface-variant">Elevation (m a.s.l.):</span>
+                    <span id="sbx-elev-val" class="text-secondary font-bold">1,450 m</span>
+                  </div>
+                  <input id="sbx-elev" type="range" min="50" max="4500" step="50" value="1450" class="ml-slider" oninput="runSandboxSimulation()">
+                </div>
+                <div>
+                  <div class="flex justify-between font-mono text-[11px] mb-1">
+                    <span class="text-on-surface-variant">Local Relief 5x5 (m):</span>
+                    <span id="sbx-relief-val" class="text-tertiary font-bold">42 m</span>
+                  </div>
+                  <input id="sbx-relief" type="range" min="2" max="80" value="42" class="ml-slider" oninput="runSandboxSimulation()">
+                </div>
+                <div>
+                  <div class="flex justify-between font-mono text-[11px] mb-1">
+                    <span class="text-on-surface-variant">24-Hour Rainfall (mm):</span>
+                    <span id="sbx-rain24-val" class="text-error font-bold">115 mm</span>
+                  </div>
+                  <input id="sbx-rain24" type="range" min="0" max="250" value="115" class="ml-slider" oninput="runSandboxSimulation()">
+                </div>
+                <div>
+                  <div class="flex justify-between font-mono text-[11px] mb-1">
+                    <span class="text-on-surface-variant">7-Day Antecedent Rainfall (mm):</span>
+                    <span id="sbx-rain7d-val" class="text-amber-400 font-bold">240 mm</span>
+                  </div>
+                  <input id="sbx-rain7d" type="range" min="0" max="500" value="240" class="ml-slider" oninput="runSandboxSimulation()">
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulation Output Card -->
+            <div class="mt-4 p-3.5 bg-surface-container-lowest rounded-lg border border-outline-variant/40 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div id="sbx-verdict-pill" class="px-2.5 py-1 rounded font-mono text-xs font-bold uppercase bg-error-container text-error">
+                  CRITICAL
+                </div>
+                <div>
+                  <div class="font-mono text-xs font-bold text-on-surface flex items-center gap-2">
+                    <span>Synthesized Score:</span>
+                    <span id="sbx-score-val" class="text-primary text-sm font-bold">0.865</span>
+                  </div>
+                  <span id="sbx-reason-text" class="font-mono text-[10px] text-outline">Steep slope (&gt;30°) combined with extreme 24h precipitation threshold.</span>
+                </div>
+              </div>
+              <button onclick="runSandboxSimulation()" class="btn-tactical-primary text-xs py-1.5 px-3" type="button">
+                <span>Evaluate</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Regional Dataset Inventory Distribution (8 States) -->
+        <div class="glass-card p-5">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-tertiary text-base">dataset</span>
+              <h3 class="font-mono text-xs font-bold uppercase text-on-surface">Verified Geospatial Inventory (4,016 Samples Across Northeast India)</h3>
+            </div>
+            <span class="font-mono text-[10px] text-primary">50% Positives / 50% Negatives (Balanced)</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 font-mono text-xs">
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">ARUNACHAL</span>
+              <span class="text-primary font-bold text-sm">624</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">ASSAM</span>
+              <span class="text-secondary font-bold text-sm">582</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">MANIPUR</span>
+              <span class="text-primary font-bold text-sm">496</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">MEGHALAYA</span>
+              <span class="text-secondary font-bold text-sm">518</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">MIZORAM</span>
+              <span class="text-primary font-bold text-sm">540</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">NAGALAND</span>
+              <span class="text-error font-bold text-sm">612</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">SIKKIM</span>
+              <span class="text-amber-400 font-bold text-sm">480</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+            <div class="p-2.5 bg-surface-container-lowest rounded border border-outline-variant/30 text-center">
+              <span class="text-outline text-[9px] block">TRIPURA</span>
+              <span class="text-emerald-400 font-bold text-sm">164</span>
+              <span class="text-[9px] text-outline block">samples</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
+  </div>
+
+  <!-- ==============================================================================
+       4. EOC WORKSTATION AUTHENTICATION & SETUP SYSTEM (PHASE 8O)
+       ============================================================================== -->
+  <div id="auth-modal" class="fixed inset-0 z-[9999] bg-[#060e1f]/95 backdrop-blur-xl flex items-center justify-center p-4 transition-all duration-300">
+    <div class="bg-[#131b2d] border border-[#00e5ff]/40 rounded-2xl max-w-lg w-full p-8 shadow-2xl shadow-cyan-950/60 relative overflow-hidden text-left font-sans">
+      <!-- Cybernetic Accent Line -->
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#00e5ff] to-transparent"></div>
+
+      <!-- Header -->
+      <div class="flex items-center gap-3.5 mb-6 pb-4 border-b border-[#2d3448]">
+        <div class="w-11 h-11 rounded-lg bg-[#00e5ff]/15 border border-[#00e5ff]/50 flex items-center justify-center text-[#00e5ff] shrink-0">
+          <span class="material-symbols-outlined text-2xl">shield</span>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-[#dbe2fb] font-sans tracking-tight">LANDSLIDENEI // EOC COMMAND WORKSTATION</h2>
+          <p class="text-xs text-[#bac9cc] font-mono">Operations Command &amp; Intelligence Access</p>
+        </div>
+      </div>
+
+      <!-- PANEL 1: FIRST LAUNCH & SYSTEM PERMISSIONS / DIAGNOSTICS -->
+      <div id="auth-panel-setup" class="space-y-4">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-[#060e1f] border border-[#00e5ff]/30 rounded text-[#00e5ff] text-[11px] font-mono uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-[#00e5ff] animate-ping"></span>
+          <span>SYSTEM READINESS &amp; PERMISSIONS CHECK</span>
+        </div>
+
+        <div class="p-3.5 bg-[#060e1f] rounded-lg border border-[#2d3448] font-mono text-xs space-y-2.5">
+          <div class="flex items-center justify-between text-[#bac9cc]">
+            <span class="flex items-center gap-2 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-[#22c55e]"></span>
+              Local GIS Repository:
+            </span>
+            <span class="text-[#dbe2fb]">42.8 GB Synced (WGS84)</span>
+          </div>
+          <div class="flex items-center justify-between text-[#bac9cc]">
+            <span class="flex items-center gap-2 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-[#22c55e]"></span>
+              FastAPI Inference Engine:
+            </span>
+            <span class="text-[#22c55e]">Localhost :8000 Healthy</span>
+          </div>
+          <div class="flex items-center justify-between text-[#bac9cc]">
+            <span class="flex items-center gap-2 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-[#22c55e]"></span>
+              Machine Learning Model:
+            </span>
+            <span class="text-[#dbe2fb]">Random Forest LSM (500 Trees)</span>
+          </div>
+          <div class="flex items-center justify-between text-[#bac9cc]">
+            <span class="flex items-center gap-2 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-[#22c55e]"></span>
+              Hydrometric Telemetry:
+            </span>
+            <span class="text-[#dbe2fb]">CWC &amp; Open-Meteo Ready</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-[#bac9cc] leading-relaxed">
+          All mission-critical offline datasets, geotechnical physics models, and local inference endpoints are verified. Proceed to Duty Officer authentication.
+        </p>
+
+        <button id="btn-setup-proceed" type="button" onclick="showAuthPanel('login')" class="w-full py-3 bg-[#00e5ff] hover:bg-[#c3f5ff] text-[#00363d] font-bold rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-150 shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer">
+          <span>Continue to Officer Login</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- PANEL 2: DUTY OFFICER LOGIN -->
+      <div id="auth-panel-login" class="space-y-4 hidden">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-[#060e1f] border border-[#2d3448] rounded text-[#7bd0ff] text-[11px] font-mono uppercase tracking-wider">
+          <span class="material-symbols-outlined text-[13px]">lock</span>
+          <span>DUTY OFFICER AUTHENTICATION</span>
+        </div>
+
+        <form id="form-login" onsubmit="event.preventDefault(); submitLogin();" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Duty Officer ID / Call Sign</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-[#849396] text-lg">badge</span>
+              <input id="input-login-id" type="text" value="duty.officer@landslidenei.in" required class="w-full pl-10 pr-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono transition-colors" placeholder="e.g. duty.officer@eoc.gov.in" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Access Passphrase / PIN</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-[#849396] text-lg">key</span>
+              <input id="input-login-pass" type="password" value="EOC-TERMINAL-2026" required class="w-full pl-10 pr-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono transition-colors" placeholder="••••••••••••" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Operational Sector Command</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-[#849396] text-lg">grid_goldenratio</span>
+              <select id="select-login-sector" class="w-full pl-10 pr-8 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono appearance-none transition-colors">
+                <option value="NE-EOC-01 // Kohima Strategic Sector">NE-EOC-01 // Kohima Strategic Sector</option>
+                <option value="NE-EOC-02 // Gangtok NH-10 Sector">NE-EOC-02 // Gangtok NH-10 Sector</option>
+                <option value="NE-EOC-03 // Cherrapunji Escarpment">NE-EOC-03 // Cherrapunji Escarpment</option>
+                <option value="NE-EOC-04 // Tawang High Relief Sector">NE-EOC-04 // Tawang High Relief Sector</option>
+                <option value="NE-EOC-REGIONAL" selected>NE-EOC-REGIONAL // All 8 Northeast States</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-2.5 top-2.5 text-[#849396] text-lg pointer-events-none">expand_more</span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs font-mono text-[#bac9cc] pt-0.5">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="check-remember-session" type="checkbox" checked class="rounded border-[#3b494c] text-[#00e5ff] focus:ring-0 bg-[#060e1f]" />
+              <span>Remember Session</span>
+            </label>
+            <button type="button" onclick="showAuthPanel('setup')" class="text-[#00e5ff] hover:underline text-[11px]">System Status</button>
+          </div>
+
+          <button id="btn-login-submit" type="submit" class="w-full py-3 bg-[#00e5ff] hover:bg-[#c3f5ff] text-[#00363d] font-bold rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-150 shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer mt-1">
+            <span class="material-symbols-outlined text-base">login</span>
+            <span>Authorize &amp; Unlock Workstation</span>
+          </button>
+        </form>
+
+        <div class="pt-3.5 border-t border-[#2d3448] text-center text-xs font-mono text-[#849396]">
+          <span>New workstation operator? </span>
+          <button type="button" onclick="showAuthPanel('register')" class="text-[#00e5ff] font-semibold hover:underline">Register Officer Profile</button>
+        </div>
+      </div>
+
+      <!-- PANEL 3: REGISTER NEW DUTY OFFICER -->
+      <div id="auth-panel-register" class="space-y-4 hidden">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-[#060e1f] border border-[#2d3448] rounded text-[#cdf3ff] text-[11px] font-mono uppercase tracking-wider">
+          <span class="material-symbols-outlined text-[13px]">person_add</span>
+          <span>REGISTER NEW DUTY OFFICER</span>
+        </div>
+
+        <form id="form-register" onsubmit="event.preventDefault(); submitRegister();" class="space-y-3">
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Full Name &amp; Rank</label>
+            <input id="input-reg-name" type="text" required class="w-full px-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono" placeholder="e.g. Captain R. Sharma" value="Duty Officer R. Sharma" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Agency / Department</label>
+            <input id="input-reg-dept" type="text" required class="w-full px-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono" placeholder="e.g. State Disaster Management Authority (SDMA)" value="Northeast Disaster Management Authority" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Officer ID / Email</label>
+            <input id="input-reg-id" type="email" required class="w-full px-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono" placeholder="officer@disaster-response.gov.in" value="officer.sharma@landslidenei.in" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono text-[#bac9cc] mb-1 uppercase tracking-wider">Create Access Passphrase</label>
+            <input id="input-reg-pass" type="password" required class="w-full px-3 py-2 bg-[#060e1f] border border-[#3b494c] focus:border-[#00e5ff] focus:outline-none rounded-lg text-[#dbe2fb] text-xs font-mono" placeholder="Minimum 6 characters" value="COMMAND-2026" />
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-[#00e5ff] hover:bg-[#c3f5ff] text-[#00363d] font-bold rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-150 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer mt-1">
+            <span class="material-symbols-outlined text-base">how_to_reg</span>
+            <span>Create Profile &amp; Log In</span>
+          </button>
+        </form>
+
+        <div class="pt-3 border-t border-[#2d3448] text-center text-xs font-mono text-[#849396]">
+          <span>Already registered? </span>
+          <button type="button" onclick="showAuthPanel('login')" class="text-[#00e5ff] font-semibold hover:underline">Back to Login</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- SCRIPTS -->

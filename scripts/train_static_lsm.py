@@ -37,7 +37,7 @@ from sklearn.metrics import (
     brier_score_loss
 )
 
-BASE_DIR = r"C:\SIH Landslide"
+BASE_DIR = os.environ.get("LANDSLIDENEI_ROOT", str(Path(__file__).resolve().parents[1]))
 INPUT_CSV = os.path.join(BASE_DIR, "data", "processed", "landslides", "landslide_training_samples_proximity.csv")
 OUTPUT_DIR = os.path.join(BASE_DIR, "data", "inspection", "lsm")
 PLOTS_DIR = os.path.join(OUTPUT_DIR, "plots")
@@ -182,13 +182,13 @@ def build_pipeline(numeric_cols, categorical_cols):
     )
     
     classifier = RandomForestClassifier(
-        n_estimators=100,
-        max_depth=15,
-        min_samples_split=5,
+        n_estimators=150,
+        max_depth=16,
+        min_samples_split=4,
         min_samples_leaf=2,
-        class_weight="balanced",
+        class_weight="balanced_subsample",
         random_state=42,
-        n_jobs=-1
+        n_jobs=1
     )
     
     return Pipeline(steps=[
@@ -328,7 +328,7 @@ def compute_permutation_importance(df, num_cols, cat_cols, model_name):
             scoring="roc_auc",
             n_repeats=5,
             random_state=42 + fold,
-            n_jobs=-1
+            n_jobs=2
         )
         fold_importances.append(res.importances_mean)
         

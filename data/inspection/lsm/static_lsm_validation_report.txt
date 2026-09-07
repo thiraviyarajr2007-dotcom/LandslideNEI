@@ -1,7 +1,7 @@
 ================================================================================
 PHASE 8F — STATIC LANDSLIDE SUSCEPTIBILITY MODEL VALIDATION REPORT
 ================================================================================
-Generated UTC: 2026-09-06T05:46:56.376758+00:00
+Generated UTC: 2026-09-07T06:05:19.467942+00:00
 Total Samples: 4016 (2,008 Positives, 2,008 Negatives)
 Spatial CV Strategy: 41 1-Degree Grid Blocks -> 5 Balanced Geographic Folds
 
@@ -9,41 +9,41 @@ Spatial CV Strategy: 41 1-Degree Grid Blocks -> 5 Balanced Geographic Folds
 --------------------------------------------------------------------------------
 Model Configuration                  | ROC-AUC         | PR-AUC          | Bal. Acc     | F1          
 --------------------------------------------------------------------------------
-Model A (Environmental Only)         | 0.8062 ± 0.0719 | 0.7937 ± 0.0525 | 0.7188      | 0.6866
-Model B1 (Env + Road/River)          | 0.8059 ± 0.0713 | 0.7948 ± 0.0530 | 0.7187      | 0.6799
-Model B2 (Env + All Proximity)       | 0.9553 ± 0.0371 | 0.9613 ± 0.0339 | 0.9011      | 0.8933
+Model A (Environmental Only)         | 0.8057 ± 0.0708 | 0.7950 ± 0.0545 | 0.7233      | 0.6885
+Model B1 (Env + Road/River)          | 0.8099 ± 0.0668 | 0.7973 ± 0.0558 | 0.7204      | 0.6803
+Model B2 (Env + All Proximity)       | 0.9549 ± 0.0368 | 0.9610 ± 0.0339 | 0.8997      | 0.8917
 --------------------------------------------------------------------------------
 
 2. PROXIMITY FEATURE ABLATION ANALYSIS
 --------------------------------------------------------------------------------
 Model A -> Model B1 (Road & River Distance):
-  * Δ Spatial ROC-AUC: -0.0003
-  * Δ Spatial PR-AUC:  +0.0011
+  * Δ Spatial ROC-AUC: +0.0042
+  * Δ Spatial PR-AUC:  +0.0023
   * Assessment: Road and river proximity produce neutral impact across geographic folds.
 Model A -> Model B2 (All Proximity, including distance_to_nearest_other_landslide_m):
   * Δ Spatial ROC-AUC: +0.1492
-  * Δ Spatial PR-AUC:  +0.1676
+  * Δ Spatial PR-AUC:  +0.1660
   * Critical Scientific Note: The +0.1534 surge in ROC-AUC is driven almost entirely by
     distance_to_nearest_other_landslide_m, which acts as an inventory clustering proxy
     and mirrors the >=1 km buffer of negative generation. It is NOT a causal physical mechanism.
 
 3. PERMUTATION FEATURE IMPORTANCE (MODEL A — HELD-OUT SPATIAL FOLDS)
 --------------------------------------------------------------------------------
-  * aspect_deg                : +0.10960 ± 0.02831 ROC-AUC drop
-  * relief_std_5x5_m          : +0.06124 ± 0.01375 ROC-AUC drop
-  * elevation_m               : +0.03880 ± 0.02928 ROC-AUC drop
-  * slope_deg                 : +0.03659 ± 0.01054 ROC-AUC drop
-  * bulk_density_kg_dm3       : +0.00407 ± 0.00437 ROC-AUC drop
-  * landcover_class           : +0.00110 ± 0.00270 ROC-AUC drop
-  * clay_percent              : -0.00066 ± 0.00515 ROC-AUC drop
-  * sand_percent              : -0.00192 ± 0.00173 ROC-AUC drop
-  * silt_percent              : -0.00373 ± 0.00284 ROC-AUC drop
-  * soil_class                : -0.00391 ± 0.00835 ROC-AUC drop
+  * aspect_deg                : +0.10962 ± 0.02649 ROC-AUC drop
+  * relief_std_5x5_m          : +0.05669 ± 0.01639 ROC-AUC drop
+  * elevation_m               : +0.04077 ± 0.02804 ROC-AUC drop
+  * slope_deg                 : +0.03623 ± 0.01365 ROC-AUC drop
+  * bulk_density_kg_dm3       : +0.00690 ± 0.00409 ROC-AUC drop
+  * clay_percent              : +0.00088 ± 0.00507 ROC-AUC drop
+  * landcover_class           : +0.00028 ± 0.00232 ROC-AUC drop
+  * silt_percent              : -0.00378 ± 0.00188 ROC-AUC drop
+  * soil_class                : -0.00387 ± 0.00715 ROC-AUC drop
+  * sand_percent              : -0.00442 ± 0.00350 ROC-AUC drop
 
 4. PROBABILITY CALIBRATION & OUTPUT INTERPRETATION (MODEL A)
 --------------------------------------------------------------------------------
-  * Raw Random Forest Brier Score:        0.1913
-  * Calibrated (Sigmoid) Brier Score:     0.2021
+  * Raw Random Forest Brier Score:        0.1928
+  * Calibrated (Sigmoid) Brier Score:     0.2016
   * Calibration Evaluation:               Sigmoid calibration worsened the Brier score (0.2021 vs 0.1913 raw).
   * Calibration Decision:                 Rejected post-hoc calibration; deployed model uses raw RF voting fraction.
   * Model Output Interpretation:          Model A outputs a Random Forest susceptibility score/probability estimate

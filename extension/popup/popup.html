@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=380, initial-scale=1.0">
+  <title>LandslideNEI Sentinel Monitor</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="bg-obsidian text-slate-100 antialiased font-sans select-none">
+  <!-- Top Navigation Bar -->
+  <header class="flex items-center justify-between px-3.5 py-2.5 bg-slate-900/90 border-b border-emerald-500/20 backdrop-blur-md">
+    <div class="flex items-center gap-2">
+      <img src="../icons/icon32.png" alt="LandslideNEI Logo" class="w-5 h-5 rounded drop-shadow">
+      <div>
+        <div class="text-[11px] font-mono font-bold tracking-wider text-emerald-400 leading-none">LANDSLIDENEI</div>
+        <div class="text-[9px] font-mono text-slate-400 tracking-tight leading-none mt-0.5">SENTINEL MONITOR v1.0</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <span id="api-status-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Connected to Local API"></span>
+      <span id="api-status-text" class="text-[9px] font-mono text-emerald-400">ONLINE</span>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="p-3 space-y-3">
+    <!-- Strategic Corridor Selector -->
+    <div class="space-y-1">
+      <label for="sector-select" class="text-[10px] font-mono uppercase text-slate-400 flex justify-between">
+        <span>Strategic Sector / Corridor</span>
+        <button id="btn-toggle-coords" class="text-emerald-400 hover:text-emerald-300 transition-colors">Custom Lat/Lon</button>
+      </label>
+      <select id="sector-select" class="w-full bg-slate-800/90 text-slate-200 text-xs font-mono rounded border border-slate-700 px-2.5 py-1.5 focus:border-emerald-500 focus:outline-none transition">
+        <option value="25.6740,94.1120">Nagaland: Kohima & Zubza Axis (NH-29)</option>
+        <option value="27.3389,88.6065">Sikkim: Gangtok & Teesta Corridor (NH-10)</option>
+        <option value="25.2702,91.7323">Meghalaya: Cherrapunji Escarpment</option>
+        <option value="27.5860,91.8660">Arunachal: Tawang Mountain Pass</option>
+        <option value="23.7271,92.7176">Mizoram: Aizawl Slopes Axis</option>
+        <option value="26.1445,91.7362">Assam: Guwahati Foothills Corridor</option>
+        <option value="custom">-- Enter Custom Coordinates --</option>
+      </select>
+    </div>
+
+    <!-- Collapsible Custom Coordinates Box -->
+    <div id="custom-coords-panel" class="hidden p-2.5 bg-slate-800/60 rounded border border-slate-700/80 space-y-2">
+      <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+        <div>
+          <label class="text-[9px] text-slate-400">Latitude (°N)</label>
+          <input type="number" id="custom-lat" step="0.0001" placeholder="27.5925" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="text-[9px] text-slate-400">Longitude (°E)</label>
+          <input type="number" id="custom-lon" step="0.0001" placeholder="91.6087" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 focus:border-emerald-500 focus:outline-none">
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button id="btn-run-eval" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-[11px] py-1 px-2 rounded transition shadow">Evaluate Point</button>
+        <button id="btn-gps" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-mono text-[10px] py-1 px-2 rounded transition" title="Use browser GPS">📍 GPS</button>
+      </div>
+    </div>
+
+    <!-- Risk Verdict Banner Card -->
+    <div id="verdict-card" class="p-3 rounded-lg border border-emerald-500/30 bg-gradient-to-br from-slate-900 to-slate-800/90 shadow-lg text-center relative overflow-hidden">
+      <div class="text-[9px] font-mono tracking-widest text-slate-400 uppercase">OPERATIONAL HAZARD VERDICT</div>
+      <div id="verdict-pill" class="text-xl font-mono font-extrabold text-emerald-400 tracking-wider my-0.5">LOW RISK</div>
+      <div class="text-[10px] font-mono text-slate-400 flex justify-center items-center gap-2">
+        <span>Fusion Score: <strong id="score-val" class="text-slate-200">0.124</strong></span>
+        <span>•</span>
+        <span id="loc-name">Kohima Sector</span>
+      </div>
+      <!-- Progress Indicator -->
+      <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden border border-slate-700/60">
+        <div id="score-bar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 12%;"></div>
+      </div>
+    </div>
+
+    <!-- 4-Pillar Telemetry Grid -->
+    <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+      <!-- Pillar 1: Precipitation -->
+      <div class="p-2 rounded bg-slate-900/70 border border-slate-800 space-y-0.5">
+        <div class="text-[9px] text-sky-400 font-bold flex justify-between">
+          <span>🌧️ METEO TELEMETRY</span>
+          <span id="rain-quality" class="text-[8px] text-emerald-400">REALTIME</span>
+        </div>
+        <div class="flex justify-between items-baseline pt-0.5">
+          <span class="text-slate-400 text-[10px]">24h Rain:</span>
+          <span id="rain-24h" class="text-slate-200 font-bold">2.4 mm</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+          <span class="text-slate-400 text-[10px]">DWR Radar:</span>
+          <span id="dwr-val" class="text-slate-300">18 dBZ</span>
+        </div>
+      </div>
+
+      <!-- Pillar 2: Geotechnical Soil -->
+      <div class="p-2 rounded bg-slate-900/70 border border-slate-800 space-y-0.5">
+        <div class="text-[9px] text-amber-400 font-bold flex justify-between">
+          <span>⛰️ SOIL MECHANICS</span>
+          <span id="fos-state" class="text-[8px] text-emerald-400">STABLE</span>
+        </div>
+        <div class="flex justify-between items-baseline pt-0.5">
+          <span class="text-slate-400 text-[10px]">Factor of Safety:</span>
+          <span id="fos-val" class="text-slate-200 font-bold">2.45</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+          <span class="text-slate-400 text-[10px]">Pore Press (u):</span>
+          <span id="pore-val" class="text-slate-300">0.0 kPa</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3: Micro-Topography -->
+      <div class="p-2 rounded bg-slate-900/70 border border-slate-800 space-y-0.5">
+        <div class="text-[9px] text-emerald-400 font-bold flex justify-between">
+          <span>📐 MICRO-TERRAIN</span>
+          <span id="curv-badge" class="text-[8px] text-slate-400">PLANAR</span>
+        </div>
+        <div class="flex justify-between items-baseline pt-0.5">
+          <span class="text-slate-400 text-[10px]">Slope Angle:</span>
+          <span id="slope-val" class="text-slate-200 font-bold">26.4°</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+          <span class="text-slate-400 text-[10px]">Wetness (TWI):</span>
+          <span id="twi-val" class="text-slate-300">6.8</span>
+        </div>
+      </div>
+
+      <!-- Pillar 4: Anthropogenic Factors -->
+      <div class="p-2 rounded bg-slate-900/70 border border-slate-800 space-y-0.5">
+        <div class="text-[9px] text-purple-400 font-bold flex justify-between">
+          <span>🚧 HUMAN FACTORS</span>
+          <span id="cut-severity" class="text-[8px] text-emerald-400">NONE</span>
+        </div>
+        <div class="flex justify-between items-baseline pt-0.5">
+          <span class="text-slate-400 text-[10px]">Road Cut:</span>
+          <span id="road-cut-val" class="text-slate-200 font-bold">Natural</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+          <span class="text-slate-400 text-[10px]">Drainage:</span>
+          <span id="drainage-val" class="text-slate-300">Free</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reason Code / Advisory Banner -->
+    <div id="advisory-box" class="p-2 rounded bg-slate-900/80 border border-slate-800 text-[10px] font-mono leading-tight text-slate-300 space-y-1">
+      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">OPERATIONAL ADVISORY</div>
+      <div id="advisory-text" class="text-slate-300">Routine monitoring; baseline susceptibility is low and meteorological telemetry is normal.</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-2 gap-2 pt-1">
+      <button id="btn-open-workstation" class="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-mono text-[11px] font-bold py-2 px-3 rounded border border-emerald-500/30 transition shadow">
+        <span>🖥️ Open EOC Workstation</span>
+      </button>
+      <button id="btn-open-sidepanel" class="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 font-mono text-[11px] font-bold py-2 px-3 rounded border border-sky-500/30 transition shadow">
+        <span>📑 Open Side Panel</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="px-3 py-2 bg-slate-950 border-t border-slate-800/80 flex justify-between items-center text-[9px] font-mono text-slate-400">
+    <div class="flex items-center gap-1.5">
+      <span>API:</span>
+      <input type="text" id="api-base-url" value="http://localhost:8000" class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-[9px] text-slate-300 focus:outline-none w-32">
+    </div>
+    <div id="last-updated" class="text-slate-400">Updated: Just now</div>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

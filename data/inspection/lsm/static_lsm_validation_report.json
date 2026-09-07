@@ -295,45 +295,45 @@
       "landcover_class"
     ],
     "summary": {
-      "roc_auc_mean": 0.8061620569637477,
-      "roc_auc_std": 0.07190076466222894,
-      "pr_auc_mean": 0.7937260643391932,
-      "pr_auc_std": 0.052532228409616424,
-      "accuracy_mean": 0.7107981050963932,
-      "accuracy_std": 0.09363390267566742,
-      "balanced_accuracy_mean": 0.7187983515045044,
-      "balanced_accuracy_std": 0.08259932928517368,
-      "precision_mean": 0.7541567065191511,
-      "precision_std": 0.09673302269118328,
-      "recall_mean": 0.6657211865132255,
-      "recall_std": 0.1778955798788176,
-      "f1_mean": 0.6866250756166326,
-      "f1_std": 0.11939093540130469,
-      "brier_raw_mean": 0.1913318948217169,
-      "brier_calib_mean": 0.20213067140659863
+      "roc_auc_mean": 0.80570556732576,
+      "roc_auc_std": 0.07082020141214826,
+      "pr_auc_mean": 0.7949956237620327,
+      "pr_auc_std": 0.05447430888046036,
+      "accuracy_mean": 0.715033665334794,
+      "accuracy_std": 0.09217228982559716,
+      "balanced_accuracy_mean": 0.7233066382801558,
+      "balanced_accuracy_std": 0.0805831296703243,
+      "precision_mean": 0.7644617414775109,
+      "precision_std": 0.09810246920667315,
+      "recall_mean": 0.66405648654881,
+      "recall_std": 0.18085882789057253,
+      "f1_mean": 0.6885328548695613,
+      "f1_std": 0.12061976812592497,
+      "brier_raw_mean": 0.19279444883345861,
+      "brier_calib_mean": 0.20158157901739063
     },
     "per_fold": [
       {
         "fold": 0,
         "train_samples": 2958,
         "test_samples": 1058,
-        "roc_auc": 0.7047150470027419,
-        "pr_auc": 0.7246687443470674,
-        "accuracy": 0.5775047258979206,
-        "balanced_accuracy": 0.601409902103143,
-        "precision": 0.75,
-        "recall": 0.3379549393414211,
-        "f1_score": 0.4659498207885305,
-        "brier_score_raw": 0.2527630470669484,
-        "brier_score_calibrated": 0.24142006958368284,
+        "roc_auc": 0.7023748184926695,
+        "pr_auc": 0.721715933361482,
+        "accuracy": 0.5803402646502835,
+        "balanced_accuracy": 0.6052202048735844,
+        "precision": 0.7670682730923695,
+        "recall": 0.3310225303292894,
+        "f1_score": 0.46246973365617433,
+        "brier_score_raw": 0.2560336580438548,
+        "brier_score_calibrated": 0.2426168813438784,
         "confusion_matrix": [
           [
-            416,
-            65
+            423,
+            58
           ],
           [
-            382,
-            195
+            386,
+            191
           ]
         ]
       },
@@ -341,23 +341,23 @@
         "fold": 1,
         "train_samples": 3019,
         "test_samples": 997,
-        "roc_auc": 0.8809060701839695,
-        "pr_auc": 0.8341708239084362,
-        "accuracy": 0.802407221664995,
-        "balanced_accuracy": 0.7965718453683444,
-        "precision": 0.8217821782178217,
-        "recall": 0.7264770240700219,
-        "f1_score": 0.7711962833914053,
-        "brier_score_raw": 0.14815461605381736,
-        "brier_score_calibrated": 0.17181542371431563,
+        "roc_auc": 0.8789934354485777,
+        "pr_auc": 0.8414717606227389,
+        "accuracy": 0.8054162487462387,
+        "balanced_accuracy": 0.7990132911905341,
+        "precision": 0.8312342569269522,
+        "recall": 0.7221006564551422,
+        "f1_score": 0.7728337236533958,
+        "brier_score_raw": 0.15066431083635928,
+        "brier_score_calibrated": 0.1732724873879381,
         "confusion_matrix": [
           [
-            468,
-            72
+            473,
+            67
           ],
           [
-            125,
-            332
+            127,
+            330
           ]
         ]
       },
@@ -365,23 +365,23 @@
         "fold": 2,
         "train_samples": 3420,
         "test_samples": 596,
-        "roc_auc": 0.7680072710747557,
-        "pr_auc": 0.7380855715437937,
-        "accuracy": 0.6459731543624161,
-        "balanced_accuracy": 0.6636559872756191,
-        "precision": 0.57356608478803,
-        "recall": 0.8518518518518519,
-        "f1_score": 0.6855439642324889,
-        "brier_score_raw": 0.2222167638619715,
-        "brier_score_calibrated": 0.23033562868406263,
+        "roc_auc": 0.7693251533742331,
+        "pr_auc": 0.738115324813394,
+        "accuracy": 0.6510067114093959,
+        "balanced_accuracy": 0.6688934333106112,
+        "precision": 0.5771144278606966,
+        "recall": 0.8592592592592593,
+        "f1_score": 0.6904761904761905,
+        "brier_score_raw": 0.2233836749367623,
+        "brier_score_calibrated": 0.22949738786475388,
         "confusion_matrix": [
           [
-            155,
-            171
+            156,
+            170
           ],
           [
-            40,
-            230
+            38,
+            232
           ]
         ]
       },
@@ -389,23 +389,23 @@
         "fold": 3,
         "train_samples": 3405,
         "test_samples": 611,
-        "roc_auc": 0.8952097736934771,
-        "pr_auc": 0.8551959381312234,
-        "accuracy": 0.8265139116202946,
-        "balanced_accuracy": 0.8242903766049727,
-        "precision": 0.849624060150376,
-        "recall": 0.773972602739726,
-        "f1_score": 0.8100358422939068,
-        "brier_score_raw": 0.13697822239594099,
-        "brier_score_calibrated": 0.1727574005785454,
+        "roc_auc": 0.8913556920170053,
+        "pr_auc": 0.8537260864316093,
+        "accuracy": 0.8248772504091653,
+        "balanced_accuracy": 0.8224331171898485,
+        "precision": 0.8517110266159695,
+        "recall": 0.7671232876712328,
+        "f1_score": 0.8072072072072072,
+        "brier_score_raw": 0.13940386053815645,
+        "brier_score_calibrated": 0.1725633741673705,
         "confusion_matrix": [
           [
-            279,
-            40
+            280,
+            39
           ],
           [
-            66,
-            226
+            68,
+            224
           ]
         ]
       },
@@ -413,35 +413,35 @@
         "fold": 4,
         "train_samples": 3262,
         "test_samples": 754,
-        "roc_auc": 0.7819721228637939,
-        "pr_auc": 0.8165092437654453,
-        "accuracy": 0.7015915119363395,
-        "balanced_accuracy": 0.7080636461704424,
-        "precision": 0.775811209439528,
-        "recall": 0.6383495145631068,
-        "f1_score": 0.7003994673768309,
-        "brier_score_raw": 0.19654682472990617,
-        "brier_score_calibrated": 0.1943248344723866,
+        "roc_auc": 0.7864787372963151,
+        "pr_auc": 0.8199490135809395,
+        "accuracy": 0.713527851458886,
+        "balanced_accuracy": 0.7209731448362006,
+        "precision": 0.7951807228915663,
+        "recall": 0.6407766990291263,
+        "f1_score": 0.7096774193548387,
+        "brier_score_raw": 0.19448673981216028,
+        "brier_score_calibrated": 0.18995776432301242,
         "confusion_matrix": [
           [
-            266,
-            76
+            274,
+            68
           ],
           [
-            149,
-            263
+            148,
+            264
           ]
         ]
       }
     ],
     "overall_confusion_matrix": [
       [
-        1584,
-        424
+        1606,
+        402
       ],
       [
-        762,
-        1246
+        767,
+        1241
       ]
     ]
   },
@@ -462,45 +462,45 @@
       "landcover_class"
     ],
     "summary": {
-      "roc_auc_mean": 0.8059071059203458,
-      "roc_auc_std": 0.07134397530243107,
-      "pr_auc_mean": 0.7947943648867148,
-      "pr_auc_std": 0.05303152969161987,
-      "accuracy_mean": 0.7109337252301628,
-      "accuracy_std": 0.08649504052805547,
-      "balanced_accuracy_mean": 0.7186914282759157,
-      "balanced_accuracy_std": 0.07449928952073201,
-      "precision_mean": 0.7659791686803897,
-      "precision_std": 0.09415684337153298,
-      "recall_mean": 0.6483413335207966,
-      "recall_std": 0.1808682003543786,
-      "f1_mean": 0.6799282888293883,
-      "f1_std": 0.1169837411680919,
-      "brier_raw_mean": 0.19326975598714832,
-      "brier_calib_mean": 0.2009428417375462
+      "roc_auc_mean": 0.8099439417721486,
+      "roc_auc_std": 0.06676828893985734,
+      "pr_auc_mean": 0.7973329995174965,
+      "pr_auc_std": 0.05578332761459955,
+      "accuracy_mean": 0.7131649182652258,
+      "accuracy_std": 0.08743853312935998,
+      "balanced_accuracy_mean": 0.720427726616824,
+      "balanced_accuracy_std": 0.07513470391839264,
+      "precision_mean": 0.7692982484329587,
+      "precision_std": 0.09506866308176962,
+      "recall_mean": 0.6481146424859784,
+      "recall_std": 0.18392136072381238,
+      "f1_mean": 0.6803486771791036,
+      "f1_std": 0.12266371823722325,
+      "brier_raw_mean": 0.19122688655478676,
+      "brier_calib_mean": 0.19988059473799316
     },
     "per_fold": [
       {
         "fold": 0,
         "train_samples": 2958,
         "test_samples": 1058,
-        "roc_auc": 0.699512137120456,
-        "pr_auc": 0.7207121712025201,
-        "accuracy": 0.5765595463137996,
-        "balanced_accuracy": 0.601581050454534,
-        "precision": 0.7611336032388664,
-        "recall": 0.32582322357019067,
-        "f1_score": 0.4563106796116505,
-        "brier_score_raw": 0.25276977625300706,
-        "brier_score_calibrated": 0.23492101301373813,
+        "roc_auc": 0.7194734395774257,
+        "pr_auc": 0.7328178982529524,
+        "accuracy": 0.5718336483931947,
+        "balanced_accuracy": 0.5977671445609054,
+        "precision": 0.7627118644067796,
+        "recall": 0.3119584055459272,
+        "f1_score": 0.44280442804428044,
+        "brier_score_raw": 0.24689080985766967,
+        "brier_score_calibrated": 0.23812453629679495,
         "confusion_matrix": [
           [
-            422,
-            59
+            425,
+            56
           ],
           [
-            389,
-            188
+            397,
+            180
           ]
         ]
       },
@@ -508,23 +508,23 @@
         "fold": 1,
         "train_samples": 3019,
         "test_samples": 997,
-        "roc_auc": 0.8814369073668855,
-        "pr_auc": 0.8438933225640879,
-        "accuracy": 0.7913741223671013,
-        "balanced_accuracy": 0.7825188426938974,
-        "precision": 0.8373983739837398,
-        "recall": 0.6761487964989059,
-        "f1_score": 0.7481840193704601,
-        "brier_score_raw": 0.1523241947946894,
-        "brier_score_calibrated": 0.16788192256179366,
+        "roc_auc": 0.8784342329200097,
+        "pr_auc": 0.8403625493477945,
+        "accuracy": 0.7873620862587764,
+        "balanced_accuracy": 0.7773016451900479,
+        "precision": 0.8450704225352113,
+        "recall": 0.6564551422319475,
+        "f1_score": 0.7389162561576355,
+        "brier_score_raw": 0.1552049307697651,
+        "brier_score_calibrated": 0.16638650696634893,
         "confusion_matrix": [
           [
-            480,
-            60
+            485,
+            55
           ],
           [
-            148,
-            309
+            157,
+            300
           ]
         ]
       },
@@ -532,23 +532,23 @@
         "fold": 2,
         "train_samples": 3420,
         "test_samples": 596,
-        "roc_auc": 0.7790161326971143,
-        "pr_auc": 0.7441133400714506,
+        "roc_auc": 0.7709384230856623,
+        "pr_auc": 0.7297717075965968,
         "accuracy": 0.6661073825503355,
-        "balanced_accuracy": 0.6836514428538969,
-        "precision": 0.5889724310776943,
-        "recall": 0.8703703703703703,
-        "f1_score": 0.70254110612855,
-        "brier_score_raw": 0.21660054713609458,
-        "brier_score_calibrated": 0.23753662691923885,
+        "balanced_accuracy": 0.6830152238127698,
+        "precision": 0.589873417721519,
+        "recall": 0.8629629629629629,
+        "f1_score": 0.7007518796992481,
+        "brier_score_raw": 0.2185802905017215,
+        "brier_score_calibrated": 0.23165139597612106,
         "confusion_matrix": [
           [
-            162,
-            164
+            164,
+            162
           ],
           [
-            35,
-            235
+            37,
+            233
           ]
         ]
       },
@@ -556,23 +556,23 @@
         "fold": 3,
         "train_samples": 3405,
         "test_samples": 611,
-        "roc_auc": 0.8897131446729935,
-        "pr_auc": 0.8517540955379475,
+        "roc_auc": 0.8953600721432559,
+        "pr_auc": 0.8643948264984322,
         "accuracy": 0.8150572831423896,
-        "balanced_accuracy": 0.8120142139391077,
-        "precision": 0.8509803921568627,
-        "recall": 0.7431506849315068,
-        "f1_score": 0.793418647166362,
-        "brier_score_raw": 0.1463754783576802,
-        "brier_score_calibrated": 0.17132670485747017,
+        "balanced_accuracy": 0.8121591445871087,
+        "precision": 0.8482490272373541,
+        "recall": 0.7465753424657534,
+        "f1_score": 0.7941712204007286,
+        "brier_score_raw": 0.14021274759702246,
+        "brier_score_calibrated": 0.17247443513215863,
         "confusion_matrix": [
           [
-            281,
-            38
+            280,
+            39
           ],
           [
-            75,
-            217
+            74,
+            218
           ]
         ]
       },
@@ -580,35 +580,35 @@
         "fold": 4,
         "train_samples": 3262,
         "test_samples": 754,
-        "roc_auc": 0.7798572077442798,
-        "pr_auc": 0.8134988950575688,
-        "accuracy": 0.7055702917771883,
-        "balanced_accuracy": 0.7136915914381423,
-        "precision": 0.7914110429447853,
-        "recall": 0.6262135922330098,
-        "f1_score": 0.6991869918699187,
-        "brier_score_raw": 0.19827878339427038,
-        "brier_score_calibrated": 0.19304794133549025,
+        "roc_auc": 0.7855135411343894,
+        "pr_auc": 0.8193180158917059,
+        "accuracy": 0.7254641909814323,
+        "balanced_accuracy": 0.731895474933288,
+        "precision": 0.8005865102639296,
+        "recall": 0.662621359223301,
+        "f1_score": 0.7250996015936255,
+        "brier_score_raw": 0.19524565404775485,
+        "brier_score_calibrated": 0.19076609931854213,
         "confusion_matrix": [
           [
             274,
             68
           ],
           [
-            154,
-            258
+            139,
+            273
           ]
         ]
       }
     ],
     "overall_confusion_matrix": [
       [
-        1619,
-        389
+        1628,
+        380
       ],
       [
-        801,
-        1207
+        804,
+        1204
       ]
     ]
   },
@@ -630,45 +630,45 @@
       "landcover_class"
     ],
     "summary": {
-      "roc_auc_mean": 0.9553429632693448,
-      "roc_auc_std": 0.03712553224966563,
-      "pr_auc_mean": 0.9613283841712958,
-      "pr_auc_std": 0.03386815991300866,
-      "accuracy_mean": 0.9018720329100605,
-      "accuracy_std": 0.04881815879997981,
-      "balanced_accuracy_mean": 0.9011371850186876,
-      "balanced_accuracy_std": 0.05139481322330392,
-      "precision_mean": 0.9341526828945155,
-      "precision_std": 0.05579807171337462,
-      "recall_mean": 0.8565480596735405,
-      "recall_std": 0.06834071973872047,
-      "f1_mean": 0.8933421093313946,
-      "f1_std": 0.06095389159662673,
-      "brier_raw_mean": 0.07818298178985546,
-      "brier_calib_mean": 0.07232106748355399
+      "roc_auc_mean": 0.95494742457883,
+      "roc_auc_std": 0.03676489352662888,
+      "pr_auc_mean": 0.9610027028327114,
+      "pr_auc_std": 0.033890450930195146,
+      "accuracy_mean": 0.9003608424305888,
+      "accuracy_std": 0.05334563060308776,
+      "balanced_accuracy_mean": 0.8997292711284427,
+      "balanced_accuracy_std": 0.0558463201127417,
+      "precision_mean": 0.9316455786731105,
+      "precision_std": 0.06194798118730164,
+      "recall_mean": 0.8555952312644284,
+      "recall_std": 0.0711883646249416,
+      "f1_mean": 0.8917436303778977,
+      "f1_std": 0.06570463402066076,
+      "brier_raw_mean": 0.07823957254323236,
+      "brier_calib_mean": 0.07303029539671359
     },
     "per_fold": [
       {
         "fold": 0,
         "train_samples": 2958,
         "test_samples": 1058,
-        "roc_auc": 0.9797144164561842,
-        "pr_auc": 0.9814185432342961,
-        "accuracy": 0.94234404536862,
-        "balanced_accuracy": 0.9438543329357887,
-        "precision": 0.9657039711191335,
-        "recall": 0.9272097053726169,
-        "f1_score": 0.9460654288240495,
-        "brier_score_raw": 0.05824160761634154,
-        "brier_score_calibrated": 0.04475165596863593,
+        "roc_auc": 0.9784353077247357,
+        "pr_auc": 0.979612045342856,
+        "accuracy": 0.944234404536862,
+        "balanced_accuracy": 0.9461062849277754,
+        "precision": 0.9709090909090909,
+        "recall": 0.925476603119584,
+        "f1_score": 0.9476486246672582,
+        "brier_score_raw": 0.0579335223865708,
+        "brier_score_calibrated": 0.04470542401962121,
         "confusion_matrix": [
           [
-            462,
-            19
+            465,
+            16
           ],
           [
-            42,
-            535
+            43,
+            534
           ]
         ]
       },
@@ -676,23 +676,23 @@
         "fold": 1,
         "train_samples": 3019,
         "test_samples": 997,
-        "roc_auc": 0.9781100575411297,
-        "pr_auc": 0.9780112958476619,
+        "roc_auc": 0.9773928195153577,
+        "pr_auc": 0.9780500250308772,
         "accuracy": 0.9277833500501504,
-        "balanced_accuracy": 0.92475686846584,
-        "precision": 0.9508196721311475,
-        "recall": 0.888402625820569,
-        "f1_score": 0.918552036199095,
-        "brier_score_raw": 0.058479739156098116,
-        "brier_score_calibrated": 0.05087518933145901,
+        "balanced_accuracy": 0.925093200421428,
+        "precision": 0.9466357308584686,
+        "recall": 0.8927789934354485,
+        "f1_score": 0.918918918918919,
+        "brier_score_raw": 0.05967703974776313,
+        "brier_score_calibrated": 0.05201324409362726,
         "confusion_matrix": [
           [
-            519,
-            21
+            517,
+            23
           ],
           [
-            51,
-            406
+            49,
+            408
           ]
         ]
       },
@@ -700,23 +700,23 @@
         "fold": 2,
         "train_samples": 3420,
         "test_samples": 596,
-        "roc_auc": 0.884355828220859,
-        "pr_auc": 0.8941585150330855,
-        "accuracy": 0.8070469798657718,
-        "balanced_accuracy": 0.8003976369007044,
-        "precision": 0.8242677824267782,
-        "recall": 0.7296296296296296,
-        "f1_score": 0.7740667976424361,
-        "brier_score_raw": 0.13332729167275661,
-        "brier_score_calibrated": 0.13791337665661965,
+        "roc_auc": 0.8838445807770963,
+        "pr_auc": 0.8935469123740956,
+        "accuracy": 0.7969798657718121,
+        "balanced_accuracy": 0.7905589638718473,
+        "precision": 0.8091286307053942,
+        "recall": 0.7222222222222222,
+        "f1_score": 0.7632093933463796,
+        "brier_score_raw": 0.13374988234111646,
+        "brier_score_calibrated": 0.1382353502171428,
         "confusion_matrix": [
           [
-            284,
-            42
+            280,
+            46
           ],
           [
-            73,
-            197
+            75,
+            195
           ]
         ]
       },
@@ -724,19 +724,19 @@
         "fold": 3,
         "train_samples": 3405,
         "test_samples": 611,
-        "roc_auc": 0.9823614033580969,
-        "pr_auc": 0.9828336546153712,
-        "accuracy": 0.9263502454991817,
-        "balanced_accuracy": 0.9248293039034654,
-        "precision": 0.9523809523809523,
+        "roc_auc": 0.9803860523038604,
+        "pr_auc": 0.9819031972627507,
+        "accuracy": 0.9296235679214403,
+        "balanced_accuracy": 0.92796410014171,
+        "precision": 0.959409594095941,
         "recall": 0.8904109589041096,
-        "f1_score": 0.9203539823008849,
-        "brier_score_raw": 0.058731195131640906,
-        "brier_score_calibrated": 0.054620293939884774,
+        "f1_score": 0.9236234458259325,
+        "brier_score_raw": 0.05863952443816796,
+        "brier_score_calibrated": 0.05582999286645028,
         "confusion_matrix": [
           [
-            306,
-            13
+            308,
+            11
           ],
           [
             32,
@@ -748,19 +748,19 @@
         "fold": 4,
         "train_samples": 3262,
         "test_samples": 754,
-        "roc_auc": 0.9521731107704536,
-        "pr_auc": 0.9702199121260644,
-        "accuracy": 0.9058355437665783,
-        "balanced_accuracy": 0.9118477828876398,
-        "precision": 0.9775910364145658,
+        "roc_auc": 0.9546783625730995,
+        "pr_auc": 0.9719013341529775,
+        "accuracy": 0.903183023872679,
+        "balanced_accuracy": 0.9089238062794527,
+        "precision": 0.9721448467966574,
         "recall": 0.8470873786407767,
-        "f1_score": 0.9076723016905072,
-        "brier_score_raw": 0.08213507537244011,
-        "brier_score_calibrated": 0.0734448215211706,
+        "f1_score": 0.9053177691309987,
+        "brier_score_raw": 0.08119789380254341,
+        "brier_score_calibrated": 0.07436746578672639,
         "confusion_matrix": [
           [
-            334,
-            8
+            332,
+            10
           ],
           [
             63,
@@ -771,148 +771,148 @@
     ],
     "overall_confusion_matrix": [
       [
-        1905,
-        103
+        1902,
+        106
       ],
       [
-        261,
-        1747
+        262,
+        1746
       ]
     ]
   },
   "ablation_analysis": {
     "model_a_vs_model_b1_infrastructure_proximity": {
-      "delta_roc_auc": -0.0003,
-      "delta_pr_auc": 0.0011,
-      "delta_balanced_accuracy": -0.0001,
-      "delta_f1": -0.0067,
+      "delta_roc_auc": 0.0042,
+      "delta_pr_auc": 0.0023,
+      "delta_balanced_accuracy": -0.0029,
+      "delta_f1": -0.0082,
       "interpretation": "Adding road and river proximity results in neutral to marginal change in spatial generalization (ROC-AUC ~0.801 vs ~0.800)."
     },
     "model_a_vs_model_b2_all_proximity": {
       "delta_roc_auc": 0.1492,
-      "delta_pr_auc": 0.1676,
-      "delta_balanced_accuracy": 0.1823,
-      "delta_f1": 0.2067,
+      "delta_pr_auc": 0.166,
+      "delta_balanced_accuracy": 0.1764,
+      "delta_f1": 0.2032,
       "interpretation": "Adding distance_to_nearest_other_landslide_m causes a massive +0.1534 surge in spatial ROC-AUC. As hypothesized during Phase 8E.2.3, this feature reflects spatial clustering of the 2014 inventory combined with the >=1 km buffer used in negative generation, functioning as an indirect label lookup rather than a causative physical terrain trigger."
     }
   },
   "permutation_importance_model_a": [
     {
       "feature": "aspect_deg",
-      "mean_importance_roc_auc_drop": 0.1096,
-      "std_importance": 0.02831
+      "mean_importance_roc_auc_drop": 0.10962,
+      "std_importance": 0.02649
     },
     {
       "feature": "relief_std_5x5_m",
-      "mean_importance_roc_auc_drop": 0.06124,
-      "std_importance": 0.01375
+      "mean_importance_roc_auc_drop": 0.05669,
+      "std_importance": 0.01639
     },
     {
       "feature": "elevation_m",
-      "mean_importance_roc_auc_drop": 0.0388,
-      "std_importance": 0.02928
+      "mean_importance_roc_auc_drop": 0.04077,
+      "std_importance": 0.02804
     },
     {
       "feature": "slope_deg",
-      "mean_importance_roc_auc_drop": 0.03659,
-      "std_importance": 0.01054
+      "mean_importance_roc_auc_drop": 0.03623,
+      "std_importance": 0.01365
     },
     {
       "feature": "bulk_density_kg_dm3",
-      "mean_importance_roc_auc_drop": 0.00407,
-      "std_importance": 0.00437
-    },
-    {
-      "feature": "landcover_class",
-      "mean_importance_roc_auc_drop": 0.0011,
-      "std_importance": 0.0027
+      "mean_importance_roc_auc_drop": 0.0069,
+      "std_importance": 0.00409
     },
     {
       "feature": "clay_percent",
-      "mean_importance_roc_auc_drop": -0.00066,
-      "std_importance": 0.00515
+      "mean_importance_roc_auc_drop": 0.00088,
+      "std_importance": 0.00507
     },
     {
-      "feature": "sand_percent",
-      "mean_importance_roc_auc_drop": -0.00192,
-      "std_importance": 0.00173
+      "feature": "landcover_class",
+      "mean_importance_roc_auc_drop": 0.00028,
+      "std_importance": 0.00232
     },
     {
       "feature": "silt_percent",
-      "mean_importance_roc_auc_drop": -0.00373,
-      "std_importance": 0.00284
+      "mean_importance_roc_auc_drop": -0.00378,
+      "std_importance": 0.00188
     },
     {
       "feature": "soil_class",
-      "mean_importance_roc_auc_drop": -0.00391,
-      "std_importance": 0.00835
+      "mean_importance_roc_auc_drop": -0.00387,
+      "std_importance": 0.00715
+    },
+    {
+      "feature": "sand_percent",
+      "mean_importance_roc_auc_drop": -0.00442,
+      "std_importance": 0.0035
     }
   ],
   "permutation_importance_model_b2": [
     {
       "feature": "distance_to_nearest_other_landslide_m",
-      "mean_importance_roc_auc_drop": 0.30919,
-      "std_importance": 0.051
+      "mean_importance_roc_auc_drop": 0.3085,
+      "std_importance": 0.05389
     },
     {
       "feature": "aspect_deg",
-      "mean_importance_roc_auc_drop": 0.01726,
-      "std_importance": 0.00953
-    },
-    {
-      "feature": "relief_std_5x5_m",
-      "mean_importance_roc_auc_drop": 0.00713,
-      "std_importance": 0.00352
+      "mean_importance_roc_auc_drop": 0.01528,
+      "std_importance": 0.00909
     },
     {
       "feature": "slope_deg",
-      "mean_importance_roc_auc_drop": 0.00634,
-      "std_importance": 0.00342
+      "mean_importance_roc_auc_drop": 0.0067,
+      "std_importance": 0.00472
+    },
+    {
+      "feature": "relief_std_5x5_m",
+      "mean_importance_roc_auc_drop": 0.00654,
+      "std_importance": 0.00294
     },
     {
       "feature": "elevation_m",
-      "mean_importance_roc_auc_drop": 0.00274,
-      "std_importance": 0.00375
-    },
-    {
-      "feature": "soil_class",
-      "mean_importance_roc_auc_drop": 0.00203,
-      "std_importance": 0.00148
+      "mean_importance_roc_auc_drop": 0.00288,
+      "std_importance": 0.00303
     },
     {
       "feature": "landcover_class",
-      "mean_importance_roc_auc_drop": 0.00082,
-      "std_importance": 0.00069
-    },
-    {
-      "feature": "bulk_density_kg_dm3",
-      "mean_importance_roc_auc_drop": 0.00079,
-      "std_importance": 0.00104
+      "mean_importance_roc_auc_drop": 0.001,
+      "std_importance": 0.00121
     },
     {
       "feature": "distance_to_road_m",
-      "mean_importance_roc_auc_drop": 0.00062,
-      "std_importance": 0.00068
+      "mean_importance_roc_auc_drop": 0.00096,
+      "std_importance": 0.00129
     },
     {
-      "feature": "sand_percent",
-      "mean_importance_roc_auc_drop": 0.00029,
-      "std_importance": 0.00136
+      "feature": "soil_class",
+      "mean_importance_roc_auc_drop": 0.00093,
+      "std_importance": 0.00092
     },
     {
-      "feature": "clay_percent",
-      "mean_importance_roc_auc_drop": -1e-05,
-      "std_importance": 0.00029
-    },
-    {
-      "feature": "distance_to_river_m",
-      "mean_importance_roc_auc_drop": -8e-05,
-      "std_importance": 0.00063
+      "feature": "bulk_density_kg_dm3",
+      "mean_importance_roc_auc_drop": 0.00042,
+      "std_importance": 0.00111
     },
     {
       "feature": "silt_percent",
-      "mean_importance_roc_auc_drop": -0.00013,
-      "std_importance": 0.00078
+      "mean_importance_roc_auc_drop": 0.00029,
+      "std_importance": 0.00066
+    },
+    {
+      "feature": "sand_percent",
+      "mean_importance_roc_auc_drop": 0.0001,
+      "std_importance": 0.00084
+    },
+    {
+      "feature": "clay_percent",
+      "mean_importance_roc_auc_drop": -3e-05,
+      "std_importance": 8e-05
+    },
+    {
+      "feature": "distance_to_river_m",
+      "mean_importance_roc_auc_drop": -0.00022,
+      "std_importance": 0.00085
     }
   ],
   "model_selection": {
@@ -921,8 +921,8 @@
     "output_description": "Random Forest susceptibility score/probability estimate in the range 0\u20131."
   },
   "calibration": {
-    "model_a_brier_raw": 0.1913318948217169,
-    "model_a_brier_calibrated": 0.20213067140659863,
+    "model_a_brier_raw": 0.19279444883345861,
+    "model_a_brier_calibrated": 0.20158157901739063,
     "decision": "Post-hoc calibration rejected because sigmoid calibration worsened Brier score (0.2021 vs 0.1913 raw). Deployed model uses raw RF voting fraction.",
     "calibration_status": "Uncalibrated Random Forest probability estimate; not represented as perfectly calibrated."
   }

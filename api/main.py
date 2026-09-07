@@ -26,11 +26,11 @@ from typing import Any, Dict, List, Optional, Tuple
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 # Add project root to sys.path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(os.environ.get("LANDSLIDENEI_ROOT", Path(__file__).resolve().parents[1]))
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -49,6 +49,7 @@ from api.schemas import (
     TerrainBlock,
     SoilBlock,
     LandcoverBlock,
+    AnthropogenicBlock,
     FreshnessBlock,
     IMDMacroContextBlock,
     RainfallBlock,
@@ -279,9 +280,12 @@ def root(request: Request) -> Any:
     }
 
 
-@app.get("/download/windows", tags=["Product"])
-def download_windows_workstation():
+@app.api_route("/download/windows", methods=["GET", "HEAD"], tags=["Product"])
+def download_windows_workstation(request: Request):
     """Operational workstation package manifest and download distribution route."""
+    if request.query_params.get("download") in ("1", "true", "exe"):
+        return download_windows_installer()
+
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={
@@ -289,6 +293,7 @@ def download_windows_workstation():
             "release": "v2.4.0-GA",
             "target_os": "Windows 10 / Windows 11 (64-bit)",
             "package_name": "LANDSLIDENEI_Setup_x64.exe",
+            "download_url": "/download/installer",
             "status": "release_candidate",
             "build_timestamp": "2026-09-06T12:00:00Z",
             "sha256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
@@ -304,6 +309,38 @@ def download_windows_workstation():
                 "CWC river stage telemetry and IMD Doppler feeds cache locally for offline continuity."
             ),
         },
+    )
+
+
+@app.api_route("/download/installer", methods=["GET", "HEAD"], tags=["Product"])
+@app.api_route("/download/windows/installer", methods=["GET", "HEAD"], tags=["Product"])
+@app.api_route("/download/windows.exe", methods=["GET", "HEAD"], tags=["Product"])
+@app.api_route("/download/LANDSLIDENEI_Setup_x64.exe", methods=["GET", "HEAD"], tags=["Product"])
+@app.api_route("/downloads/LANDSLIDENEI_Setup_x64.exe", methods=["GET", "HEAD"], tags=["Product"])
+@app.api_route("/LANDSLIDENEI_Setup_x64.exe", methods=["GET", "HEAD"], tags=["Product"])
+def download_windows_installer():
+    """Direct binary stream download of the Windows standalone setup executable."""
+    installer_path = PROJECT_ROOT / "installer" / "LANDSLIDENEI_Setup_x64.exe"
+    if not installer_path.exists():
+        installer_path = PROJECT_ROOT / "website" / "downloads" / "LANDSLIDENEI_Setup_x64.exe"
+    if installer_path.exists():
+        return FileResponse(
+            path=str(installer_path),
+            filename="LANDSLIDENEI_Setup_x64.exe",
+            media_type="application/vnd.microsoft.portable-executable",
+        )
+    # Check standalone binary in dist
+    dist_exe = PROJECT_ROOT / "dist" / "LANDSLIDENEI" / "LANDSLIDENEI.exe"
+    if dist_exe.exists():
+        return FileResponse(
+            path=str(dist_exe),
+            filename="LANDSLIDENEI.exe",
+            media_type="application/vnd.microsoft.portable-executable",
+        )
+    raise APIError(
+        code="INSTALLER_NOT_FOUND",
+        message="Standalone installer binary is not present on this instance.",
+        status_code=404,
     )
 
 
@@ -451,6 +488,13 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             longitude=payload.longitude,
             timestamp=dt_utc,
             reference_time=dt_utc,
+            auto_refetch=bool(payload.auto_refetch),
+            road_cut_present=bool(payload.road_cut_present),
+            cut_slope_deg=payload.cut_slope_deg,
+            drainage_blocked=bool(payload.drainage_blocked),
+            unsupported_excavation=bool(payload.unsupported_excavation),
+            deforestation_observed=bool(payload.deforestation_observed),
+            has_retaining_wall=bool(payload.has_retaining_wall),
         )
     except Exception as exc:
         raise APIError(
@@ -507,6 +551,7 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             terrain=TerrainBlock(**susc["terrain"]),
             soil=SoilBlock(**susc["soil"]),
             landcover=LandcoverBlock(**susc["landcover"]),
+            anthropogenic=AnthropogenicBlock(**eval_res["anthropogenic"]) if eval_res.get("anthropogenic") else None,
             reasons=susc["reason_codes"],
         ),
         rainfall=RainfallBlock(
@@ -528,6 +573,19 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             quality=rf.get("quality", "UNKNOWN"),
             status=rf.get("status", "UNKNOWN"),
             quality_notes=rf.get("quality_notes", ""),
+            is_realtime=rf.get("is_realtime"),
+            realtime_attempt=rf.get("realtime_attempt"),
+            fallback_engaged=rf.get("fallback_engaged", False),
+            orographic_amplification_factor=rf.get("orographic_amplification_factor"),
+            precipitation_regime=rf.get("precipitation_regime"),
+            effective_micro_rainfall_1h=rf.get("effective_micro_rainfall_1h"),
+            effective_micro_rainfall_24h=rf.get("effective_micro_rainfall_24h"),
+            doppler_radar_name=rf.get("doppler_radar_name"),
+            doppler_radar_distance_km=rf.get("doppler_radar_distance_km"),
+            doppler_reflectivity_dbz=rf.get("doppler_reflectivity_dbz"),
+            cloudburst_detected=rf.get("cloudburst_detected"),
+            idf_threshold_breached=rf.get("idf_threshold_breached"),
+            micro_runoff_peak_m3_s=rf.get("micro_runoff_peak_m3_s"),
             freshness=FreshnessBlock(**rf.get("freshness", {
                 "freshness_status": "UNKNOWN",
                 "max_acceptable_age_hours": 6.0,
@@ -560,6 +618,7 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             operational_action=risk.get("operational_action", ""),
             matrix_lookup=risk.get("matrix_lookup", {}),
         ),
+        anthropogenic=AnthropogenicBlock(**eval_res["anthropogenic"]) if eval_res.get("anthropogenic") else None,
         model=ModelMetadataBlock(
             name="LandslideNEI Operational Risk Engine",
             version=API_VERSION,
@@ -588,7 +647,16 @@ def profile_location_endpoint(payload: ProfileRequest) -> ProfileResponse:
     engine = get_risk_engine()
 
     try:
-        profile = engine.profiler.profile_location(payload.latitude, payload.longitude)
+        profile = engine.profiler.profile_location(
+            lat=payload.latitude,
+            lon=payload.longitude,
+            road_cut_present=bool(payload.road_cut_present),
+            cut_slope_deg=payload.cut_slope_deg,
+            drainage_blocked=bool(payload.drainage_blocked),
+            unsupported_excavation=bool(payload.unsupported_excavation),
+            deforestation_observed=bool(payload.deforestation_observed),
+            has_retaining_wall=bool(payload.has_retaining_wall),
+        )
     except Exception as exc:
         raise APIError(
             code="INFERENCE_ERROR",
@@ -633,8 +701,10 @@ def profile_location_endpoint(payload: ProfileRequest) -> ProfileResponse:
             terrain=TerrainBlock(**profile["terrain"]),
             soil=SoilBlock(**profile["soil"]),
             landcover=LandcoverBlock(**profile["landcover"]),
+            anthropogenic=AnthropogenicBlock(**profile["anthropogenic"]) if profile.get("anthropogenic") else None,
             reasons=profile["explainability"]["reason_codes"],
         ),
+        anthropogenic=AnthropogenicBlock(**profile["anthropogenic"]) if profile.get("anthropogenic") else None,
         model={
             "name": "Model A (Environmental Only)",
             "type": "STATIC_SUSCEPTIBILITY_ONLY",
@@ -643,6 +713,35 @@ def profile_location_endpoint(payload: ProfileRequest) -> ProfileResponse:
         limitations=profile.get("metadata", {}).get("notes", []),
         generated_at=datetime.now(timezone.utc).isoformat(),
     )
+
+
+@app.post(
+    "/api/v1/rainfall/refetch",
+    tags=["Telemetry"],
+)
+def refetch_regional_rainfall(payload: PredictRequest) -> Dict[str, Any]:
+    """
+    Dedicated Secondary Meteorological Rainfall Re-fetch Endpoint.
+    Directly retrieves regional Open-Meteo & IMD precipitation telemetry
+    for exact coordinates when local CWC river sensors are absent or unrecorded.
+    """
+    dt_utc, effective_ts = validate_and_parse_timestamp(payload.timestamp)
+    engine = get_risk_engine()
+    rf = engine.rainfall_provider.get_rainfall_for_location(
+        latitude=payload.latitude,
+        longitude=payload.longitude,
+        timestamp=dt_utc,
+        reference_time=dt_utc,
+        auto_refetch=True,
+    )
+    trig = engine.trigger_engine.evaluate_rainfall(rf)
+    return {
+        "status": "SUCCESS",
+        "location": {"latitude": payload.latitude, "longitude": payload.longitude},
+        "rainfall": rf,
+        "rainfall_trigger": trig,
+        "refetched_at": datetime.now(timezone.utc).isoformat(),
+    }
 
 
 # ==============================================================================

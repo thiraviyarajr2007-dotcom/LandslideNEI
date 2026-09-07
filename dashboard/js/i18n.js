@@ -192,14 +192,14 @@ const translations = {
 let currentLang = "en";
 
 function setLanguage(lang) {
-  if (translations[lang]) {
-    currentLang = lang;
-    document.querySelectorAll("[data-i18n]").forEach(elem => {
-      const key = elem.getAttribute("data-i18n");
-      if (translations[currentLang][key]) {
-        elem.textContent = translations[currentLang][key];
-      }
-    });
+  // English-only requirement: Strictly force English and disallow Tamil/multilingual switching
+  currentLang = "en";
+  document.querySelectorAll("[data-i18n]").forEach(elem => {
+    const key = elem.getAttribute("data-i18n");
+    if (translations["en"][key]) {
+      elem.textContent = translations["en"][key];
+    }
+  });
 
     document.querySelectorAll("[data-i18n-placeholder]").forEach(elem => {
       const key = elem.getAttribute("data-i18n-placeholder");

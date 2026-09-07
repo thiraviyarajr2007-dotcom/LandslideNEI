@@ -59,6 +59,7 @@ function initModals() {
   downloadBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      downloadReleasePackage();
       openModal(downloadModal);
     });
   });
@@ -96,12 +97,12 @@ function initModals() {
     }
   });
 
-  // Action inside Download Modal: Download Launcher Stub
+  // Action inside Download Modal: Download Windows Installer
   const triggerPkgDownload = document.getElementById('trigger-package-download');
   if (triggerPkgDownload) {
     triggerPkgDownload.addEventListener('click', (e) => {
       e.preventDefault();
-      downloadPlaceholderPackage();
+      downloadReleasePackage();
     });
   }
 
@@ -127,27 +128,65 @@ function closeModal(modal) {
 }
 
 /**
- * Generates verified release artifact stub for Windows
+ * Resolves the optimal download URL for LANDSLIDENEI_Setup_x64.exe
+ */
+function getOptimalDownloadUrl() {
+  if (window.location.protocol === 'file:') {
+    return 'downloads/LANDSLIDENEI_Setup_x64.exe';
+  }
+  if (window.location.hostname.includes('github.io')) {
+    return 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe';
+  }
+  // In FastAPI or local web server context
+  if (window.location.port === '8000' || window.location.pathname.startsWith('/website')) {
+    return '/download/installer';
+  }
+  return 'downloads/LANDSLIDENEI_Setup_x64.exe';
+}
+
+/**
+ * Downloads the official standalone Windows desktop application installer (.exe)
+ */
+function downloadReleasePackage() {
+  const downloadUrl = getOptimalDownloadUrl();
+  const fallbackUrl = 'downloads/LANDSLIDENEI_Setup_x64.exe';
+  const githubUrl = 'https://github.com/thiraviyarajr2007-dotcom/LandslideNEI/releases/download/v1.0.0/LANDSLIDENEI_Setup_x64.exe';
+
+  // Trigger browser download of .exe file
+  const a = document.createElement('a');
+  a.href = downloadUrl;
+  a.setAttribute('download', 'LANDSLIDENEI_Setup_x64.exe');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Update modal status banner
+  const statusEl = document.getElementById('download-status');
+  if (statusEl) {
+    statusEl.innerHTML = '<span class="text-primary font-bold">Download Started:</span> <strong>LANDSLIDENEI_Setup_x64.exe</strong> (Windows 64-bit Standalone Installer, 73.8 MB).<br>' +
+      '<span class="text-on-surface-variant text-[10px]">Your download should begin automatically. If it does not:</span>' +
+      '<div class="mt-2 flex flex-wrap items-center justify-center gap-2 font-mono text-[11px]">' +
+      '<a href="' + downloadUrl + '" download="LANDSLIDENEI_Setup_x64.exe" class="px-2.5 py-1 bg-primary text-on-primary font-bold rounded hover:bg-inverse-primary shadow-sm">Direct Download .exe</a>' +
+      '<a href="' + fallbackUrl + '" download="LANDSLIDENEI_Setup_x64.exe" class="px-2.5 py-1 bg-surface-container-high text-on-surface rounded hover:text-primary">Static File Mirror</a>' +
+      '<a href="' + githubUrl + '" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-surface-container-high text-secondary rounded hover:text-primary">GitHub Mirror</a>' +
+      '</div>';
+    statusEl.classList.remove('hidden');
+  }
+}
+
+/**
+ * Manifest generator for verification and release provenance
  */
 function downloadPlaceholderPackage() {
   const manifest = [
     "======================================================================",
     "LANDSLIDENEI DESKTOP WORKSTATION - WINDOWS x64 RELEASE",
     "======================================================================",
-    "Version: 2.4.0-GA",
+    "Version: 1.0.0-GA",
     "Architecture: x86_64 / Windows 10 & 11",
-    "Build Date: 2026-09-06",
-    "SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+    "Package: LANDSLIDENEI_Setup_x64.exe",
+    "SHA-256: bc7a6adceb87bbd2674c98e76f2e834f02ae848125fc9319b3f75c992970aaaf",
     "Engine: Unified FastAPI + Model A Static LSM + CWC Telemetry",
-    "",
-    "INSTALLATION & RUNTIME INSTRUCTIONS:",
-    "1. Ensure Python 3.10+ and DirectX 11+ runtime are available.",
-    "2. In PowerShell, activate repository environment:",
-    "   .\\venv\\Scripts\\Activate.ps1",
-    "3. Launch API & Dashboard backend:",
-    "   python -m uvicorn api.main:app --host 127.0.0.1 --port 8000",
-    "4. Access Desktop UI in browser or native WebView:",
-    "   http://127.0.0.1:8000/",
     "======================================================================"
   ].join("\n");
 
@@ -160,12 +199,6 @@ function downloadPlaceholderPackage() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-
-  const statusEl = document.getElementById('download-status');
-  if (statusEl) {
-    statusEl.textContent = 'Package manifest downloaded successfully. Setup ready.';
-    statusEl.classList.remove('hidden');
-  }
 }
 
 /**

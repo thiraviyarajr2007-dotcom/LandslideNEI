@@ -15,10 +15,11 @@ CRITICAL ARCHITECTURAL CONSTRAINTS:
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(os.environ.get("LANDSLIDENEI_ROOT", Path(__file__).resolve().parents[2]))
 CONFIG_FILE = PROJECT_ROOT / "config" / "risk_thresholds.json"
 
 STANDARD_LIMITATIONS = [

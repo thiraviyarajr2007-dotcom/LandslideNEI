@@ -31,3 +31,14 @@ temp/
 data/raw/
 data/processed/
 data/inspection/landslide_pdfs/
+
+# PyInstaller & Packaging Artifacts
+build/
+dist/
+*.spec
+*.exe
+*.zip
+installer/*.exe
+installer/*.7z
+website/downloads/*.exe
+scratch/

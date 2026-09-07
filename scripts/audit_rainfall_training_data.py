@@ -12,7 +12,8 @@ import pandas as pd
 from pyproj import Transformer
 from scipy.spatial import cKDTree
 
-BASE_DIR = r"C:\SIH Landslide"
+from pathlib import Path
+BASE_DIR = os.environ.get("LANDSLIDENEI_ROOT", str(Path(__file__).resolve().parents[1]))
 CWC_FEATURES_FILE = os.path.join(BASE_DIR, "data", "processed", "cwc_rainfall_features.csv")
 INTEGRATED_DAILY_FILE = os.path.join(BASE_DIR, "data", "processed", "rainfall", "rainfall_daily_integrated.csv")
 IMD_STATE_FILE = os.path.join(BASE_DIR, "data", "processed", "imd", "imd_statewise_ner.csv")

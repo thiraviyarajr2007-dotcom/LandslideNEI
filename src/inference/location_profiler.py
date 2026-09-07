@@ -22,7 +22,11 @@ from pyproj import Transformer
 from shapely.geometry import Point, shape
 from shapely.prepared import prep
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+from src.inference.micro_topography import compute_micro_topography
+from src.inference.soil_pore_pressure import compute_soil_saturation_and_pore_pressure
+from src.inference.anthropogenic_engine import compute_anthropogenic_impact
+
+PROJECT_ROOT = Path(os.environ.get("LANDSLIDENEI_ROOT", Path(__file__).resolve().parents[2]))
 
 # Asset paths
 MODEL_PIPELINE_PATH = PROJECT_ROOT / "model" / "static_lsm_pipeline.joblib"
@@ -217,6 +221,14 @@ class LocationProfiler:
                 "slope_deg": np.nan,
                 "aspect_deg": np.nan,
                 "relief_std_5x5_m": np.nan,
+                "profile_curvature": np.nan,
+                "plan_curvature": np.nan,
+                "curvature_class": None,
+                "terrain_ruggedness_index_m": np.nan,
+                "topographic_position_index_m": np.nan,
+                "slope_position": None,
+                "topographic_wetness_index": np.nan,
+                "village_terrain_risk_multiplier": 1.0,
                 "dem_tile": None,
                 "dem_quality": "MISSING_TILE",
             }
@@ -234,6 +246,14 @@ class LocationProfiler:
                 "slope_deg": np.nan,
                 "aspect_deg": np.nan,
                 "relief_std_5x5_m": np.nan,
+                "profile_curvature": np.nan,
+                "plan_curvature": np.nan,
+                "curvature_class": None,
+                "terrain_ruggedness_index_m": np.nan,
+                "topographic_position_index_m": np.nan,
+                "slope_position": None,
+                "topographic_wetness_index": np.nan,
+                "village_terrain_risk_multiplier": 1.0,
                 "dem_tile": tile_key,
                 "dem_quality": "OUT_OF_BOUNDS",
             }
@@ -256,6 +276,14 @@ class LocationProfiler:
                 "slope_deg": np.nan,
                 "aspect_deg": np.nan,
                 "relief_std_5x5_m": np.nan,
+                "profile_curvature": np.nan,
+                "plan_curvature": np.nan,
+                "curvature_class": None,
+                "terrain_ruggedness_index_m": np.nan,
+                "topographic_position_index_m": np.nan,
+                "slope_position": None,
+                "topographic_wetness_index": np.nan,
+                "village_terrain_risk_multiplier": 1.0,
                 "dem_tile": tile_key,
                 "dem_quality": "NODATA",
             }
@@ -309,11 +337,28 @@ class LocationProfiler:
             if aspect_deg >= 360.0:
                 aspect_deg = 0.0
 
+        # Micro-Topography analysis (Village-scale profile/plan curvature, TRI, TPI, TWI)
+        micro_topo = compute_micro_topography(
+            w3=w3,
+            dx=dx,
+            dy=dy,
+            center_elev=center_elev,
+            valid_cells_5x5=valid_cells,
+        )
+
         return {
             "elevation_m": round(center_elev, 2),
             "slope_deg": round(slope_deg, 2),
             "aspect_deg": round(aspect_deg, 2) if not np.isnan(aspect_deg) else np.nan,
             "relief_std_5x5_m": round(relief_std, 2) if not np.isnan(relief_std) else np.nan,
+            "profile_curvature": micro_topo["profile_curvature"],
+            "plan_curvature": micro_topo["plan_curvature"],
+            "curvature_class": micro_topo["curvature_class"],
+            "terrain_ruggedness_index_m": micro_topo["terrain_ruggedness_index_m"],
+            "topographic_position_index_m": micro_topo["topographic_position_index_m"],
+            "slope_position": micro_topo["slope_position"],
+            "topographic_wetness_index": micro_topo["topographic_wetness_index"],
+            "village_terrain_risk_multiplier": micro_topo["village_terrain_risk_multiplier"],
             "dem_tile": tile_key,
             "dem_quality": "PARTIAL_WINDOW" if is_partial else "OK",
         }
@@ -459,6 +504,46 @@ class LocationProfiler:
                 "description": f"Soil clay fraction ({clay:.1f}%) indicates fine texture prone to moisture retention."
             })
 
+        curv_class = terrain.get("curvature_class")
+        if curv_class and "Concave-Convergent" in curv_class:
+            reasons.append({
+                "code": "MICRO_CONVERGENT_HOLLOW",
+                "description": f"Micro-topography reveals {curv_class}, naturally funnelling storm runoff and debris into the village zone."
+            })
+        elif curv_class and "Convergent" in curv_class:
+            reasons.append({
+                "code": "MICRO_CONVERGENT_CHANNEL",
+                "description": f"Micro-topography reveals {curv_class}, focusing channelized surface runoff toward settlements."
+            })
+
+        slope_pos = terrain.get("slope_position")
+        if slope_pos in ["Foot-Slope / Toe Cut", "Valley Bottom / Deep Hollow"]:
+            reasons.append({
+                "code": "VILLAGE_TOE_SLOPE_ZONE",
+                "description": f"Terrain position is '{slope_pos}', vulnerable to road cuts, toe excavation, and upslope runout."
+            })
+
+        twi = terrain.get("topographic_wetness_index")
+        if twi is not None and not np.isnan(twi) and twi >= 5.5:
+            reasons.append({
+                "code": "HIGH_TOPOGRAPHIC_WETNESS",
+                "description": f"Topographic Wetness Index ({twi:.1f}) indicates rapid soil saturation and high pore-water pressure potential."
+            })
+
+        sat_state = soil.get("saturation_state")
+        if sat_state in ["CRITICAL_SATURATION", "HIGH_PORE_PRESSURE"]:
+            reasons.append({
+                "code": "SOIL_SATURATION_WARNING",
+                "description": f"Soil saturation state is '{sat_state}' ({soil.get('saturation_percent', 0):.1f}%), indicating high fluid pressure in soil pores."
+            })
+
+        fos = soil.get("factor_of_safety")
+        if fos is not None and not np.isnan(fos) and fos <= 1.30:
+            reasons.append({
+                "code": "LIMIT_EQUILIBRIUM_SLOPE_WARNING",
+                "description": f"Geotechnical Factor of Safety ({fos:.2f}) indicates marginal or critical shear stability along failure surface."
+            })
+
         if not reasons:
             reasons.append({
                 "code": "MODERATE_BASELINE_SIGNAL",
@@ -467,7 +552,17 @@ class LocationProfiler:
 
         return reasons
 
-    def profile_location(self, lat: float, lon: float) -> Dict[str, Any]:
+    def profile_location(
+        self,
+        lat: float,
+        lon: float,
+        road_cut_present: bool = False,
+        cut_slope_deg: Optional[float] = None,
+        drainage_blocked: bool = False,
+        unsupported_excavation: bool = False,
+        deforestation_observed: bool = False,
+        has_retaining_wall: bool = False,
+    ) -> Dict[str, Any]:
         """
         Execute full location profiling and static susceptibility inference.
         Returns a structured dictionary matching the JSON specification.
@@ -492,6 +587,20 @@ class LocationProfiler:
         terrain = self._get_dem_features(lat, lon)
         soil = self._get_soil_features(lat, lon)
         lulc = self._get_worldcover_features(lat, lon)
+
+        # Baseline geotechnical soil mechanics & pore pressure
+        soil_geotech = compute_soil_saturation_and_pore_pressure(
+            clay_percent=soil.get("clay_percent"),
+            sand_percent=soil.get("sand_percent"),
+            silt_percent=soil.get("silt_percent"),
+            bulk_density_kg_dm3=soil.get("bulk_density_kg_dm3"),
+            slope_deg=terrain.get("slope_deg"),
+            rainfall_24h=0.0,
+            rainfall_3d=0.0,
+            rainfall_7d=0.0,
+            twi=terrain.get("topographic_wetness_index"),
+        )
+        soil.update(soil_geotech)
 
         # 3. Assess Feature Completeness
         model_input_dict = {
@@ -523,8 +632,66 @@ class LocationProfiler:
         score = float(self.pipeline.predict_proba(df_input)[0, 1])
         category = self._assign_susceptibility_category(score)
 
+        # Anthropogenic & Human Factors Analysis (Pillar ④)
+        anthropogenic = compute_anthropogenic_impact(
+            natural_slope_deg=terrain.get("slope_deg"),
+            landcover_class=lulc.get("landcover_class"),
+            base_cohesion_kpa=soil.get("effective_cohesion_kpa"),
+            friction_angle_deg=soil.get("friction_angle_deg"),
+            pore_water_pressure_kpa=soil.get("pore_water_pressure_kpa", 0.0),
+            slope_position=terrain.get("slope_position"),
+            road_cut_present=road_cut_present,
+            cut_slope_deg=cut_slope_deg,
+            drainage_blocked=drainage_blocked,
+            unsupported_excavation=unsupported_excavation,
+            deforestation_observed=deforestation_observed,
+            has_retaining_wall=has_retaining_wall,
+        )
+
         # 5. Explainability
         reason_codes = self._generate_reason_codes(terrain, soil, lulc, score)
+
+        # Dynamic anthropogenic explainability codes
+        if anthropogenic.get("road_cut_present"):
+            reason_codes.append({
+                "code": "ANTHROPOGENIC_ROAD_TOE_CUT",
+                "description": (
+                    f"Road toe excavation steepened cut-slope to {anthropogenic['effective_slope_deg']}° "
+                    f"({anthropogenic['road_cut_severity']}), elevating driving shear stress by {anthropogenic['anthropogenic_hazard_multiplier']:.2f}x."
+                ),
+            })
+        if drainage_blocked:
+            reason_codes.append({
+                "code": "BLOCKED_DRAINAGE_SURCHARGE",
+                "description": (
+                    f"Blocked roadside culverts/ditches create perched hydrostatic surcharge "
+                    f"({anthropogenic['hydrostatic_surcharge_kpa']:.1f} kPa), accelerating pore pressure liquefaction."
+                ),
+            })
+        if deforestation_observed:
+            reason_codes.append({
+                "code": "ROOT_COHESION_DEPLETED",
+                "description": (
+                    "Deforestation / vegetation clearance depleted root tensile cohesion to 0.0 kPa, "
+                    "increasing vulnerability to shallow translational slippage."
+                ),
+            })
+        if has_retaining_wall:
+            reason_codes.append({
+                "code": "ENGINEERED_RETAINING_WALL_ACTIVE",
+                "description": (
+                    f"Engineered retaining structure provides toe buttress reinforcement, "
+                    f"stabilizing modified Factor of Safety to {anthropogenic['modified_factor_of_safety']:.2f}."
+                ),
+            })
+        if anthropogenic.get("modified_factor_of_safety", 2.0) <= 1.0:
+            reason_codes.append({
+                "code": "ANTHROPOGENIC_LIMIT_EQUILIBRIUM_BREACH",
+                "description": (
+                    f"Anthropogenic slope modification reduced Factor of Safety to {anthropogenic['modified_factor_of_safety']:.2f} "
+                    f"(<= 1.0 Critical Failure Equilibrium)."
+                ),
+            })
 
         top_model_features = [
             {"feature": "aspect_deg", "mean_roc_auc_drop": 0.10960, "note": "Slope orientation"},
@@ -545,6 +712,7 @@ class LocationProfiler:
             "terrain": terrain,
             "soil": soil,
             "landcover": lulc,
+            "anthropogenic": anthropogenic,
             "susceptibility": {
                 "score": round(score, 4),
                 "score_range": [0.0, 1.0],
@@ -613,9 +781,27 @@ class LocationProfiler:
 _GLOBAL_PROFILER: Optional[LocationProfiler] = None
 
 
-def profile_location(lat: float, lon: float) -> Dict[str, Any]:
+def profile_location(
+    lat: float,
+    lon: float,
+    road_cut_present: bool = False,
+    cut_slope_deg: Optional[float] = None,
+    drainage_blocked: bool = False,
+    unsupported_excavation: bool = False,
+    deforestation_observed: bool = False,
+    has_retaining_wall: bool = False,
+) -> Dict[str, Any]:
     """Top-level functional entry point for location profiling and static susceptibility inference."""
     global _GLOBAL_PROFILER
     if _GLOBAL_PROFILER is None:
         _GLOBAL_PROFILER = LocationProfiler()
-    return _GLOBAL_PROFILER.profile_location(lat, lon)
+    return _GLOBAL_PROFILER.profile_location(
+        lat=lat,
+        lon=lon,
+        road_cut_present=road_cut_present,
+        cut_slope_deg=cut_slope_deg,
+        drainage_blocked=drainage_blocked,
+        unsupported_excavation=unsupported_excavation,
+        deforestation_observed=deforestation_observed,
+        has_retaining_wall=has_retaining_wall,
+    )

@@ -52,6 +52,43 @@ class PredictRequest(BaseModel):
         description="Optional observation timestamp in ISO-8601 format with explicit timezone (e.g. '2026-09-02T09:00:00Z' or '+05:30'). If omitted, current operational UTC time is used.",
         example="2026-09-02T09:00:00Z",
     )
+    auto_refetch: Optional[bool] = Field(
+        False,
+        description="If True, automatically re-fetches regional meteorological precipitation via Open-Meteo REST API when CWC local station is beyond 50km or unrecorded.",
+        example=True,
+    )
+    road_cut_present: Optional[bool] = Field(
+        False,
+        description="Whether road toe cut or excavation is present at the slope base.",
+        example=False,
+    )
+    cut_slope_deg: Optional[float] = Field(
+        None,
+        ge=0.0,
+        le=90.0,
+        description="Estimated or measured slope angle of the cut-face in degrees.",
+        example=60.0,
+    )
+    drainage_blocked: Optional[bool] = Field(
+        False,
+        description="Whether roadside culverts or slope drainage ditches are blocked by debris/silt.",
+        example=False,
+    )
+    unsupported_excavation: Optional[bool] = Field(
+        False,
+        description="Whether ongoing construction excavation lacks retaining structure support.",
+        example=False,
+    )
+    deforestation_observed: Optional[bool] = Field(
+        False,
+        description="Whether recent forest clearing, burning, or tree removal occurred on the slope.",
+        example=False,
+    )
+    has_retaining_wall: Optional[bool] = Field(
+        False,
+        description="Whether engineered gabion or reinforced retaining wall is installed at the slope toe.",
+        example=False,
+    )
 
 
 class ProfileRequest(BaseModel):
@@ -68,6 +105,38 @@ class ProfileRequest(BaseModel):
         le=180.0,
         description="Target longitude in decimal degrees (-180.0 to 180.0)",
         example=91.6087,
+    )
+    road_cut_present: Optional[bool] = Field(
+        False,
+        description="Whether road toe cut or excavation is present at the slope base.",
+        example=False,
+    )
+    cut_slope_deg: Optional[float] = Field(
+        None,
+        ge=0.0,
+        le=90.0,
+        description="Estimated or measured slope angle of the cut-face in degrees.",
+        example=60.0,
+    )
+    drainage_blocked: Optional[bool] = Field(
+        False,
+        description="Whether roadside culverts or slope drainage ditches are blocked by debris/silt.",
+        example=False,
+    )
+    unsupported_excavation: Optional[bool] = Field(
+        False,
+        description="Whether ongoing construction excavation lacks retaining structure support.",
+        example=False,
+    )
+    deforestation_observed: Optional[bool] = Field(
+        False,
+        description="Whether recent forest clearing, burning, or tree removal occurred on the slope.",
+        example=False,
+    )
+    has_retaining_wall: Optional[bool] = Field(
+        False,
+        description="Whether engineered gabion or reinforced retaining wall is installed at the slope toe.",
+        example=False,
     )
 
 
@@ -95,6 +164,14 @@ class TerrainBlock(BaseModel):
     slope_deg: Optional[float] = None
     aspect_deg: Optional[float] = None
     relief_std_5x5_m: Optional[float] = None
+    profile_curvature: Optional[float] = None
+    plan_curvature: Optional[float] = None
+    curvature_class: Optional[str] = None
+    terrain_ruggedness_index_m: Optional[float] = None
+    topographic_position_index_m: Optional[float] = None
+    slope_position: Optional[str] = None
+    topographic_wetness_index: Optional[float] = None
+    village_terrain_risk_multiplier: Optional[float] = None
 
 
 class SoilBlock(BaseModel):
@@ -103,11 +180,40 @@ class SoilBlock(BaseModel):
     sand_percent: Optional[float] = None
     silt_percent: Optional[float] = None
     bulk_density_kg_dm3: Optional[float] = None
+    porosity: Optional[float] = None
+    hydraulic_conductivity_mm_h: Optional[float] = None
+    saturation_ratio: Optional[float] = None
+    saturation_percent: Optional[float] = None
+    pore_water_pressure_kpa: Optional[float] = None
+    effective_cohesion_kpa: Optional[float] = None
+    friction_angle_deg: Optional[float] = None
+    factor_of_safety: Optional[float] = None
+    saturation_state: Optional[str] = None
+    liquefaction_risk: Optional[str] = None
+    stability_status: Optional[str] = None
+    sar_dielectric_constant: Optional[float] = None
+    sar_backscatter_vv_db: Optional[float] = None
 
 
 class LandcoverBlock(BaseModel):
     landcover_code: Optional[int] = None
     landcover_class: Optional[str] = None
+
+
+class AnthropogenicBlock(BaseModel):
+    road_cut_present: bool = False
+    road_cut_severity: str = "NONE"
+    cut_slope_deg: Optional[float] = None
+    effective_slope_deg: Optional[float] = None
+    drainage_condition: str = "NORMAL_SURFACE_DRAINAGE"
+    hydrostatic_surcharge_kpa: float = 0.0
+    retaining_wall_status: str = "NATURAL_SLOPE"
+    root_cohesion_kpa: float = 0.0
+    deforestation_observed: bool = False
+    anthropogenic_hazard_multiplier: float = 1.0
+    modified_factor_of_safety: Optional[float] = None
+    stability_verdict: str = "STABLE"
+    recommended_mitigations: List[str] = []
 
 
 class StaticSusceptibilityBlock(BaseModel):
@@ -119,6 +225,7 @@ class StaticSusceptibilityBlock(BaseModel):
     terrain: TerrainBlock
     soil: SoilBlock
     landcover: LandcoverBlock
+    anthropogenic: Optional[AnthropogenicBlock] = None
     reasons: List[Dict[str, str]]
 
 
@@ -162,6 +269,19 @@ class RainfallBlock(BaseModel):
     quality: str = Field(..., description="Data quality tier: GOOD, PARTIAL, MISSING, STALE, NO_RELIABLE_STATION")
     status: str = Field(..., description="Operational availability status: OK, STALE, MISSING, NO_RELIABLE_LOCAL_STATION")
     quality_notes: str
+    is_realtime: Optional[bool] = Field(None, description="True if telemetry represents fresh live observation; False if historical or fallback")
+    realtime_attempt: Optional[int] = Field(None, description="Which real-time fetch attempt (1, 2, or 3) succeeded")
+    fallback_engaged: Optional[bool] = Field(False, description="True if secondary fallback was engaged after real-time retries")
+    orographic_amplification_factor: Optional[float] = None
+    precipitation_regime: Optional[str] = None
+    effective_micro_rainfall_1h: Optional[float] = None
+    effective_micro_rainfall_24h: Optional[float] = None
+    doppler_radar_name: Optional[str] = None
+    doppler_radar_distance_km: Optional[float] = None
+    doppler_reflectivity_dbz: Optional[float] = None
+    cloudburst_detected: Optional[bool] = None
+    idf_threshold_breached: Optional[bool] = None
+    micro_runoff_peak_m3_s: Optional[float] = None
     freshness: FreshnessBlock
     imd_macro_context: Optional[IMDMacroContextBlock] = None
 
@@ -216,6 +336,7 @@ class PredictResponse(BaseModel):
     rainfall: RainfallBlock
     rainfall_trigger: RainfallTriggerBlock
     risk: RiskBlock
+    anthropogenic: Optional[AnthropogenicBlock] = None
     model: ModelMetadataBlock
     limitations: List[str]
     generated_at: str
@@ -226,6 +347,7 @@ class ProfileResponse(BaseModel):
     request_id: str
     location: LocationBlock
     static_susceptibility: StaticSusceptibilityBlock
+    anthropogenic: Optional[AnthropogenicBlock] = None
     model: Dict[str, str]
     limitations: List[str]
     generated_at: str

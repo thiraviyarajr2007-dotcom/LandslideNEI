@@ -20,8 +20,8 @@
         "Critical"
     ],
     "training_dataset": "data/raw/landslide_training.csv",
-    "training_rows": 18,
-    "training_timestamp": "2026-09-04T16:36:39.600506+00:00",
+    "training_rows": 1200,
+    "training_timestamp": "2026-09-07T06:42:09.757960+00:00",
     "random_state": 42,
     "validation_status": "PASSED_DEMO_VALIDATION",
     "dataset_type": "DEMO / PIPELINE VALIDATION DATA",
@@ -29,32 +29,33 @@
     "model_selection_method": "3-Fold Stratified Cross-Validation on Training Split (Holdout Untouched)",
     "model_selection_criteria": "Priority: (1) CV Macro F1 -> (2) CV Critical Recall -> (3) CV High Recall -> (4) CV Accuracy",
     "cv_selection_metrics": {
-        "mean_accuracy": 0.85,
-        "std_accuracy": 0.10801234497346433,
-        "mean_macro_f1": 0.7777777777777777,
-        "std_macro_f1": 0.15713484026367724,
-        "mean_critical_recall": 1.0,
-        "std_critical_recall": 0.0,
-        "mean_high_recall": 1.0,
-        "std_high_recall": 0.0
+        "mean_accuracy": 0.9755555555555556,
+        "std_accuracy": 0.010999438818457384,
+        "mean_macro_f1": 0.9759875372540954,
+        "std_macro_f1": 0.010866211220000057,
+        "mean_critical_recall": 0.9857813547954394,
+        "std_critical_recall": 0.011664622509622895,
+        "mean_high_recall": 0.9570429570429569,
+        "std_high_recall": 0.02625428350906028
     },
     "holdout_evaluation_metrics": {
-        "accuracy": 1.0,
-        "macro_precision": 1.0,
-        "macro_recall": 1.0,
-        "macro_f1": 1.0,
-        "weighted_f1": 1.0,
-        "high_recall": 1.0,
-        "critical_recall": 1.0
+        "accuracy": 0.9566666666666667,
+        "macro_precision": 0.9579783950617284,
+        "macro_recall": 0.9571715139320773,
+        "macro_f1": 0.9572711638477319,
+        "weighted_f1": 0.9567780660061996,
+        "high_recall": 0.935064935064935,
+        "critical_recall": 0.9859154929577465
     },
+    "full_dataset_accuracy": 1.0,
     "feature_importance": {
-        "rainfall_7d": 0.1721,
-        "rainfall_3d": 0.151,
-        "rainfall_24h": 0.1453,
-        "elevation": 0.1447,
-        "distance_to_landslide": 0.1377,
-        "slope": 0.1362,
-        "soil_risk": 0.0991,
-        "historical_landslide": 0.014
+        "rainfall_7d": 0.3687,
+        "rainfall_3d": 0.3256,
+        "rainfall_24h": 0.2579,
+        "elevation": 0.014,
+        "slope": 0.0111,
+        "distance_to_landslide": 0.011,
+        "soil_risk": 0.0106,
+        "historical_landslide": 0.0012
     }
 }

@@ -238,6 +238,6 @@ def test_real_demo_csv_validation():
     demo_df = pd.read_csv("data/raw/landslide_training.csv")
     result = validate_training_data(demo_df)
     assert result["valid"] is True
-    assert result["row_count"] == 18
+    assert result["row_count"] == len(demo_df)
     assert len(result["errors"]) == 0
     assert "Critical" in result["class_distribution"]

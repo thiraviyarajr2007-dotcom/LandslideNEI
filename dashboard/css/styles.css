@@ -300,6 +300,306 @@ html, body {
   position: relative;
 }
 
+/* ============================================================
+ * MODERN CYBER-GIS TACTICAL AESTHETICS & GLASSMORPHISM
+ * ============================================================ */
+
+.glass-panel {
+  background: rgba(23, 31, 50, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+  background: rgba(19, 27, 45, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(59, 73, 76, 0.5);
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 229, 255, 0.45);
+  box-shadow: 0 6px 24px rgba(0, 229, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Glowing Tactical Accents */
+.glow-cyan {
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+}
+
+.glow-crimson {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+.glow-amber {
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.4);
+}
+
+/* Pulsing Radar Effect */
+@keyframes tacticalPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.alert-pulse-critical {
+  animation: tacticalPulse 2s infinite;
+}
+
+@keyframes cyanScan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.radar-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.radar-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.8), transparent);
+  animation: cyanScan 3s linear infinite;
+  pointer-events: none;
+}
+
+/* ============================================================
+ * INTERACTIVE SEMI-CIRCULAR SVG GAUGE
+ * ============================================================ */
+
+.tactical-gauge-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg {
+  width: 100%;
+  max-width: 220px;
+  overflow: visible;
+}
+
+.gauge-track {
+  fill: none;
+  stroke: rgba(45, 52, 72, 0.8);
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.gauge-arc {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.5s ease;
+}
+
+.gauge-needle {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 100px 100px;
+}
+
+.gauge-center-cap {
+  fill: var(--surface-container-high);
+  stroke: var(--primary-container);
+  stroke-width: 2;
+}
+
+.gauge-readout {
+  position: absolute;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ============================================================
+ * QUICK SCENARIO PRESET CHIPS
+ * ============================================================ */
+
+.corridor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(23, 31, 50, 0.9);
+  border: 1px solid rgba(59, 73, 76, 0.6);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.corridor-chip:hover {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: rgba(0, 229, 255, 0.5);
+  color: var(--primary-container);
+  transform: translateY(-1px);
+}
+
+.corridor-chip.active {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: var(--primary-container);
+  color: var(--primary);
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+/* ============================================================
+ * ML MODEL HUB & ANALYTICS STYLES
+ * ============================================================ */
+
+.metric-tile {
+  background: rgba(19, 27, 45, 0.9);
+  border: 1px solid rgba(59, 73, 76, 0.5);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.metric-tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-container);
+}
+
+.metric-tile:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.feature-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.feature-bar-label {
+  width: 170px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feature-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(6, 14, 31, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(59, 73, 76, 0.3);
+}
+
+.feature-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #00a6e0, #00e5ff);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.feature-bar-value {
+  width: 55px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-container);
+}
+
+/* Custom Tactical Range Slider */
+.ml-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--surface-container-lowest);
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid rgba(59, 73, 76, 0.6);
+}
+
+.ml-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary-container);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+  transition: transform 0.1s ease;
+}
+
+.ml-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Language Switcher Pill */
+.lang-switcher-pill {
+  display: flex;
+  align-items: center;
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(59, 73, 76, 0.6);
+  border-radius: 9999px;
+  padding: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.lang-btn {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lang-btn.active {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-weight: bold;
+}
+
 /* Print Styles */
 @media print {
   .window-titlebar, .workstation-header, .app-sidebar, .command-toolbar, .no-print {

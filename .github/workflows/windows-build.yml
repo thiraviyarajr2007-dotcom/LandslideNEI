@@ -1,0 +1,89 @@
+﻿name: Build and Release Windows Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release Tag (e.g. v1.0.0)'
+        required: false
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install System and Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller wheel
+          pip install -r requirements.txt
+
+      - name: Build Standalone Desktop Executable
+        run: |
+          python scripts/build_desktop_app.py
+
+      - name: Package Windows Installer (7-Zip SFX)
+        shell: powershell
+        run: |
+          .\scripts\build_windows_installer.ps1
+
+      - name: Verify Installer Artifact
+        shell: powershell
+        run: |
+          if (-not (Test-Path "installer/LANDSLIDENEI_Setup_x64.exe")) {
+            throw "Installer binary installer/LANDSLIDENEI_Setup_x64.exe was not created!"
+          }
+          $hash = (Get-FileHash "installer/LANDSLIDENEI_Setup_x64.exe" -Algorithm SHA256).Hash
+          $size = (Get-Item "installer/LANDSLIDENEI_Setup_x64.exe").Length / 1MB
+          Write-Host "Installer verified successfully: $size MB (SHA256: $hash)"
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LANDSLIDENEI_Setup_x64
+          path: installer/LANDSLIDENEI_Setup_x64.exe
+          if-no-files-found: error
+
+      - name: Publish to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name || inputs.release_tag }}
+          name: "LANDSLIDENEI Release ${{ github.ref_name || inputs.release_tag }}"
+          draft: false
+          prerelease: false
+          files: installer/LANDSLIDENEI_Setup_x64.exe
+          body: |
+            ## LANDSLIDENEI Desktop Workstation - Official Windows Release
+            
+            ### Package Information
+            - **Binary:** `LANDSLIDENEI_Setup_x64.exe`
+            - **Platform:** Windows 10 / Windows 11 (64-bit)
+            - **Architecture:** x86_64
+            - **Inference Engine:** Frozen Model A Random Forest Static Susceptibility + Dynamic Rainfall Trigger Fusion
+            - **UI Framework:** GIS Workstation Dashboard (Dark Theme, Leaflet GIS, 8 Northeast Indian States)
+            - **Offline Mode:** 100% Self-Contained (no Python or CLI required)
+
+            ### Installation Instructions
+            1. Download `LANDSLIDENEI_Setup_x64.exe`.
+            2. Double-click the installer and choose the installation destination folder (or accept default).
+            3. Run `Create_Shortcuts.bat` to create Desktop and Start Menu shortcuts.
+            4. Launch `LANDSLIDENEI.exe` to open the local GIS workstation.
