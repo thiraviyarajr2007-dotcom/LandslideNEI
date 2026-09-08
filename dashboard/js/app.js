@@ -247,15 +247,27 @@ function getAspectHeading(deg) {
 function selectSector(key) {
   const SECTORS = {
     'nagaland': { lat: 25.6740, lon: 94.1120, name: 'Nagaland Corridor — Kohima & Zubza Axis (NH-29)', elev: 1428 },
-    'sikkim': { lat: 27.5028, lon: 88.5284, name: 'Sikkim Transit — NH-10 Teesta Gorge Corridor', elev: 1840 },
-    'cherrapunji': { lat: 25.2986, lon: 91.7317, name: 'Meghalaya Plateau — Cherrapunji-Shella Escarpment', elev: 1137 },
-    'meghalaya': { lat: 25.2986, lon: 91.7317, name: 'Meghalaya Plateau — Cherrapunji-Shella Escarpment', elev: 1137 },
-    'tawang': { lat: 27.5925, lon: 91.6087, name: 'Arunachal Western Axis — Bhalukpong-Tawang Spur', elev: 3020 },
-    'arunachal': { lat: 27.5925, lon: 91.6087, name: 'Arunachal Western Axis — Bhalukpong-Tawang Spur', elev: 3020 },
-    'guwahati': { lat: 26.1445, lon: 91.7362, name: 'Assam Urban Foothills — Guwahati', elev: 54 },
-    'assam': { lat: 26.1445, lon: 91.7362, name: 'Assam Urban Foothills — Guwahati', elev: 54 },
-    'aizawl': { lat: 23.7271, lon: 92.7176, name: 'Mizoram Ridge — Aizawl', elev: 1132 },
-    'mizoram': { lat: 23.7271, lon: 92.7176, name: 'Mizoram Ridge — Aizawl', elev: 1132 }
+    'mokokchung': { lat: 26.3256, lon: 94.5165, name: 'Nagaland Ridge — Mokokchung Corridor', elev: 906 },
+    'sikkim': { lat: 27.3389, lon: 88.6065, name: 'Sikkim Transit — Gangtok NH-10 Teesta Gorge Corridor', elev: 1755 },
+    'namchi': { lat: 27.1667, lon: 88.3500, name: 'Sikkim Ridge — Namchi & South Sikkim Spur', elev: 1106 },
+    'cherrapunji': { lat: 25.2702, lon: 91.7323, name: 'Meghalaya Plateau — Cherrapunji-Shella Escarpment', elev: 859 },
+    'meghalaya': { lat: 25.2702, lon: 91.7323, name: 'Meghalaya Plateau — Cherrapunji-Shella Escarpment', elev: 859 },
+    'shillong': { lat: 25.5788, lon: 91.8933, name: 'Meghalaya Upland — Shillong Peak & Urban Axis', elev: 1442 },
+    'tawang': { lat: 27.5861, lon: 91.8594, name: 'Arunachal Western Axis — Bhalukpong-Tawang Spur', elev: 3189 },
+    'arunachal': { lat: 27.5861, lon: 91.8594, name: 'Arunachal Western Axis — Bhalukpong-Tawang Spur', elev: 3189 },
+    'itanagar': { lat: 27.0844, lon: 93.6053, name: 'Arunachal Foothills — Itanagar Capital Axis', elev: 548 },
+    'guwahati': { lat: 26.1445, lon: 91.7362, name: 'Assam Urban Foothills — Guwahati', elev: 113 },
+    'assam': { lat: 26.1445, lon: 91.7362, name: 'Assam Urban Foothills — Guwahati', elev: 113 },
+    'tezpur': { lat: 26.6338, lon: 92.7926, name: 'Assam Valley — Tezpur & Sonitpur Corridor', elev: 66 },
+    'silchar': { lat: 24.8333, lon: 92.7789, name: 'Assam Barak Valley — Silchar & Cachar Foothills', elev: 35 },
+    'aizawl': { lat: 23.7271, lon: 92.7176, name: 'Mizoram Ridge — Aizawl', elev: 590 },
+    'mizoram': { lat: 23.7271, lon: 92.7176, name: 'Mizoram Ridge — Aizawl', elev: 590 },
+    'lunglei': { lat: 22.8872, lon: 92.7388, name: 'Mizoram Southern Ridge — Lunglei Corridor', elev: 599 },
+    'manipur': { lat: 24.8170, lon: 93.9368, name: 'Manipur Corridor — Imphal Valley & Kangpokpi Axis (NH-2)', elev: 790 },
+    'imphal': { lat: 24.8170, lon: 93.9368, name: 'Manipur Corridor — Imphal Valley & Kangpokpi Axis (NH-2)', elev: 790 },
+    'tripura': { lat: 23.8315, lon: 91.2868, name: 'Tripura Corridor — Agartala & Baramura Range', elev: 24 },
+    'agartala': { lat: 23.8315, lon: 91.2868, name: 'Tripura Corridor — Agartala & Baramura Range', elev: 24 },
+    'kalimpong': { lat: 27.0667, lon: 88.4667, name: 'West Bengal Border — Kalimpong-Teesta Confluence Corridor', elev: 1250 }
   };
   const sec = SECTORS[key];
   if (sec) {

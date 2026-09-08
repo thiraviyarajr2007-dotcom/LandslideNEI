@@ -250,6 +250,78 @@ def main() -> int:
         time.sleep(0.5)
         return 0
 
+    if "--test-terrain-offline" in sys.argv:
+        import urllib.request
+        import urllib.error
+        import json
+        test_locs = [
+            ("1. Kohima (Nagaland)", 25.6740, 94.1120, "Authoritative NH-29 Corridor Cache"),
+            ("2. Shillong (Meghalaya)", 25.5788, 91.8933, "Authoritative Capital Focal Cache"),
+            ("3. Tezpur (Assam)", 26.6338, 92.7926, "Authoritative North-Bank Brahmaputra Focal Cache"),
+            ("4. Imphal (Manipur)", 24.8170, 93.9368, "Authoritative Capital Intermontane Focal Cache"),
+            ("5. Mokokchung (Nagaland)", 26.3256, 94.5165, "Authoritative Central Nagaland Focal Cache"),
+            ("6. Lunglei (Mizoram)", 22.8872, 92.7388, "Authoritative Southern Mizoram Focal Cache"),
+            ("7. Agartala (Tripura)", 23.8315, 91.2868, "Authoritative Capital Urban Focal Cache"),
+            ("8. Nongstoin (Meghalaya)", 25.5200, 91.2700, "Genuine Resampled Window from Regional N25_E091 Cache"),
+            ("9. Itanagar (Arunachal)", 27.0844, 93.6053, "Authoritative Foothills Focal Cache"),
+            ("10. Namchi (Sikkim)", 27.1667, 88.3500, "Authoritative South Sikkim Focal Cache"),
+        ]
+        results = []
+        all_passed = True
+        total_time_ms = 0
+        for name, lat, lon, desc in test_locs:
+            t0 = time.perf_counter()
+            url = f"http://127.0.0.1:{port}/api/v1/terrain/mesh?latitude={lat}&longitude={lon}&radius_km=10.0&grid_size=128"
+            req = urllib.request.Request(url)
+            try:
+                with urllib.request.urlopen(req) as resp:
+                    t_load = (time.perf_counter() - t0) * 1000
+                    total_time_ms += t_load
+                    data = json.loads(resp.read().decode("utf-8"))
+                    stats = data.get("elevation_stats", {})
+                    ok = data.get("status") == "SUCCESS" and stats.get("min_m") is not None and len(data.get("elevations", [])) == 16384
+                    if not ok:
+                        all_passed = False
+                    res_line = f"LOC: {name:28s} | Lat: {lat:.4f} Lon: {lon:.4f} | Src: {data.get('dem_source')[:25]} | Mode: {data.get('source_mode')} | Elev: {stats.get('min_m')}m - {stats.get('max_m')}m | Time: {t_load:.1f}ms | Result: {'PASS' if ok else 'FAIL'}"
+                    results.append(res_line)
+                    log_startup(res_line)
+            except Exception as exc:
+                all_passed = False
+                res_line = f"LOC: {name} | ERROR: {exc}"
+                results.append(res_line)
+                log_startup(res_line)
+
+        # Test out-of-domain coordinate
+        bad_ok = False
+        try:
+            url_bad = f"http://127.0.0.1:{port}/api/v1/terrain/mesh?latitude=28.6139&longitude=77.2090"
+            urllib.request.urlopen(url_bad)
+        except urllib.error.HTTPError as e:
+            bad_ok = (e.code == 404)
+
+        avg_time = total_time_ms / len(test_locs)
+        summary = (
+            f"\n================================================================================\n"
+            f"STEP 9 EXE OFFLINE TERRAIN VERIFICATION REPORT\n"
+            f"================================================================================\n"
+            + "\n".join(results)
+            + f"\n--------------------------------------------------------------------------------\n"
+            f"Out-of-Domain 404 Guardrail: {'PASS (404 Not Found)' if bad_ok else 'FAIL'}\n"
+            f"Average Terrain Load Time:   {avg_time:.2f} ms\n"
+            f"Final Offline Readiness:     {'FULL NER OFFLINE TERRAIN READY' if (all_passed and bad_ok) else 'FULL NER OFFLINE TERRAIN NOT READY'}\n"
+            f"================================================================================\n"
+        )
+        if ORIG_STDOUT is not None:
+            try:
+                ORIG_STDOUT.write(summary)
+                ORIG_STDOUT.flush()
+            except Exception:
+                pass
+        print(summary)
+        stop_event.set()
+        time.sleep(0.5)
+        return 0 if (all_passed and bad_ok) else 1
+
     # Launch desktop window
     win_proc = launch_desktop_window(port)
 

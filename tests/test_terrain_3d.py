@@ -7,7 +7,9 @@ layer status truthfulness, 3D endpoint responses, and frontend integration.
 """
 
 import json
+import math
 from pathlib import Path
+import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
@@ -16,6 +18,7 @@ from src.inference.terrain_service import get_terrain_service, TerrainService, N
 
 client = TestClient(app)
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEM_DIR = PROJECT_ROOT / "data" / "raw" / "dem" / "copernicus_glo30" / "downloads"
 
 
 # ==============================================================================
@@ -310,3 +313,120 @@ def test_frontend_html_2d_3d_switching_elements():
     assert "assets/vendor/three.min.js" in index_html
     assert "assets/vendor/OrbitControls.js" in index_html
     assert "js/terrain3d.js" in index_html
+
+
+# ==============================================================================
+# 7. EXPANDED FULL NER 8-STATE & OFFLINE CACHE ARCHITECTURE TESTS
+# ==============================================================================
+
+def test_full_ner_8_states_coverage():
+    """Verify that all 8 NER states are represented in authoritative focal corridors and regional cache."""
+    svc = get_terrain_service()
+    meta = svc.get_dem_metadata()
+    corridors = meta["corridors"]
+    states = {c["state"] for c in corridors}
+
+    expected_ner_states = {
+        "Arunachal Pradesh",
+        "Assam",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Sikkim",
+        "Tripura",
+    }
+    assert expected_ner_states.issubset(states), f"Missing states in operational corridors: {expected_ner_states - states}"
+    assert meta["regional_tiles_count"] == 41, "Expected 41 regional base tiles"
+
+
+def test_source_mode_reporting():
+    """Verify exact source_mode reporting across focal cache, dynamic extraction, and offline cache."""
+    svc = get_terrain_service()
+
+    # 1. Focal Corridor Cache
+    focal_res = svc.extract_terrain_grid(25.6740, 94.1120, sector="nagaland")
+    assert focal_res["status"] == "SUCCESS"
+    assert focal_res["source_mode"] == "PREPROCESSED_FOCAL_CACHE"
+
+    # 2. Dynamic Raster Extraction (development mode with raw GeoTIFFs)
+    # Coordinate outside focal corridors: e.g. Nongstoin (25.5200° N, 91.2700° E)
+    dyn_res = svc.extract_terrain_grid(25.5200, 91.2700)
+    assert dyn_res["status"] == "SUCCESS"
+    assert dyn_res["source_mode"] == "DYNAMIC_RASTER_EXTRACTION"
+
+    # 3. Offline Standalone Mode (simulating EXE with no raw DEM)
+    svc_offline = TerrainService(dem_dir=Path("C:/nonexistent/dem"))
+    off_res = svc_offline.extract_terrain_grid(25.5200, 91.2700)
+    assert off_res["status"] == "SUCCESS"
+    assert off_res["source_mode"] == "REGIONAL_OFFLINE_CACHE"
+
+    # 4. Out of domain strictly reports TERRAIN_DATA_UNAVAILABLE
+    unavail = svc_offline.extract_terrain_grid(28.6139, 77.2090)  # Delhi
+    assert unavail["status"] == "TERRAIN_DATA_UNAVAILABLE"
+
+
+def test_offline_simulation_all_10_locations():
+    """
+    STEP 9 VERIFICATION: Test that in packaged offline standalone mode (no raw DEM),
+    all 10 required locations across all 8 NER states load genuine elevation data.
+    """
+    svc_offline = TerrainService(dem_dir=Path("C:/nonexistent/dem"))
+    locations = [
+        ("Kohima (Nagaland)", 25.6740, 94.1120),
+        ("Shillong (Meghalaya)", 25.5788, 91.8933),
+        ("Tezpur (Assam)", 26.6338, 92.7926),
+        ("Imphal (Manipur)", 24.8170, 93.9368),
+        ("Mokokchung (Nagaland)", 26.3256, 94.5165),
+        ("Lunglei (Mizoram)", 22.8872, 92.7388),
+        ("Agartala (Tripura)", 23.8315, 91.2868),
+        ("Nongstoin (Meghalaya)", 25.5200, 91.2700),
+        ("Itanagar (Arunachal Pradesh)", 27.0844, 93.6053),
+        ("Namchi (Sikkim)", 27.1667, 88.3500),
+    ]
+
+    for name, lat, lon in locations:
+        res = svc_offline.extract_terrain_grid(lat, lon)
+        assert res["status"] == "SUCCESS", f"Failed for {name}: {res.get('message')}"
+        stats = res["elevation_stats"]
+        assert stats["min_m"] is not None and stats["max_m"] is not None
+        assert stats["max_m"] >= stats["min_m"]
+        assert len(res["elevations"]) == 128 * 128
+        assert len(res["slopes"]) == 128 * 128
+        assert len(res["aspects"]) == 128 * 128
+
+
+def test_elevation_consistency_cache_vs_raw_dem():
+    """Verify that cached elevations strictly match raw Copernicus GLO-30 GeoTIFF elevations."""
+    import rasterio
+    from rasterio.windows import from_bounds
+    from rasterio.enums import Resampling
+
+    svc = get_terrain_service()
+    # Check Kohima corridor against Copernicus_DSM_COG_10_N25_00_E094_00_DEM.tif
+    cached = svc.extract_terrain_grid(25.6740, 94.1120, sector="nagaland")
+    raw_tile = DEM_DIR / "Copernicus_DSM_COG_10_N25_00_E094_00_DEM.tif"
+    if raw_tile.exists():
+        d_lat = 10.0 / 111.32
+        d_lon = 10.0 / (111.32 * math.cos(math.radians(25.6740)))
+        with rasterio.open(raw_tile) as src:
+            w = from_bounds(94.1120 - d_lon, 25.6740 - d_lat, 94.1120 + d_lon, 25.6740 + d_lat, src.transform)
+            raw_data = src.read(1, window=w, out_shape=(128, 128), resampling=Resampling.bilinear)
+        
+        raw_min = float(np.nanmin(raw_data))
+        raw_max = float(np.nanmax(raw_data))
+        assert abs(cached["elevation_stats"]["min_m"] - raw_min) <= 0.1
+        assert abs(cached["elevation_stats"]["max_m"] - raw_max) <= 0.1
+
+
+def test_sikkim_vs_kalimpong_administrative_integrity():
+    """
+    CRITICAL CHECK: Ensure Kalimpong is explicitly classified under West Bengal,
+    preserving source context while strictly maintaining authoritative administrative geography.
+    """
+    svc = get_terrain_service()
+    corridors = svc.get_dem_metadata()["corridors"]
+    kalimpong_corr = next((c for c in corridors if c["id"] == "corridor_westbengal_kalimpong"), None)
+    assert kalimpong_corr is not None, "Kalimpong corridor missing"
+    assert kalimpong_corr["state"] == "West Bengal", "Kalimpong must be administratively classified as West Bengal"
+

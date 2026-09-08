@@ -182,7 +182,7 @@ def ensure_bundle_mirror():
     for item in ["cwc_rainfall_features.csv", "rainfall", "imd", "dem"]:
         s = src_proc / item
         d = data_proc / item
-        if s.exists() and not d.exists():
+        if s.exists():
             if s.is_dir():
                 shutil.copytree(s, d, dirs_exist_ok=True)
             else:

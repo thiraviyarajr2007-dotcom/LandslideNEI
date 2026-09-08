@@ -259,8 +259,12 @@
 
       state.terrainData = data;
       buildTerrainMesh(data);
-      updateQueryMarker(lat, lon);
-      showStatusBanner(`COPERNICUS GLO-30 // ELEVATION: ${data.elevation_stats.min_m}m – ${data.elevation_stats.max_m}m`, 'success');
+      const modeLabel = data.source_mode === 'PREPROCESSED_FOCAL_CACHE' 
+        ? `FOCAL CACHE (~${data.resolution_m || 157}m MESH)` 
+        : (data.source_mode === 'REGIONAL_OFFLINE_CACHE' 
+          ? `REGIONAL CACHE (~${data.resolution_m || 834}m MESH)` 
+          : `DYNAMIC GLO-30 (~${data.resolution_m || 157}m MESH)`);
+      showStatusBanner(`COPERNICUS GLO-30 [${modeLabel}] // ELEVATION: ${data.elevation_stats.min_m}m – ${data.elevation_stats.max_m}m`, 'success');
 
       // Sync layers
       if (state.layers.historical_landslides) loadHistoricalLandslidesLayer();

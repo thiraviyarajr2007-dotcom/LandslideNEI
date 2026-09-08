@@ -770,6 +770,7 @@ def get_terrain_mesh(
     radius_km: float = 10.0,
     grid_size: int = 128,
     sector: Optional[str] = None,
+    view: Optional[str] = None,
 ):
     """
     Returns genuine Copernicus GLO-30 elevation grid, Horn's slope, and aspect.
@@ -783,6 +784,7 @@ def get_terrain_mesh(
         radius_km=radius_km,
         grid_size=grid_size,
         sector=sector,
+        view=view,
     )
     if res.get("status") == "TERRAIN_DATA_UNAVAILABLE":
         return JSONResponse(

@@ -87,18 +87,33 @@ Bundling all 41 raw Copernicus GLO-30 GeoTIFFs (~1.8 GB) directly into the stand
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 4.2 Preprocessed Operational Corridors
+### 4.2 Authoritative Strategic Focal Corridors (16 Hubs)
 
-| Corridor ID | Name | Sector | Center (Lat, Lon) | Elev Range (m) | Cache Size (GZ) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `corridor_nagaland_kohima` | Kohima & Zubza Axis (NH-29) | `nagaland` | 25.6740° N, 94.1120° E | 569m – 2,984m | 96.4 KB |
-| `corridor_sikkim_gangtok` | Gangtok NH-10 Teesta Gorge | `sikkim` | 27.3389° N, 88.6065° E | 493m – 3,777m | 98.9 KB |
-| `corridor_meghalaya_cherrapunji` | Cherrapunji-Shella Escarpment | `cherrapunji` | 25.2702° N, 91.7323° E | 19m – 1,729m | 96.3 KB |
-| `corridor_arunachal_tawang` | Bhalukpong-Tawang Spur | `tawang` | 27.5861° N, 91.8594° E | 1,245m – 4,588m | 99.3 KB |
-| `corridor_mizoram_aizawl` | Aizawl Ridge | `aizawl` | 23.7271° N, 92.7176° E | 67m – 1,337m | 95.7 KB |
-| `corridor_assam_guwahati` | Guwahati Urban Foothills | `guwahati` | 26.1445° N, 91.7362° E | 42m – 449m | 77.2 KB |
+The system packages 16 authoritative strategic focal corridors covering **all 8 Northeast India states** and the West Bengal border corridor:
 
-Total preprocessed offline cache size: **563.8 KB** (compressed GZ), packaged effortlessly into `LANDSLIDENEI.exe`.
+| Corridor ID | Name | Sector | State | Center (Lat, Lon) | Elev Range (m) | Cache Size (GZ) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `corridor_nagaland_kohima` | Kohima & Zubza Axis (NH-29) | `nagaland` | Nagaland | 25.6740° N, 94.1120° E | 569m – 2,984m | 97.7 KB |
+| `corridor_nagaland_mokokchung` | Mokokchung Ridge Corridor | `mokokchung` | Nagaland | 26.3256° N, 94.5165° E | 408m – 1,677m | 96.3 KB |
+| `corridor_sikkim_gangtok` | Gangtok NH-10 Teesta Gorge | `sikkim` | Sikkim | 27.3389° N, 88.6065° E | 493m – 3,777m | 100.1 KB |
+| `corridor_sikkim_namchi` | Namchi & South Sikkim Spur | `namchi` | Sikkim | 27.1667° N, 88.3500° E | 225m – 2,622m | 98.7 KB |
+| `corridor_meghalaya_cherrapunji` | Cherrapunji-Shella Escarpment | `cherrapunji` | Meghalaya | 25.2702° N, 91.7323° E | 19m – 1,729m | 97.2 KB |
+| `corridor_meghalaya_shillong` | Shillong Peak & Urban Axis | `shillong` | Meghalaya | 25.5788° N, 91.8933° E | 851m – 1,947m | 93.3 KB |
+| `corridor_arunachal_tawang` | Bhalukpong-Tawang Spur | `tawang` | Arunachal Pradesh | 27.5861° N, 91.8594° E | 1,245m – 4,588m | 100.5 KB |
+| `corridor_arunachal_itanagar` | Itanagar Capital Foothills | `itanagar` | Arunachal Pradesh | 27.0844° N, 93.6053° E | 111m – 2,343m | 95.2 KB |
+| `corridor_mizoram_aizawl` | Aizawl Ridge | `aizawl` | Mizoram | 23.7271° N, 92.7176° E | 67m – 1,337m | 96.7 KB |
+| `corridor_mizoram_lunglei` | Lunglei Southern Ridge | `lunglei` | Mizoram | 22.8872° N, 92.7388° E | 77m – 1,521m | 96.5 KB |
+| `corridor_assam_guwahati` | Guwahati Urban Foothills | `guwahati` | Assam | 26.1445° N, 91.7362° E | 42m – 449m | 78.3 KB |
+| `corridor_assam_silchar` | Silchar & Cachar (Barak Valley)| `silchar` | Assam | 24.8333° N, 92.7789° E | 24m – 472m | 73.3 KB |
+| `corridor_assam_tezpur` | Tezpur & Sonitpur Corridor | `tezpur` | Assam | 26.6338° N, 92.7926° E | 58m – 114m | 59.0 KB |
+| `corridor_manipur_imphal` | Imphal Valley & Kangpokpi Axis | `imphal` | Manipur | 24.8170° N, 93.9368° E | 770m – 1,089m | 72.2 KB |
+| `corridor_tripura_agartala` | Agartala & Baramura Range | `agartala` | Tripura | 23.8315° N, 91.2868° E | 0.5m – 68m | 73.5 KB |
+| `corridor_westbengal_kalimpong` | Kalimpong-Teesta Confluence | `kalimpong` | West Bengal | 27.0667° N, 88.4667° E | 230m – 2,146m | 98.2 KB |
+
+Total focal corridors cache: **1.39 MB** (compressed GZ).
+Total 41 regional base tiles cache: **3.59 MB** (compressed GZ).
+Total offline terrain cache: **4.98 MB (5,103.4 KB)**.
+For complete architectural details, see [DEM_3D_COVERAGE_ARCHITECTURE.md](DEM_3D_COVERAGE_ARCHITECTURE.md).
 
 ---
 

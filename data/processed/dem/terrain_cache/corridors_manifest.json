@@ -1,19 +1,31 @@
 {
-  "dem_source": "Copernicus DEM GLO-30 Public (AWS Open Data)",
+  "dem_source": "Copernicus DEM GLO-30 Public (COP-DEM_GLO-30-DGED)",
   "crs": "EPSG:4326",
   "nominal_resolution": "30 meters (1 arc-second)",
-  "corridor_count": 6,
+  "corridor_count": 16,
+  "states_covered": [
+    "Arunachal Pradesh",
+    "Assam",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Sikkim",
+    "Tripura",
+    "West Bengal"
+  ],
   "corridors": [
     {
       "id": "corridor_nagaland_kohima",
       "sector": "nagaland",
       "name": "Kohima & Zubza Axis (NH-29)",
       "state": "Nagaland",
-      "description": "High-risk arterial freight corridor connecting Dimapur to Kohima along unstable shale/sandstone terrain.",
+      "description": "High-risk arterial freight corridor connecting Dimapur to Kohima along unstable Disang shale/Barail sandstone terrain.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N25_00_E094_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 25.674,
         "lon": 94.112
@@ -38,15 +50,50 @@
       }
     },
     {
+      "id": "corridor_nagaland_mokokchung",
+      "sector": "mokokchung",
+      "name": "Mokokchung Ridge Corridor",
+      "state": "Nagaland",
+      "description": "Major northern central Nagaland ridge settlement on steep anticlinal hills vulnerable to monsoon rotational slips.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N26_00_E094_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 26.3256,
+        "lon": 94.5165
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        94.41627,
+        26.23577,
+        94.61673,
+        26.41543
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 407.8,
+        "max_m": 1677.4,
+        "mean_m": 905.8,
+        "relief_m": 1269.6
+      }
+    },
+    {
       "id": "corridor_sikkim_gangtok",
       "sector": "sikkim",
       "name": "Gangtok NH-10 Teesta Gorge Corridor",
       "state": "Sikkim",
-      "description": "Vital lifeline corridor along the steep Teesta river gorge prone to debris flows and slope failures.",
+      "description": "Vital lifeline corridor along the steep Teesta river gorge prone to catastrophic debris flows and slope failures.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N27_00_E088_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 27.3389,
         "lon": 88.6065
@@ -71,15 +118,50 @@
       }
     },
     {
+      "id": "corridor_sikkim_namchi",
+      "sector": "namchi",
+      "name": "Namchi & South Sikkim Spur",
+      "state": "Sikkim",
+      "description": "Steep dissected terrain in South Sikkim with extensive phyllite/schist bedrock subject to toe erosion.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N27_00_E088_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 27.1667,
+        "lon": 88.35
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        88.24903,
+        27.07687,
+        88.45097,
+        27.25653
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 224.6,
+        "max_m": 2621.7,
+        "mean_m": 1106.3,
+        "relief_m": 2397.0
+      }
+    },
+    {
       "id": "corridor_meghalaya_cherrapunji",
       "sector": "cherrapunji",
       "name": "Cherrapunji-Shella Escarpment",
       "state": "Meghalaya",
-      "description": "High-precipitation plateau escarpment experiencing extreme monsoon rainfall and rotational slips.",
+      "description": "High-precipitation southern plateau escarpment experiencing extreme monsoon rainfall and sheer canyon slope failures.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N25_00_E091_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 25.2702,
         "lon": 91.7323
@@ -104,15 +186,50 @@
       }
     },
     {
+      "id": "corridor_meghalaya_shillong",
+      "sector": "shillong",
+      "name": "Shillong Peak & Urban Axis",
+      "state": "Meghalaya",
+      "description": "Central Shillong plateau and Shillong Peak granitic uplands with dense anthropogenic slope settlements.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N25_00_E091_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 25.5788,
+        "lon": 91.8933
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        91.79371,
+        25.48897,
+        91.99289,
+        25.66863
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 851.2,
+        "max_m": 1946.7,
+        "mean_m": 1442.0,
+        "relief_m": 1095.4
+      }
+    },
+    {
       "id": "corridor_arunachal_tawang",
       "sector": "tawang",
       "name": "Bhalukpong-Tawang Spur (Sela Pass)",
       "state": "Arunachal Pradesh",
-      "description": "Strategic high-altitude Himalayan mountain corridor vulnerable to rockfalls and solifluction.",
+      "description": "Strategic high-altitude Eastern Himalayan corridor vulnerable to frost shattering, rockfalls, and moraine failures.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N27_00_E091_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 27.5861,
         "lon": 91.8594
@@ -137,15 +254,50 @@
       }
     },
     {
+      "id": "corridor_arunachal_itanagar",
+      "sector": "itanagar",
+      "name": "Itanagar Capital Foothills",
+      "state": "Arunachal Pradesh",
+      "description": "Sub-Himalayan Siwalik belt with fragile sedimentary geology and heavy monsoonal flash-flood erosion.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N27_00_E093_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 27.0844,
+        "lon": 93.6053
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        93.5044,
+        26.99457,
+        93.7062,
+        27.17423
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 110.6,
+        "max_m": 2343.1,
+        "mean_m": 548.2,
+        "relief_m": 2232.4
+      }
+    },
+    {
       "id": "corridor_mizoram_aizawl",
       "sector": "aizawl",
       "name": "Aizawl Ridge",
       "state": "Mizoram",
-      "description": "Anticlinal ridge settlement with steep eastern/western flanks and active urban anthropogenic cut-slopes.",
+      "description": "Narrow anticlinal ridge settlement with steep eastern and western dip slopes and intensive cut-slope vulnerabilities.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N23_00_E092_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 23.7271,
         "lon": 92.7176
@@ -170,15 +322,50 @@
       }
     },
     {
+      "id": "corridor_mizoram_lunglei",
+      "sector": "lunglei",
+      "name": "Lunglei Southern Ridge",
+      "state": "Mizoram",
+      "description": "Key southern Mizoram ridge node connecting secondary border routes across steep Surma group flysch formations.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N22_00_E092_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 22.8872,
+        "lon": 92.7388
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        92.64129,
+        22.79737,
+        92.83631,
+        22.97703
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 77.0,
+        "max_m": 1520.9,
+        "mean_m": 598.8,
+        "relief_m": 1443.9
+      }
+    },
+    {
       "id": "corridor_assam_guwahati",
       "sector": "guwahati",
       "name": "Guwahati Urban Foothills",
       "state": "Assam",
-      "description": "Brahmaputra alluvial plain junction and granitic hillocks with dense slope settlements.",
+      "description": "Brahmaputra alluvial junction and Precambrian granitic inselbergs with dense slope encroachment.",
       "status": "SUCCESS",
       "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
       "dem_tile": "Copernicus_DSM_COG_10_N26_00_E091_00_DEM.tif",
       "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
       "center": {
         "lat": 26.1445,
         "lon": 91.7362
@@ -200,6 +387,176 @@
         "max_m": 449.0,
         "mean_m": 112.7,
         "relief_m": 407.5
+      }
+    },
+    {
+      "id": "corridor_assam_silchar",
+      "sector": "silchar",
+      "name": "Silchar & Cachar Foothills (Barak Valley)",
+      "state": "Assam",
+      "description": "Barak Valley alluvial plain boundary bordering steep Mizoram-Manipur hill ranges prone to rainfall saturation.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N24_00_E092_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 24.8333,
+        "lon": 92.7789
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        92.67992,
+        24.74347,
+        92.87788,
+        24.92313
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 11.3,
+        "max_m": 115.7,
+        "mean_m": 24.2,
+        "relief_m": 104.4
+      }
+    },
+    {
+      "id": "corridor_assam_tezpur",
+      "sector": "tezpur",
+      "name": "Tezpur & Sonitpur Corridor",
+      "state": "Assam",
+      "description": "North bank Brahmaputra transport hub connecting the plains to the Kameng and Tawang Himalayan passes.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N26_00_E092_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 26.6338,
+        "lon": 92.7926
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        92.69211,
+        26.54397,
+        92.89309,
+        26.72363
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 58.5,
+        "max_m": 114.0,
+        "mean_m": 66.0,
+        "relief_m": 55.5
+      }
+    },
+    {
+      "id": "corridor_manipur_imphal",
+      "sector": "imphal",
+      "name": "Imphal Valley & Kangpokpi Axis (NH-2)",
+      "state": "Manipur",
+      "description": "Intermontane valley margin and steep foothill slopes along the NH-2 lifeline vulnerable to translational slides.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N24_00_E093_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 24.817,
+        "lon": 93.9368
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        93.83783,
+        24.72717,
+        94.03577,
+        24.90683
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 770.2,
+        "max_m": 1088.6,
+        "mean_m": 790.5,
+        "relief_m": 318.4
+      }
+    },
+    {
+      "id": "corridor_tripura_agartala",
+      "sector": "agartala",
+      "name": "Agartala & Baramura Range",
+      "state": "Tripura",
+      "description": "Low-altitude folded anticlinal hill ranges of Tripura consisting of unconsolidated Tertiary sandstones and shales.",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N23_00_E091_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 23.8315,
+        "lon": 91.2868
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        91.1886,
+        23.74167,
+        91.385,
+        23.92133
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 0.5,
+        "max_m": 68.5,
+        "mean_m": 24.0,
+        "relief_m": 68.0
+      }
+    },
+    {
+      "id": "corridor_westbengal_kalimpong",
+      "sector": "kalimpong",
+      "name": "Kalimpong-Teesta Confluence Corridor",
+      "state": "West Bengal",
+      "description": "Crucial Teesta border corridor linking Siliguri to Sikkim; steep Lesser Himalayan Daling phyllites (source-grouped under Sikkim border events; administrative state West Bengal).",
+      "status": "SUCCESS",
+      "dem_source": "Copernicus DEM GLO-30 (COP-DEM_GLO-30-DGED)",
+      "dem_tile": "Copernicus_DSM_COG_10_N27_00_E088_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "source_mode": "PREPROCESSED_FOCAL_CACHE",
+      "center": {
+        "lat": 27.0667,
+        "lon": 88.4667
+      },
+      "radius_km": 10.0,
+      "bbox": [
+        88.36582,
+        26.97687,
+        88.56758,
+        27.15653
+      ],
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "resolution_m": 157.5,
+      "elevation_stats": {
+        "min_m": 185.6,
+        "max_m": 2075.1,
+        "mean_m": 910.0,
+        "relief_m": 1889.5
       }
     }
   ]
