@@ -5,7 +5,7 @@
 SUBSYSTEM:        3D Digital Elevation Model (DEM) & Offline Coverage Architecture
 DATASET:          Copernicus DEM GLO-30 Public (COP-DEM_GLO-30-DGED)
 CRS & RESOLUTION: EPSG:4326 (WGS 84), 1 arc-second (~30m nominal)
-COVERAGE:         Full Northeast India (NER) — 8 States + Border Corridor
+COVERAGE:         Broad Offline Terrain Coverage across all 8 NER States (Documented Gaps)
 STORAGE STRATEGY: Adaptive Hierarchical Terrain Cache (Regional Base + Focal Hubs)
 STATUS:           FULL NER OFFLINE TERRAIN READY
 ================================================================================
@@ -15,9 +15,9 @@ STATUS:           FULL NER OFFLINE TERRAIN READY
 
 ## 1. Executive Summary
 
-This document establishes the architecture, physical storage specifications, mathematical derivations, empirical performance metrics, and runtime behaviors for providing **broad offline 3D terrain coverage across Northeast India** within the standalone Windows desktop application (`LANDSLIDENEI.exe`).
+This document establishes the architecture, physical storage specifications, mathematical derivations, empirical performance metrics, and runtime behaviors for providing **broad offline 3D terrain coverage across all 8 Northeast India (NER) states, with state-specific coverage gaps explicitly documented in the coverage report** within the standalone Windows desktop application (`LANDSLIDENEI.exe`).
 
-The architecture achieves complete geographic coverage across all 8 Northeast India states without bundling the multi-gigabyte raw DEM collection, reducing physical storage requirements by **354.6×** while strictly preserving truth-in-data guarantees (zero synthetic fallback).
+The architecture achieves broad regional geographic coverage across all 8 Northeast India states without bundling the multi-gigabyte raw DEM collection, reducing physical storage requirements by **354.6×** while strictly preserving truth-in-data guarantees (zero synthetic fallback).
 
 ---
 

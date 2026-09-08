@@ -37,7 +37,7 @@ Built on strict principles of scientific integrity, the module guarantees:
 | **Horizontal Resolution** | **1.0 arc-second** (~30 meters at equator) | Cell spacing: `0.0002777777777777778°` |
 | **Vertical Units** | Metric Meters above EGM2008 Geoid | Elevation range verified from ~19m to 8,564m |
 | **Tile Structure** | 1° × 1° Cloud-Optimized GeoTIFFs (COGs) | 3600 × 3600 pixels per tile |
-| **Geographic Coverage** | Bounding Box: `[88.0° E, 21.0° N]` to `[98.0° E, 30.0° N]` | 41 tiles covering all 8 Northeast India states |
+| **Geographic Coverage** | Bounding Box: `[88.0° E, 21.0° N]` to `[98.0° E, 30.0° N]` | 41 tiles providing broad offline coverage across all 8 NER states (documented gaps in uninhabited crests) |
 | **Nodata Handling** | Explicit NaN / Mask handling | Nodata never replaced with synthetic filler |
 
 ---
