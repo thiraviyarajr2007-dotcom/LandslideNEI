@@ -16,6 +16,7 @@ Architecture:
 from __future__ import annotations
 
 import json
+import math
 import os
 import sys
 import uuid
@@ -464,6 +465,18 @@ def get_system_info() -> InfoResponse:
     )
 
 
+def _clean_nans(d: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if not d:
+        return {}
+    out = {}
+    for k, v in d.items():
+        if isinstance(v, float) and math.isnan(v):
+            out[k] = None
+        else:
+            out[k] = v
+    return out
+
+
 @app.post(
     "/api/v1/predict",
     response_model=PredictResponse,
@@ -550,10 +563,10 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             category_label=susc["category_label"],
             category_description=susc["category_description"],
             quality_status=susc["quality_status"],
-            terrain=TerrainBlock(**susc["terrain"]),
-            soil=SoilBlock(**susc["soil"]),
-            landcover=LandcoverBlock(**susc["landcover"]),
-            anthropogenic=AnthropogenicBlock(**eval_res["anthropogenic"]) if eval_res.get("anthropogenic") else None,
+            terrain=TerrainBlock(**_clean_nans(susc.get("terrain"))),
+            soil=SoilBlock(**_clean_nans(susc.get("soil"))),
+            landcover=LandcoverBlock(**_clean_nans(susc.get("landcover"))),
+            anthropogenic=AnthropogenicBlock(**_clean_nans(eval_res.get("anthropogenic"))) if eval_res.get("anthropogenic") else None,
             reasons=susc["reason_codes"],
         ),
         rainfall=RainfallBlock(
@@ -700,13 +713,13 @@ def profile_location_endpoint(payload: ProfileRequest) -> ProfileResponse:
             category_label=susc["category_label"],
             category_description=susc["category_description"],
             quality_status=profile["quality"]["status"],
-            terrain=TerrainBlock(**profile["terrain"]),
-            soil=SoilBlock(**profile["soil"]),
-            landcover=LandcoverBlock(**profile["landcover"]),
-            anthropogenic=AnthropogenicBlock(**profile["anthropogenic"]) if profile.get("anthropogenic") else None,
+            terrain=TerrainBlock(**_clean_nans(profile.get("terrain"))),
+            soil=SoilBlock(**_clean_nans(profile.get("soil"))),
+            landcover=LandcoverBlock(**_clean_nans(profile.get("landcover"))),
+            anthropogenic=AnthropogenicBlock(**_clean_nans(profile.get("anthropogenic"))) if profile.get("anthropogenic") else None,
             reasons=profile["explainability"]["reason_codes"],
         ),
-        anthropogenic=AnthropogenicBlock(**profile["anthropogenic"]) if profile.get("anthropogenic") else None,
+        anthropogenic=AnthropogenicBlock(**_clean_nans(profile.get("anthropogenic"))) if profile.get("anthropogenic") else None,
         model={
             "name": "Model A (Environmental Only)",
             "type": "STATIC_SUSCEPTIBILITY_ONLY",

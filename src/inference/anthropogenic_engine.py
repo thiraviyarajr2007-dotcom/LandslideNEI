@@ -87,7 +87,7 @@ def compute_anthropogenic_impact(
     phi_rad = math.radians(phi)
 
     # 1. Vegetation Root Cohesion (Wu & Waldron Model)
-    lc = (landcover_class or "").lower()
+    lc = str(landcover_class).lower() if (landcover_class is not None and not (isinstance(landcover_class, float) and math.isnan(landcover_class))) else ""
     if "tree" in lc or "forest" in lc:
         root_cohesion = 10.0
     elif "shrub" in lc:

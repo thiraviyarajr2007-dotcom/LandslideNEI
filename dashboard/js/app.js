@@ -716,7 +716,12 @@ function renderPredictionResults(data) {
     window.mapInstance.setView([loc.latitude, loc.longitude], 10);
   }
 
-  // 8. Update Location Analysis View cards
+  // 8. Synchronize 3D EOC Terrain Intelligence Overlay
+  if (window.Terrain3D && typeof window.Terrain3D.updateIntelligenceOverlay === 'function') {
+    window.Terrain3D.updateIntelligenceOverlay(data);
+  }
+
+  // 9. Update Location Analysis View cards
   updateLocationAnalysisCards(data);
 }
 

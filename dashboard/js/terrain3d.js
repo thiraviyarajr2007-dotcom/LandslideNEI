@@ -660,6 +660,7 @@
 
   /**
    * Canvas Click Handler: Select Location & Trigger Synchronous Risk Evaluation
+   * Supports clicking on both 3D Historical Landslide Cones and General Terrain Mesh
    */
   function onCanvasClick(e) {
     if (!state.terrainMesh || !state.container) return;
@@ -669,14 +670,50 @@
     state.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
     state.raycaster.setFromCamera(state.mouse, state.camera);
-    const intersects = state.raycaster.intersectObject(state.terrainMesh);
 
+    // 1. Check if user clicked a 3D Historical Landslide Marker
+    if (state.landslideMarkersGroup && state.landslideMarkersGroup.children.length > 0) {
+      const markerHits = state.raycaster.intersectObjects(state.landslideMarkersGroup.children, false);
+      if (markerHits.length > 0) {
+        const hitObj = markerHits[0].object;
+        const evt = hitObj.userData;
+        if (evt && evt.latitude && evt.longitude) {
+          const lat = parseFloat(Number(evt.latitude).toFixed(5));
+          const lon = parseFloat(Number(evt.longitude).toFixed(5));
+          const local = geoToLocal(lat, lon);
+
+          displayHistoricalIncident(evt);
+          updateQueryMarker(lat, lon);
+
+          const geo = {
+            lat: lat,
+            lon: lon,
+            elev: local ? local.rawElev : 0,
+            slope: local ? local.slope : null,
+            aspect: local ? local.aspect : null
+          };
+          displayLocationProfilePanel(geo);
+
+          if (window.handleMapClick) {
+            window.handleMapClick(lat, lon);
+          }
+          return;
+        }
+      }
+    }
+
+    // 2. Check intersection with Terrain Mesh
+    const intersects = state.raycaster.intersectObject(state.terrainMesh);
     if (intersects.length > 0) {
       const hit = intersects[0].point;
       const geo = localToGeo(hit.x, hit.y);
       if (geo) {
         const lat = parseFloat(geo.lat.toFixed(5));
         const lon = parseFloat(geo.lon.toFixed(5));
+
+        // Hide historical block when clicking general terrain
+        const histBlock = document.getElementById('loc-card-historical-block');
+        if (histBlock) histBlock.classList.add('hidden');
 
         updateQueryMarker(lat, lon);
         displayLocationProfilePanel(geo);
@@ -736,11 +773,251 @@
 
     setText('loc-card-lat', `${geo.lat.toFixed(5)}° N`);
     setText('loc-card-lon', `${geo.lon.toFixed(5)}° E`);
-    setText('loc-card-elev', `${geo.elev ? Math.round(geo.elev).toLocaleString() : '--'} m`);
-    setText('loc-card-slope', geo.slope !== null ? `${geo.slope.toFixed(1)}°` : 'SLOPE: UNAVAILABLE');
-    setText('loc-card-aspect', geo.aspect !== null ? `${geo.aspect.toFixed(1)}°` : 'ASPECT: UNAVAILABLE');
-    setText('loc-card-source', 'Copernicus DEM GLO-30 (30m / EPSG:4326)');
-    setText('loc-card-time', new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC');
+    setText('loc-card-elev', `${(geo.elev !== null && geo.elev !== undefined) ? Math.round(geo.elev).toLocaleString() : '--'} m`);
+    
+    // Topographic classifications
+    if (geo.slope !== null && geo.slope !== undefined) {
+      const sev = geo.slope > 30 ? ' (Critical >30°)' : (geo.slope > 15 ? ' (Moderate)' : ' (Gentle)');
+      setText('loc-card-slope', `${geo.slope.toFixed(1)}°${sev}`);
+    } else {
+      setText('loc-card-slope', 'SLOPE: UNAVAILABLE');
+    }
+
+    if (geo.aspect !== null && geo.aspect !== undefined) {
+      const cardinals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      const cardHeading = cardinals[Math.round(geo.aspect / 45) % 8];
+      setText('loc-card-aspect', `${geo.aspect.toFixed(0)}° (${cardHeading})`);
+    } else {
+      setText('loc-card-aspect', 'ASPECT: UNAVAILABLE');
+    }
+
+    // Set evaluation placeholders while backend inference is computing
+    const suscEl = document.getElementById('loc-card-susc-pill');
+    if (suscEl) {
+      suscEl.textContent = 'EVALUATING...';
+      suscEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-surface-container-highest text-secondary animate-pulse';
+    }
+    const suscScoreEl = document.getElementById('loc-card-susc-score');
+    if (suscScoreEl) suscScoreEl.textContent = 'Computing RF susceptibility...';
+
+    const rainPill = document.getElementById('loc-card-rain-pill');
+    if (rainPill) {
+      rainPill.textContent = 'MATCHING...';
+      rainPill.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-surface-container-highest text-secondary animate-pulse';
+    }
+    const rainStationEl = document.getElementById('loc-card-rain-station');
+    if (rainStationEl) rainStationEl.textContent = 'Querying nearest CWC station...';
+    const rain24El = document.getElementById('loc-card-rain-24h');
+    if (rain24El) rain24El.textContent = '-- mm';
+
+    const riskPill = document.getElementById('loc-card-risk-pill');
+    if (riskPill) {
+      riskPill.textContent = 'SYNTHESIZING...';
+      riskPill.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-surface-container-highest text-secondary animate-pulse';
+    }
+    const riskScoreEl = document.getElementById('loc-card-risk-score');
+    if (riskScoreEl) riskScoreEl.textContent = 'Running fusion matrix...';
+
+    const reasonsEl = document.getElementById('loc-card-reasons');
+    if (reasonsEl) reasonsEl.innerHTML = '<div class="text-[9px] text-outline">Evaluating hydrometeorological triggers...</div>';
+
+    const now = new Date();
+    setText('loc-card-time', now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false }) + ' IST');
+  }
+
+  /**
+   * Display Historical Landslide Event Incident Card
+   */
+  function displayHistoricalIncident(evt) {
+    const histBlock = document.getElementById('loc-card-historical-block');
+    if (!histBlock) return;
+    histBlock.classList.remove('hidden');
+
+    const setText = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setText('loc-card-hist-id', evt.event_id || 'VERIFIED EVENT');
+    setText('loc-card-hist-date', evt.event_date || '--');
+    setText('loc-card-hist-fatalities', evt.fatalities !== undefined ? `${evt.fatalities} reported` : '0');
+    setText('loc-card-hist-type', `${evt.landslide_type || 'Slope Failure'} (${evt.district || ''}, ${evt.state || ''})`);
+  }
+
+  /**
+   * Colorize the 3D Query Marker Beacon according to Operational Risk Tier
+   */
+  function setQueryMarkerRiskColor(level) {
+    if (!state.queryMarker) return;
+    const colorMap = {
+      'LOW': 0x10b981,        // Emerald green
+      'WATCH': 0xf59e0b,      // Amber
+      'MODERATE': 0xf59e0b,   // Amber
+      'HIGH': 0xf97316,       // Tactical Orange
+      'VERY HIGH': 0xef4444,  // Crimson Red
+      'CRITICAL': 0xef4444,   // Radiant Crimson
+    };
+    const hex = colorMap[level] || 0x00e5ff;
+    state.queryMarker.traverse(child => {
+      if (child.isMesh && child.material) {
+        child.material.color.setHex(hex);
+      }
+    });
+  }
+
+  /**
+   * Update 3D Location Card & Beacon with Genuine Operational Intelligence
+   * Called by app.js when /api/v1/predict resolves
+   */
+  function updateIntelligenceOverlay(data) {
+    const card = document.getElementById('hud-3d-location-card');
+    if (!card) return;
+
+    const risk = data.risk || {};
+    const staticLsm = data.static_susceptibility || {};
+    const rain = data.rainfall || {};
+    const loc = data.location || {};
+    const terrain = staticLsm.terrain || {};
+
+    const level = (risk.risk_level || risk.level || 'UNKNOWN').toUpperCase();
+    const fusionScore = risk.operational_fusion_score !== undefined ? risk.operational_fusion_score : (risk.risk_score || 0.0);
+    const suscScore = staticLsm.score;
+    const suscCat = (staticLsm.category || staticLsm.category_label || 'MODERATE').toUpperCase();
+
+    // 1. Static Susceptibility (Model A Random Forest)
+    const suscEl = document.getElementById('loc-card-susc-pill');
+    const suscScoreEl = document.getElementById('loc-card-susc-score');
+    if (suscEl) {
+      suscEl.textContent = suscCat;
+      if (suscCat === 'CRITICAL' || suscCat === 'VERY HIGH') {
+        suscEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-error-container text-error border border-error/50';
+      } else if (suscCat === 'HIGH') {
+        suscEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-orange-950 text-orange-400 border border-orange-500/40';
+      } else if (suscCat === 'MODERATE') {
+        suscEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-950 text-amber-400 border border-amber-500/40';
+      } else {
+        suscEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/40';
+      }
+    }
+    if (suscScoreEl) {
+      suscScoreEl.textContent = (suscScore !== null && suscScore !== undefined) ? `${suscScore.toFixed(3)} (${suscCat})` : 'N/A';
+    }
+
+    // 2. Rainfall Telemetry (CWC / IMD / Real-Time)
+    const rainPill = document.getElementById('loc-card-rain-pill');
+    const rainStationEl = document.getElementById('loc-card-rain-station');
+    const rain24El = document.getElementById('loc-card-rain-24h');
+    const rainQuality = (rain.quality || rain.status || 'NO_DATA').toUpperCase();
+
+    if (rainPill) {
+      const trig = (data.rainfall_trigger?.trigger_level || rain.status || 'NORMAL').toUpperCase();
+      rainPill.textContent = trig;
+      if (trig === 'CRITICAL' || trig === 'HIGH') {
+        rainPill.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-error-container text-error border border-error/50';
+      } else if (trig === 'WATCH') {
+        rainPill.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-950 text-amber-400 border border-amber-500/40';
+      } else {
+        rainPill.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/40';
+      }
+    }
+
+    if (rainStationEl) {
+      const stName = rain.station || rain.station_name;
+      const stDist = (rain.distance_km !== null && rain.distance_km !== undefined) ? rain.distance_km.toFixed(1) : null;
+      if (rain.source === 'OPEN_METEO_REALTIME' || rain.source === 'OPEN_METEO_API') {
+        rainStationEl.textContent = `Open-Meteo Realtime (${loc.latitude ? loc.latitude.toFixed(2) : ''}° N)`;
+      } else if (stName && stDist !== null) {
+        if (rain.distance_km > 50.0) {
+          rainStationEl.textContent = `${stName} (${stDist} km — Out of 50km cap)`;
+        } else {
+          rainStationEl.textContent = `${stName} (${stDist} km)`;
+        }
+      } else if (stName) {
+        rainStationEl.textContent = stName;
+      } else {
+        rainStationEl.textContent = 'NO RELIABLE LOCAL DATA';
+      }
+    }
+
+    if (rain24El) {
+      const r24 = rain.rainfall_24h !== undefined ? rain.rainfall_24h : rain.rainfall_24h_mm;
+      rain24El.textContent = (r24 !== null && r24 !== undefined) ? `${Number(r24).toFixed(1)} mm` : 'NO DATA';
+    }
+
+    // 3. Operational Risk Synthesis
+    const riskPill = document.getElementById('loc-card-risk-pill');
+    const riskScoreEl = document.getElementById('loc-card-risk-score');
+    if (riskPill) {
+      riskPill.textContent = level;
+      if (level === 'CRITICAL' || level === 'VERY HIGH') {
+        riskPill.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-error-container text-error border border-error/50 shadow-sm';
+      } else if (level === 'HIGH') {
+        riskPill.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-orange-950/80 text-orange-400 border border-orange-500/50 shadow-sm';
+      } else if (level === 'WATCH' || level === 'MODERATE') {
+        riskPill.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-950/80 text-amber-400 border border-amber-500/50 shadow-sm';
+      } else {
+        riskPill.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm';
+      }
+    }
+    if (riskScoreEl) {
+      riskScoreEl.textContent = `${fusionScore.toFixed(3)} (${level})`;
+    }
+
+    // 4. Attribution Reasons
+    const reasonsContainer = document.getElementById('loc-card-reasons');
+    if (reasonsContainer) {
+      const allReasons = [];
+      if (Array.isArray(risk.reasons)) {
+        risk.reasons.forEach(r => {
+          const desc = typeof r === 'string' ? r : (r.description || r.code);
+          if (desc && !allReasons.includes(desc)) allReasons.push(desc);
+        });
+      }
+      if (Array.isArray(staticLsm.reasons)) {
+        staticLsm.reasons.forEach(r => {
+          const desc = typeof r === 'string' ? r : (r.description || r.code);
+          if (desc && !allReasons.includes(desc)) allReasons.push(desc);
+        });
+      }
+      if (allReasons.length > 0) {
+        reasonsContainer.innerHTML = allReasons.slice(0, 3).map(r => `
+          <div class="flex items-start gap-1 leading-tight">
+            <span class="text-primary mt-0.5">•</span>
+            <span class="truncate">${r}</span>
+          </div>
+        `).join('');
+      } else {
+        reasonsContainer.innerHTML = '<div class="text-[9px] text-outline">Environmental baseline within stable bounds.</div>';
+      }
+    }
+
+    // 5. Data Quality & Timestamp
+    const qualEl = document.getElementById('loc-card-quality');
+    if (qualEl) {
+      if (rain.source === 'OPEN_METEO_REALTIME' || rain.source === 'OPEN_METEO_API') {
+        qualEl.textContent = 'REAL-TIME TELEMETRY';
+        qualEl.className = 'text-sky-400 font-medium';
+      } else if (rainQuality === 'GOOD' || rainQuality === 'VALID') {
+        qualEl.textContent = 'GOOD // CWC VERIFIED';
+        qualEl.className = 'text-emerald-400 font-medium';
+      } else {
+        qualEl.textContent = 'PARTIAL // NO LOCAL CWC';
+        qualEl.className = 'text-amber-400 font-medium';
+      }
+    }
+    const timeEl = document.getElementById('loc-card-time');
+    if (timeEl) {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false }) + ' IST';
+    }
+
+    // 6. Update 3D Query Marker color to match risk level
+    setQueryMarkerRiskColor(level);
+
+    // 7. Update status banner
+    const bannerText = `${state.activeCorridor ? state.activeCorridor.name.toUpperCase() : 'COPERNICUS GLO-30'} // RISK: ${level} (${fusionScore.toFixed(3)})`;
+    const bannerType = (level === 'CRITICAL' || level === 'HIGH') ? 'error' : (level === 'LOW' ? 'success' : 'info');
+    showStatusBanner(bannerText, bannerType);
   }
 
   /**
@@ -881,6 +1158,8 @@
     setExaggeration: setExaggeration,
     toggleLayer: toggleLayer,
     updateQueryMarker: updateQueryMarker,
+    setQueryMarkerRiskColor: setQueryMarkerRiskColor,
+    updateIntelligenceOverlay: updateIntelligenceOverlay,
     resetCamera: resetCamera,
     setTopView: setTopView,
     setPerspectiveView: setPerspectiveView,

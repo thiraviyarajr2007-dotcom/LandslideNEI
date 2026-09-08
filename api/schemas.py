@@ -11,7 +11,8 @@ Defines stable, strongly-typed request and response contracts for:
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+import math
+from pydantic import BaseModel, Field, field_validator
 
 
 # ==============================================================================
@@ -173,6 +174,13 @@ class TerrainBlock(BaseModel):
     topographic_wetness_index: Optional[float] = None
     village_terrain_risk_multiplier: Optional[float] = None
 
+    @field_validator("*", mode="before")
+    @classmethod
+    def convert_nan_to_none(cls, v):
+        if isinstance(v, float) and math.isnan(v):
+            return None
+        return v
+
 
 class SoilBlock(BaseModel):
     soil_class: Optional[str] = None
@@ -194,10 +202,24 @@ class SoilBlock(BaseModel):
     sar_dielectric_constant: Optional[float] = None
     sar_backscatter_vv_db: Optional[float] = None
 
+    @field_validator("*", mode="before")
+    @classmethod
+    def convert_nan_to_none(cls, v):
+        if isinstance(v, float) and math.isnan(v):
+            return None
+        return v
+
 
 class LandcoverBlock(BaseModel):
     landcover_code: Optional[int] = None
     landcover_class: Optional[str] = None
+
+    @field_validator("*", mode="before")
+    @classmethod
+    def convert_nan_to_none(cls, v):
+        if isinstance(v, float) and math.isnan(v):
+            return None
+        return v
 
 
 class AnthropogenicBlock(BaseModel):

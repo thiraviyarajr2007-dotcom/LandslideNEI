@@ -63,11 +63,12 @@ def test_distribution_bundle_if_built():
         pytest.skip("Distribution bundle not yet built in local environment")
 
     dist_dir = PROJECT_ROOT / "dist" / "LANDSLIDENEI"
-    assert (dist_dir / "dashboard" / "index.html").exists(), "dashboard bundle missing in dist"
-    assert (dist_dir / "website" / "index.html").exists(), "website bundle missing in dist"
-    assert (dist_dir / "config" / "risk_thresholds.json").exists(), "config bundle missing in dist"
-    assert (dist_dir / "model" / "static_lsm_pipeline.joblib").exists(), "model bundle missing in dist"
-    assert (dist_dir / "data" / "inspection" / "landslide_validation" / "gadm41_IND_1.json").exists(), "GADM geojson missing in dist"
+    target_dir = (dist_dir / "_internal") if (dist_dir / "_internal").exists() else dist_dir
+    assert (target_dir / "dashboard" / "index.html").exists(), "dashboard bundle missing in dist"
+    assert (target_dir / "website" / "index.html").exists(), "website bundle missing in dist"
+    assert (target_dir / "config" / "risk_thresholds.json").exists(), "config bundle missing in dist"
+    assert (target_dir / "model" / "static_lsm_pipeline.joblib").exists(), "model bundle missing in dist"
+    assert (target_dir / "data" / "inspection" / "landslide_validation" / "gadm41_IND_1.json").exists(), "GADM geojson missing in dist"
 
 def test_executable_headless_health_if_built():
     """

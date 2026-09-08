@@ -652,35 +652,111 @@
                 </div>
               </div>
 
-              <!-- Bottom-Right: Selected Location Information Panel -->
-              <div id="hud-3d-location-card" class="absolute bottom-3 right-3 z-20 w-80 bg-surface-container/95 backdrop-blur-md border border-outline-variant rounded-xl shadow-2xl p-3.5 font-mono text-xs hidden">
-                <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-outline-variant/40">
+              <!-- Bottom-Right: Selected Location Information Panel & Operational Intelligence Overlay -->
+              <div id="hud-3d-location-card" class="absolute bottom-3 right-3 z-20 w-84 max-w-[340px] max-h-[85vh] overflow-y-auto bg-surface-container/95 backdrop-blur-md border border-outline-variant rounded-xl shadow-2xl p-3.5 font-mono text-xs hidden space-y-2.5">
+                <!-- Card Header -->
+                <div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/40">
                   <div class="flex items-center gap-1.5 text-primary font-bold">
                     <span class="material-symbols-outlined text-[15px]">pin_drop</span>
-                    <span>LOCATION PROFILE</span>
+                    <span class="tracking-wider">LOCATION PROFILE</span>
                   </div>
                   <button type="button" onclick="document.getElementById('hud-3d-location-card').classList.add('hidden')" class="text-outline hover:text-on-surface">
                     <span class="material-symbols-outlined text-[15px]">close</span>
                   </button>
                 </div>
 
-                <div class="space-y-1 text-[11px]">
+                <!-- Historical Incident Banner (Active when clicking a historical 3D marker) -->
+                <div id="loc-card-historical-block" class="hidden p-2 rounded bg-error-container/20 border border-error/40 text-[10px] space-y-0.5">
+                  <div class="flex items-center justify-between text-error font-bold">
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">history_edu</span>HISTORICAL INCIDENT</span>
+                    <span id="loc-card-hist-id" class="font-mono">--</span>
+                  </div>
+                  <div class="text-on-surface-variant flex justify-between"><span>Date:</span> <span id="loc-card-hist-date" class="text-on-surface font-semibold">--</span></div>
+                  <div class="text-on-surface-variant flex justify-between"><span>Casualties:</span> <span id="loc-card-hist-fatalities" class="text-error font-bold">--</span></div>
+                  <div class="text-on-surface-variant flex justify-between"><span>Type:</span> <span id="loc-card-hist-type" class="text-on-surface">--</span></div>
+                </div>
+
+                <!-- 1. Topographic Parameters (Copernicus GLO-30 DEM) -->
+                <div class="space-y-1 text-[11px] pb-2 border-b border-outline-variant/20">
+                  <div class="text-[9px] font-bold text-outline uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[11px] text-secondary">terrain</span>
+                    <span>COPENICUS GLO-30 TOPOGRAPHY</span>
+                  </div>
                   <div class="flex justify-between"><span class="text-outline">Latitude:</span> <span id="loc-card-lat" class="text-on-surface font-medium">--</span></div>
                   <div class="flex justify-between"><span class="text-outline">Longitude:</span> <span id="loc-card-lon" class="text-on-surface font-medium">--</span></div>
                   <div class="flex justify-between"><span class="text-outline">Elevation:</span> <span id="loc-card-elev" class="text-secondary font-bold">-- m</span></div>
                   <div class="flex justify-between"><span class="text-outline">Slope:</span> <span id="loc-card-slope" class="text-on-surface font-medium">--</span></div>
                   <div class="flex justify-between"><span class="text-outline">Aspect:</span> <span id="loc-card-aspect" class="text-on-surface font-medium">--</span></div>
-                  <div class="pt-1 border-t border-outline-variant/20 text-[9px] text-outline flex justify-between">
-                    <span>Source:</span> <span id="loc-card-source" class="text-on-surface-variant truncate">Copernicus DEM GLO-30</span>
+                </div>
+
+                <!-- 2. Static Susceptibility (Model A Random Forest) -->
+                <div class="space-y-1 text-[11px] pb-2 border-b border-outline-variant/20">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[11px] text-primary">psychology</span>
+                      <span>STATIC SUSCEPTIBILITY</span>
+                    </span>
+                    <span id="loc-card-susc-pill" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-surface-container-highest text-outline">EVALUATING</span>
                   </div>
-                  <div class="text-[9px] text-outline flex justify-between">
-                    <span>Timestamp:</span> <span id="loc-card-time" class="text-on-surface-variant">--</span>
+                  <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-outline">Model A RF Score:</span>
+                    <span id="loc-card-susc-score" class="text-on-surface font-semibold">--</span>
                   </div>
                 </div>
 
-                <button type="button" onclick="if(window.currentCoordinates) evaluateLocation(window.currentCoordinates.lat, window.currentCoordinates.lon)" class="w-full mt-2 py-1.5 bg-primary-container text-on-primary-container rounded font-bold text-[10px] tracking-wider uppercase flex items-center justify-center gap-1 hover:brightness-110">
-                  <span class="material-symbols-outlined text-[13px]">analytics</span>
-                  <span>EVALUATE RISK SYNTHESIS</span>
+                <!-- 3. Rainfall Telemetry (CWC / IMD / Real-Time) -->
+                <div class="space-y-1 text-[11px] pb-2 border-b border-outline-variant/20">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[11px] text-sky-400">rainy</span>
+                      <span>RAINFALL TELEMETRY</span>
+                    </span>
+                    <span id="loc-card-rain-pill" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-surface-container-highest text-outline">--</span>
+                  </div>
+                  <div class="flex justify-between text-[10px]">
+                    <span class="text-outline">Station:</span>
+                    <span id="loc-card-rain-station" class="text-on-surface font-medium truncate max-w-[170px]">--</span>
+                  </div>
+                  <div class="flex justify-between text-[10px]">
+                    <span class="text-outline">24h Accumulation:</span>
+                    <span id="loc-card-rain-24h" class="text-sky-300 font-bold">-- mm</span>
+                  </div>
+                </div>
+
+                <!-- 4. Operational Risk Synthesis -->
+                <div class="space-y-1.5 text-[11px] pb-2 border-b border-outline-variant/20">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[9px] font-bold text-outline uppercase tracking-wider flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[11px] text-amber-400">analytics</span>
+                      <span>OPERATIONAL RISK</span>
+                    </span>
+                    <span id="loc-card-risk-pill" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-surface-container-highest text-outline">--</span>
+                  </div>
+                  <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-outline">Synthesis Score:</span>
+                    <span id="loc-card-risk-score" class="text-on-surface font-bold">--</span>
+                  </div>
+                  <div id="loc-card-reasons" class="text-[9px] text-on-surface-variant space-y-0.5 pt-0.5">
+                    <!-- Explainable trigger reasons dynamically inserted here -->
+                  </div>
+                </div>
+
+                <!-- 5. Data Quality & Metadata Provenance -->
+                <div class="space-y-0.5 text-[9px] text-outline">
+                  <div class="flex justify-between">
+                    <span>Data Quality:</span>
+                    <span id="loc-card-quality" class="text-emerald-400 font-medium">GOOD // VERIFIED</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Last Updated:</span>
+                    <span id="loc-card-time" class="text-on-surface-variant">--</span>
+                  </div>
+                </div>
+
+                <!-- Action Button -->
+                <button type="button" onclick="if(window.currentCoordinates) evaluateLocation(window.currentCoordinates.lat, window.currentCoordinates.lon)" class="w-full mt-1.5 py-1.5 bg-primary-container text-on-primary-container rounded font-bold text-[10px] tracking-wider uppercase flex items-center justify-center gap-1 hover:brightness-110 shadow">
+                  <span class="material-symbols-outlined text-[13px]">refresh</span>
+                  <span>RE-EVALUATE LOCATION RISK</span>
                 </button>
               </div>
 
