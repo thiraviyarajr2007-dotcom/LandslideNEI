@@ -267,10 +267,95 @@ function selectSector(key) {
       c.classList.toggle('active', c.getAttribute('data-sector') === key);
     });
     showToast(`Quick Selected: ${sec.name}`);
+
+    // Synchronize 3D Terrain Viewer if active
+    if (window.mapViewMode === '3d' && window.Terrain3D) {
+      window.Terrain3D.loadCorridor(key, sec.lat, sec.lon);
+    }
+    // Synchronize 2D Leaflet pin
+    if (typeof setQueryPoint === 'function') {
+      setQueryPoint(sec.lat, sec.lon);
+    }
+
     evaluateLocation(sec.lat, sec.lon);
   }
 }
 window.selectSector = selectSector;
+
+window.mapViewMode = '2d';
+
+function switchMapView(mode) {
+  const btn2d = document.getElementById('btn-view-2d');
+  const btn3d = document.getElementById('btn-view-3d');
+  const mapContainer = document.getElementById('gis-map');
+  const terrain3dWrapper = document.getElementById('terrain-3d-wrapper');
+
+  if (mode === '3d') {
+    window.mapViewMode = '3d';
+    if (mapContainer) mapContainer.style.display = 'none';
+    if (terrain3dWrapper) {
+      terrain3dWrapper.classList.remove('hidden');
+      terrain3dWrapper.style.display = 'block';
+    }
+
+    if (btn2d) {
+      btn2d.className = 'px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 text-on-surface-variant hover:text-primary';
+    }
+    if (btn3d) {
+      btn3d.className = 'px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 bg-primary-container text-on-primary-container shadow-sm';
+    }
+
+    // Initialize 3D Engine if needed
+    if (window.Terrain3D) {
+      window.Terrain3D.init();
+      setTimeout(() => {
+        window.Terrain3D.onWindowResize();
+        if (window.currentCoordinates) {
+          const secKey = document.querySelector('.corridor-chip.active')?.getAttribute('data-sector') || 'nagaland';
+          window.Terrain3D.loadCorridor(secKey, window.currentCoordinates.lat, window.currentCoordinates.lon);
+        }
+      }, 50);
+    }
+    showToast('3D Terrain Engine Active // WebGL 60 FPS');
+
+  } else {
+    window.mapViewMode = '2d';
+    if (terrain3dWrapper) {
+      terrain3dWrapper.style.display = 'none';
+      terrain3dWrapper.classList.add('hidden');
+    }
+    if (mapContainer) {
+      mapContainer.style.display = 'block';
+    }
+
+    if (btn3d) {
+      btn3d.className = 'px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 text-on-surface-variant hover:text-primary';
+    }
+    if (btn2d) {
+      btn2d.className = 'px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 bg-primary-container text-on-primary-container shadow-sm';
+    }
+
+    // Refresh 2D Leaflet map view
+    if (window.mapInstance) {
+      setTimeout(() => {
+        window.mapInstance.invalidateSize();
+        if (window.currentCoordinates) {
+          window.mapInstance.setView([window.currentCoordinates.lat, window.currentCoordinates.lon]);
+        }
+      }, 50);
+    }
+    showToast('2D GIS Map Active');
+  }
+}
+window.switchMapView = switchMapView;
+
+function toggleLayerDrawer() {
+  const drawer = document.getElementById('hud-3d-layers-drawer');
+  if (drawer) {
+    drawer.classList.toggle('hidden');
+  }
+}
+window.toggleLayerDrawer = toggleLayerDrawer;
 
 function initSectorSelector() {
   const select = document.getElementById('sector-select') || document.getElementById('sector-quick-select');
@@ -281,7 +366,7 @@ function initSectorSelector() {
   });
 }
 
-// Global Map Click Handler invoked from map.js Leaflet click
+// Global Map Click Handler invoked from map.js Leaflet click or 3D terrain click
 window.handleMapClick = function(lat, lon) {
   window.currentCoordinates = {
     lat: lat,
@@ -290,6 +375,15 @@ window.handleMapClick = function(lat, lon) {
     elev: 0
   };
   updateCoordDisplays(window.currentCoordinates);
+
+  // Synchronize both 2D and 3D pins
+  if (window.Terrain3D) {
+    window.Terrain3D.updateQueryMarker(lat, lon);
+  }
+  if (typeof setQueryPoint === 'function') {
+    setQueryPoint(lat, lon);
+  }
+
   showToast(`Evaluating real-time risk at ${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E...`);
   evaluateLocation(lat, lon);
 };

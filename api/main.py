@@ -60,6 +60,7 @@ from api.schemas import (
 from src.inference.location_profiler import LocationProfiler
 from src.inference.rainfall_provider import RainfallProvider, get_rainfall_provider
 from src.inference.risk_engine import RiskEngine, get_risk_engine
+from src.inference.terrain_service import get_terrain_service
 
 # ==============================================================================
 # 1. CONFIGURATION & APP INITIALIZATION
@@ -743,6 +744,73 @@ def refetch_regional_rainfall(payload: PredictRequest) -> Dict[str, Any]:
         "rainfall_trigger": trig,
         "refetched_at": datetime.now(timezone.utc).isoformat(),
     }
+
+
+# ==============================================================================
+# 4B. 3D TERRAIN & GEOSPATIAL VISUALIZATION ENDPOINTS
+# ==============================================================================
+
+@app.get(
+    "/api/v1/terrain/metadata",
+    tags=["3D Terrain"],
+)
+def get_terrain_metadata():
+    """Returns authoritative metadata regarding Copernicus GLO-30 DEM assets."""
+    terrain_svc = get_terrain_service()
+    return terrain_svc.get_dem_metadata()
+
+
+@app.get(
+    "/api/v1/terrain/mesh",
+    tags=["3D Terrain"],
+)
+def get_terrain_mesh(
+    latitude: float,
+    longitude: float,
+    radius_km: float = 10.0,
+    grid_size: int = 128,
+    sector: Optional[str] = None,
+):
+    """
+    Returns genuine Copernicus GLO-30 elevation grid, Horn's slope, and aspect.
+    Strictly returns TERRAIN_DATA_UNAVAILABLE if coordinate is outside NER domain
+    or if tile is missing. Never generates synthetic terrain.
+    """
+    terrain_svc = get_terrain_service()
+    res = terrain_svc.extract_terrain_grid(
+        lat=latitude,
+        lon=longitude,
+        radius_km=radius_km,
+        grid_size=grid_size,
+        sector=sector,
+    )
+    if res.get("status") == "TERRAIN_DATA_UNAVAILABLE":
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=res,
+        )
+    return res
+
+
+@app.get(
+    "/api/v1/layers/status",
+    tags=["3D Terrain"],
+)
+def get_visualization_layers_status():
+    """Returns operational status and genuine data sources for all 3D visualization layers."""
+    terrain_svc = get_terrain_service()
+    return terrain_svc.get_layers_status()
+
+
+@app.get(
+    "/api/v1/layers/historical-landslides",
+    tags=["3D Terrain"],
+)
+def get_historical_landslides_layer():
+    """Returns verified historical landslide events from NESAC/NERDRR 2021 without fabrication."""
+    terrain_svc = get_terrain_service()
+    res = terrain_svc.get_historical_landslides()
+    return res
 
 
 # ==============================================================================

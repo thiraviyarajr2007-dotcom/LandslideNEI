@@ -179,7 +179,7 @@ def ensure_bundle_mirror():
     data_proc = dist_dir / "data" / "processed"
     data_proc.mkdir(parents=True, exist_ok=True)
     src_proc = PROJECT_ROOT / "data" / "processed"
-    for item in ["cwc_rainfall_features.csv", "rainfall", "imd"]:
+    for item in ["cwc_rainfall_features.csv", "rainfall", "imd", "dem"]:
         s = src_proc / item
         d = data_proc / item
         if s.exists() and not d.exists():

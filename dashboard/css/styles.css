@@ -615,3 +615,54 @@ html, body {
     color: black !important;
   }
 }
+
+/* ==============================================================================
+ * 3D DEM TERRAIN VIEWER & TACTICAL HUD
+ * ============================================================================== */
+
+#terrain-3d-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--surface-container-lowest);
+  overflow: hidden;
+  user-select: none;
+}
+
+#terrain-3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+.btn-exaggeration {
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-exaggeration:hover {
+  filter: brightness(1.15);
+}
+
+.hud-status-banner {
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+#hud-3d-layers-drawer {
+  animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -415,6 +415,18 @@
           </div>
 
           <div class="flex items-center gap-1.5">
+            <!-- View Mode Switcher: 2D Map vs 3D Terrain -->
+            <div class="inline-flex rounded-lg p-0.5 bg-surface-container-lowest border border-outline-variant/40 shadow-inner mr-1">
+              <button id="btn-view-2d" onclick="switchMapView('2d')" type="button" class="px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 bg-primary-container text-on-primary-container shadow-sm">
+                <span class="material-symbols-outlined text-[14px]">map</span>
+                <span>2D MAP</span>
+              </button>
+              <button id="btn-view-3d" onclick="switchMapView('3d')" type="button" class="px-2.5 py-1 rounded font-mono text-xs font-bold uppercase transition-all flex items-center gap-1.5 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-[14px]">view_in_ar</span>
+                <span>3D TERRAIN</span>
+              </button>
+            </div>
+
             <button onclick="window.mapInstance && window.mapInstance.zoomIn()" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-primary" title="Zoom In" type="button">
               <span class="material-symbols-outlined text-[15px]">add</span>
             </button>
@@ -470,9 +482,207 @@
         <!-- Main Workspace: Split Canvas (Left: Map, Right: Operational Panel) -->
         <div class="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
           
-          <!-- LEFT: Map Canvas (8 Cols) -->
-          <div class="lg:col-span-8 relative h-full bg-surface-container-lowest overflow-hidden">
+          <!-- LEFT: Map & 3D Terrain Canvas (8 Cols) -->
+          <div id="map-canvas-container" class="lg:col-span-8 relative h-full bg-surface-container-lowest overflow-hidden">
+            <!-- 2D Leaflet GIS Map -->
             <div id="gis-map" class="w-full h-full"></div>
+
+            <!-- 3D DEM Terrain Viewer Native Component -->
+            <div id="terrain-3d-wrapper" class="w-full h-full relative hidden">
+              <canvas id="terrain-3d-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+
+              <!-- Top-Left: Visual Terrain Exaggeration Controls (Clearly Non-Physical) -->
+              <div class="absolute top-3 left-3 z-20 flex flex-col gap-1.5 bg-surface-container/90 backdrop-blur border border-outline-variant/50 p-2.5 rounded-lg shadow-xl font-mono text-xs">
+                <div class="flex items-center justify-between gap-3 pb-1 border-b border-outline-variant/30">
+                  <span class="text-[10px] text-secondary font-bold tracking-wider uppercase">VISUAL TERRAIN EXAGGERATION</span>
+                  <span id="hud-exaggeration-badge" class="px-1.5 py-0.2 rounded bg-primary-container/20 text-primary text-[10px] font-bold">1.5x</span>
+                </div>
+                <div class="flex items-center gap-1 pt-0.5">
+                  <button id="btn-exag-10" onclick="if(window.Terrain3D) window.Terrain3D.setExaggeration(1.0)" type="button" data-exaggeration="1.0" class="btn-exaggeration px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container text-on-surface-variant hover:text-primary transition-all">1.0x</button>
+                  <button id="btn-exag-15" onclick="if(window.Terrain3D) window.Terrain3D.setExaggeration(1.5)" type="button" data-exaggeration="1.5" class="btn-exaggeration px-2 py-0.5 rounded text-[11px] font-bold bg-primary-container text-on-primary-container transition-all">1.5x</button>
+                  <button id="btn-exag-20" onclick="if(window.Terrain3D) window.Terrain3D.setExaggeration(2.0)" type="button" data-exaggeration="2.0" class="btn-exaggeration px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container text-on-surface-variant hover:text-primary transition-all">2.0x</button>
+                  <button id="btn-exag-30" onclick="if(window.Terrain3D) window.Terrain3D.setExaggeration(3.0)" type="button" data-exaggeration="3.0" class="btn-exaggeration px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container text-on-surface-variant hover:text-primary transition-all">3.0x</button>
+                </div>
+                <span class="text-[9px] text-outline leading-tight pt-0.5">Non-physical geometric scaling for topographic relief.</span>
+              </div>
+
+              <!-- Top-Right: 3D Camera Controls & Layer Toggle -->
+              <div class="absolute top-3 right-3 z-20 flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-surface-container/90 backdrop-blur border border-outline-variant/50 p-1 rounded-lg shadow-xl">
+                  <button id="btn-3d-zoom-in" type="button" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container hover:bg-surface-container-high text-primary hover:text-primary-container" title="Zoom In">
+                    <span class="material-symbols-outlined text-[15px]">add</span>
+                  </button>
+                  <button id="btn-3d-zoom-out" type="button" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container hover:bg-surface-container-high text-primary hover:text-primary-container" title="Zoom Out">
+                    <span class="material-symbols-outlined text-[15px]">remove</span>
+                  </button>
+                  <div class="h-4 w-[1px] bg-outline-variant/40 mx-0.5"></div>
+                  <button id="btn-3d-top-view" type="button" class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high font-mono text-[10px] font-bold text-on-surface hover:text-primary" title="Top-Down Nadir View">
+                    TOP
+                  </button>
+                  <button id="btn-3d-persp-view" type="button" class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high font-mono text-[10px] font-bold text-on-surface hover:text-primary" title="Tactical 45° Perspective">
+                    PERSP
+                  </button>
+                  <button id="btn-3d-reset" type="button" class="w-7 h-7 flex items-center justify-center rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary" title="Reset Camera">
+                    <span class="material-symbols-outlined text-[15px]">restart_alt</span>
+                  </button>
+                </div>
+
+                <!-- Layer Panel Trigger Button -->
+                <button type="button" onclick="toggleLayerDrawer()" class="px-2.5 py-1.5 rounded-lg bg-surface-container/90 backdrop-blur border border-outline-variant/50 hover:border-primary/50 text-on-surface hover:text-primary font-mono text-xs font-bold flex items-center gap-1.5 shadow-xl">
+                  <span class="material-symbols-outlined text-[16px] text-primary">layers</span>
+                  <span>LAYERS</span>
+                </button>
+              </div>
+
+              <!-- Floating 3D Layer Control Panel Drawer -->
+              <div id="hud-3d-layers-drawer" class="absolute top-14 right-3 z-30 w-72 bg-surface-container/95 backdrop-blur-md border border-outline-variant rounded-xl shadow-2xl p-4 font-mono text-xs hidden">
+                <div class="flex items-center justify-between pb-2 mb-3 border-b border-outline-variant/40">
+                  <div class="flex items-center gap-1.5 text-primary font-bold">
+                    <span class="material-symbols-outlined text-[16px]">layers</span>
+                    <span>3D LAYER CONTROL</span>
+                  </div>
+                  <button type="button" onclick="toggleLayerDrawer()" class="text-outline hover:text-on-surface">
+                    <span class="material-symbols-outlined text-[16px]">close</span>
+                  </button>
+                </div>
+
+                <div class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                  <!-- Terrain Surface -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-terrain" type="checkbox" checked class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Terrain Surface</span>
+                    </span>
+                    <span class="text-[9px] text-emerald-400 font-bold">GLO-30</span>
+                  </label>
+
+                  <!-- Elevation Hypsometric Tint -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-elevation" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Elevation (Hypsometric)</span>
+                    </span>
+                    <span class="text-[9px] text-secondary">DEM</span>
+                  </label>
+
+                  <!-- Slope Gradient -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-slope" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Slope Gradient (Horn's)</span>
+                    </span>
+                    <span class="text-[9px] text-amber-400">0°–90°</span>
+                  </label>
+
+                  <!-- Aspect Direction -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-aspect" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Aspect Azimuth</span>
+                    </span>
+                    <span class="text-[9px] text-secondary">0°–360°</span>
+                  </label>
+
+                  <!-- Historical Landslides (Verified) -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-landslides" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Historical Landslides</span>
+                    </span>
+                    <span class="text-[9px] text-error font-bold">75 EVENTS</span>
+                  </label>
+
+                  <!-- CWC Rainfall Stations -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-stations" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Rainfall Stations (CWC)</span>
+                    </span>
+                    <span class="text-[9px] text-primary">55 STATIONS</span>
+                  </label>
+
+                  <!-- Dynamic Rainfall Intensity -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-intensity" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Rainfall Intensity</span>
+                    </span>
+                    <span class="text-[9px] text-secondary">TELEMETRY</span>
+                  </label>
+
+                  <!-- Risk Zones -->
+                  <label class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-high cursor-pointer">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-risk" type="checkbox" class="rounded border-outline-variant text-primary-container focus:ring-0">
+                      <span class="text-on-surface">Risk Envelope Tiers</span>
+                    </span>
+                    <span class="text-[9px] text-amber-400">SYNTHESIS</span>
+                  </label>
+
+                  <!-- Villages (Truth in data: DATA UNAVAILABLE) -->
+                  <label class="flex items-center justify-between p-1.5 rounded bg-surface-container-lowest/50 opacity-60 cursor-not-allowed">
+                    <span class="flex items-center gap-2">
+                      <input id="layer-3d-villages" type="checkbox" disabled class="rounded border-outline-variant text-outline">
+                      <span class="text-outline">Villages &amp; Settlements</span>
+                    </span>
+                    <span class="text-[9px] text-outline font-bold">DATA UNAVAILABLE</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Bottom-Left: Real-Time Terrain Hover Inspection HUD -->
+              <div class="absolute bottom-3 left-3 z-20 bg-surface-container/90 backdrop-blur border border-outline-variant/60 p-2.5 rounded-lg shadow-xl font-mono text-xs max-w-sm">
+                <div class="text-[10px] text-primary font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">travel_explore</span>
+                  <span>TERRAIN SURFACE INSPECTION</span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px]">
+                  <div><span class="text-outline">COORD:</span> <span id="hud-3d-coords" class="text-on-surface font-medium">--</span></div>
+                  <div><span class="text-outline">ELEV:</span> <span id="hud-3d-elevation" class="text-secondary font-bold">-- m</span></div>
+                  <div><span class="text-outline">SLOPE:</span> <span id="hud-3d-slope" class="text-on-surface font-medium">--</span></div>
+                  <div><span class="text-outline">ASPECT:</span> <span id="hud-3d-aspect" class="text-on-surface font-medium">--</span></div>
+                </div>
+              </div>
+
+              <!-- Bottom-Right: Selected Location Information Panel -->
+              <div id="hud-3d-location-card" class="absolute bottom-3 right-3 z-20 w-80 bg-surface-container/95 backdrop-blur-md border border-outline-variant rounded-xl shadow-2xl p-3.5 font-mono text-xs hidden">
+                <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-outline-variant/40">
+                  <div class="flex items-center gap-1.5 text-primary font-bold">
+                    <span class="material-symbols-outlined text-[15px]">pin_drop</span>
+                    <span>LOCATION PROFILE</span>
+                  </div>
+                  <button type="button" onclick="document.getElementById('hud-3d-location-card').classList.add('hidden')" class="text-outline hover:text-on-surface">
+                    <span class="material-symbols-outlined text-[15px]">close</span>
+                  </button>
+                </div>
+
+                <div class="space-y-1 text-[11px]">
+                  <div class="flex justify-between"><span class="text-outline">Latitude:</span> <span id="loc-card-lat" class="text-on-surface font-medium">--</span></div>
+                  <div class="flex justify-between"><span class="text-outline">Longitude:</span> <span id="loc-card-lon" class="text-on-surface font-medium">--</span></div>
+                  <div class="flex justify-between"><span class="text-outline">Elevation:</span> <span id="loc-card-elev" class="text-secondary font-bold">-- m</span></div>
+                  <div class="flex justify-between"><span class="text-outline">Slope:</span> <span id="loc-card-slope" class="text-on-surface font-medium">--</span></div>
+                  <div class="flex justify-between"><span class="text-outline">Aspect:</span> <span id="loc-card-aspect" class="text-on-surface font-medium">--</span></div>
+                  <div class="pt-1 border-t border-outline-variant/20 text-[9px] text-outline flex justify-between">
+                    <span>Source:</span> <span id="loc-card-source" class="text-on-surface-variant truncate">Copernicus DEM GLO-30</span>
+                  </div>
+                  <div class="text-[9px] text-outline flex justify-between">
+                    <span>Timestamp:</span> <span id="loc-card-time" class="text-on-surface-variant">--</span>
+                  </div>
+                </div>
+
+                <button type="button" onclick="if(window.currentCoordinates) evaluateLocation(window.currentCoordinates.lat, window.currentCoordinates.lon)" class="w-full mt-2 py-1.5 bg-primary-container text-on-primary-container rounded font-bold text-[10px] tracking-wider uppercase flex items-center justify-center gap-1 hover:brightness-110">
+                  <span class="material-symbols-outlined text-[13px]">analytics</span>
+                  <span>EVALUATE RISK SYNTHESIS</span>
+                </button>
+              </div>
+
+              <!-- Top-Center: Status Banner -->
+              <div class="absolute top-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+                <div id="hud-3d-status-banner" class="hud-status-banner px-3 py-1 rounded text-xs font-mono font-semibold tracking-wider bg-surface-container/90 text-primary border border-primary/40 shadow-lg">
+                  COPERNICUS GLO-30 // 3D TERRAIN READY
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- RIGHT: Operational Telemetry Panel (4 Cols) -->
@@ -1410,9 +1620,12 @@
 
   <!-- SCRIPTS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/vendor/three.min.js"></script>
+  <script src="assets/vendor/OrbitControls.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/demo_presets.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/terrain3d.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
