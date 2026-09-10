@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from .location_profiler import LocationProfiler
+from .location_profiler import LocationProfiler, get_location_profiler
 from .rainfall_provider import RainfallProvider, get_rainfall_provider
 from .rainfall_trigger import RainfallTriggerEngine, get_rainfall_trigger_engine
 from .risk_fusion import RiskFusionEngine, get_risk_fusion_engine
@@ -37,7 +37,7 @@ class RiskEngine:
         trigger_engine: Optional[RainfallTriggerEngine] = None,
         fusion_engine: Optional[RiskFusionEngine] = None,
     ):
-        self.profiler = profiler if profiler is not None else LocationProfiler()
+        self.profiler = profiler or get_location_profiler()
         self.rainfall_provider = rainfall_provider or get_rainfall_provider()
         self.trigger_engine = trigger_engine or get_rainfall_trigger_engine()
         self.fusion_engine = fusion_engine or get_risk_fusion_engine()

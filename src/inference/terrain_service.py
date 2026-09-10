@@ -217,6 +217,7 @@ class TerrainService:
         self.cache_dir = cache_dir
         self.regional_cache_dir = cache_dir / "regional"
         self._raster_cache = {}
+        self._historical_landslides_cache: Optional[Dict[str, Any]] = None
 
     def get_dem_metadata(self) -> Dict[str, Any]:
         """Return authoritative metadata on Copernicus GLO-30 DEM assets."""
@@ -268,13 +269,9 @@ class TerrainService:
         hl_count = 0
         hl_source = "NESAC/NERDRR SLI 2021"
         if HISTORICAL_LANDSLIDES_CSV.exists():
-            try:
-                import pandas as pd
-                df = pd.read_csv(HISTORICAL_LANDSLIDES_CSV)
-                hl_count = len(df)
-                hl_status = "CONNECTED" if hl_count > 0 else "NOT_CONNECTED"
-            except Exception:
-                hl_status = "NOT_CONNECTED"
+            hl_data = self.get_historical_landslides()
+            hl_count = hl_data.get("count", 0)
+            hl_status = hl_data.get("status", "NOT_CONNECTED")
 
         # CWC stations check
         cwc_count = 0
@@ -364,6 +361,9 @@ class TerrainService:
 
     def get_historical_landslides(self) -> Dict[str, Any]:
         """Return verified historical landslide event points without fabrication."""
+        if self._historical_landslides_cache is not None:
+            return self._historical_landslides_cache
+
         if not HISTORICAL_LANDSLIDES_CSV.exists():
             return {
                 "status": "NOT_CONNECTED",
@@ -391,12 +391,14 @@ class TerrainService:
                     "rainfall_linkage_status": "ALIGNED" if pd.notna(r.get("trigger_reported")) else "MONITORED",
                     "confidence": str(r.get("confidence", "HIGH")),
                 })
-            return {
+            res = {
                 "status": "CONNECTED",
                 "count": len(events),
                 "source": "NESAC/NERDRR SLI 2021",
                 "events": events,
             }
+            self._historical_landslides_cache = res
+            return res
         except Exception as exc:
             return {
                 "status": "ERROR",

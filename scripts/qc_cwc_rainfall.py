@@ -1,4 +1,4 @@
-﻿"""
+"""
 Quality-Control (QC) and Station Analysis Engine for CWC Telemetry Rainfall Datasets.
 Vectorized for fast execution across all raw datasets.
 """

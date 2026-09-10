@@ -66,5 +66,5 @@ def create_app_icon(output_path: Path):
     print(f"Generated icon: {output_path}")
 
 if __name__ == "__main__":
-    icon_path = Path("C:/SIH Landslide/assets/icon.ico")
+    icon_path = Path(__file__).resolve().parent.parent / "assets" / "icon.ico"
     create_app_icon(icon_path)

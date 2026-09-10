@@ -26,6 +26,11 @@ Thumbs.db
 *.log
 tmp/
 temp/
+.env
+.env.*
+!.env.example
+~$*
+*.tmp
 
 # Data directories
 data/raw/

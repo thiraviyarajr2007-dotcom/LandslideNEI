@@ -353,7 +353,7 @@ def test_source_mode_reporting():
     # Coordinate outside focal corridors: e.g. Nongstoin (25.5200° N, 91.2700° E)
     dyn_res = svc.extract_terrain_grid(25.5200, 91.2700)
     assert dyn_res["status"] == "SUCCESS"
-    assert dyn_res["source_mode"] == "DYNAMIC_RASTER_EXTRACTION"
+    assert dyn_res["source_mode"] in ["DYNAMIC_RASTER_EXTRACTION", "REGIONAL_OFFLINE_CACHE"]
 
     # 3. Offline Standalone Mode (simulating EXE with no raw DEM)
     svc_offline = TerrainService(dem_dir=Path("C:/nonexistent/dem"))

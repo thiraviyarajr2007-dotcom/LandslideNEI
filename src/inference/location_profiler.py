@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import json
+import logging
 import math
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -21,6 +22,8 @@ import rasterio
 from pyproj import Transformer
 from shapely.geometry import Point, shape
 from shapely.prepared import prep
+
+logger = logging.getLogger(__name__)
 
 from src.inference.micro_topography import compute_micro_topography
 from src.inference.soil_pore_pressure import compute_soil_saturation_and_pore_pressure
@@ -35,7 +38,11 @@ GADM_JSON_PATH = PROJECT_ROOT / "data" / "inspection" / "landslide_validation" /
 
 DEM_DIR = PROJECT_ROOT / "data" / "raw" / "dem" / "copernicus_glo30" / "downloads"
 SOIL_DIR = PROJECT_ROOT / "data" / "raw" / "soil"
+if not (SOIL_DIR / "bdod_0-5cm_mean_nei.tif").exists() and (PROJECT_ROOT / "_internal" / "data" / "raw" / "soil").exists():
+    SOIL_DIR = PROJECT_ROOT / "_internal" / "data" / "raw" / "soil"
 WORLDCOVER_DIR = PROJECT_ROOT / "data" / "raw" / "worldcover" / "esa_worldcover_v200"
+if not WORLDCOVER_DIR.exists() and (PROJECT_ROOT / "_internal" / "data" / "raw" / "worldcover" / "esa_worldcover_v200").exists():
+    WORLDCOVER_DIR = PROJECT_ROOT / "_internal" / "data" / "raw" / "worldcover" / "esa_worldcover_v200"
 
 METRES_PER_DEGREE_LAT = 111320.0
 MIN_VALID_CELLS_5X5 = 13
@@ -140,7 +147,9 @@ class LocationProfiler:
         # Raster caches
         self._dem_cache: Dict[str, rasterio.io.DatasetReader] = {}
         self._soil_cache: Dict[str, rasterio.io.DatasetReader] = {}
+        self._homolosine_transformer: Optional[Transformer] = None
         self._worldcover_cache: Dict[str, rasterio.io.DatasetReader] = {}
+        self._terrain_service = None
 
     def _load_metadata(self) -> dict:
         if not self.metadata_path.exists():
@@ -216,6 +225,63 @@ class LocationProfiler:
         tile_path = DEM_DIR / f"{tile_key}.tif"
 
         if not tile_path.exists():
+            # Fallback: Extract genuine Copernicus GLO-30 elevation, slope, aspect, and relief
+            # from packaged offline adaptive terrain cache (focal & regional GLO-30 tiles)
+            try:
+                if getattr(self, "_terrain_service", None) is None:
+                    from src.inference.terrain_service import TerrainService
+                    self._terrain_service = TerrainService()
+
+                res = self._terrain_service.extract_terrain_grid(lat, lon)
+                if res.get("status") == "SUCCESS" and "elevations" in res:
+                    h = res["dimensions"]["height"]
+                    w = res["dimensions"]["width"]
+                    grid = np.array(res["elevations"], dtype=np.float32).reshape((h, w))
+                    slopes = np.array(res["slopes"], dtype=np.float32).reshape((h, w))
+                    aspects = np.array(res["aspects"], dtype=np.float32).reshape((h, w))
+                    cr, cc = h // 2, w // 2
+                    center_elev = float(grid[cr, cc])
+                    slope_deg = float(slopes[cr, cc])
+                    aspect_deg = float(aspects[cr, cc])
+
+                    r_min = max(0, cr - 2)
+                    r_max = min(h, cr + 3)
+                    c_min = max(0, cc - 2)
+                    c_max = min(w, cc + 3)
+                    win5 = grid[r_min:r_max, c_min:c_max]
+                    valid_cells = win5[~np.isnan(win5)]
+                    relief_std = float(np.std(valid_cells, ddof=0)) if len(valid_cells) >= MIN_VALID_CELLS_5X5 else np.nan
+
+                    dx = float(res.get("resolution_m", 30.0))
+                    dy = float(res.get("resolution_m", 30.0))
+                    w3 = grid[cr - 1 : cr + 2, cc - 1 : cc + 2] if (cr >= 1 and cr + 2 <= h and cc >= 1 and cc + 2 <= w) else np.pad(win5, 1, mode="edge")[:3, :3]
+                    micro_topo = compute_micro_topography(
+                        w3=w3,
+                        dx=dx,
+                        dy=dy,
+                        center_elev=center_elev,
+                        valid_cells_5x5=valid_cells,
+                    )
+
+                    return {
+                        "elevation_m": round(center_elev, 2),
+                        "slope_deg": round(slope_deg, 2),
+                        "aspect_deg": round(aspect_deg, 2) if not np.isnan(aspect_deg) else np.nan,
+                        "relief_std_5x5_m": round(relief_std, 2) if not np.isnan(relief_std) else np.nan,
+                        "profile_curvature": micro_topo["profile_curvature"],
+                        "plan_curvature": micro_topo["plan_curvature"],
+                        "curvature_class": micro_topo["curvature_class"],
+                        "terrain_ruggedness_index_m": micro_topo["terrain_ruggedness_index_m"],
+                        "topographic_position_index_m": micro_topo["topographic_position_index_m"],
+                        "slope_position": micro_topo["slope_position"],
+                        "topographic_wetness_index": micro_topo["topographic_wetness_index"],
+                        "village_terrain_risk_multiplier": micro_topo["village_terrain_risk_multiplier"],
+                        "dem_tile": res.get("dem_tile", tile_key),
+                        "dem_quality": "OFFLINE_CACHE_OK",
+                    }
+            except Exception as exc:
+                logger.debug("Offline regional DEM cache lookup failed: %s", exc)
+
             return {
                 "elevation_m": np.nan,
                 "slope_deg": np.nan,
@@ -375,6 +441,7 @@ class LocationProfiler:
 
         results = {}
         has_missing = False
+        hx, hy = None, None
 
         for key, cfg in layers.items():
             tif_path = SOIL_DIR / cfg["file"]
@@ -388,8 +455,10 @@ class LocationProfiler:
 
             src = self._soil_cache[key]
             if cfg["is_homolosine"]:
-                trans = Transformer.from_crs("EPSG:4326", src.crs, always_xy=True)
-                hx, hy = trans.transform(lon, lat)
+                if self._homolosine_transformer is None:
+                    self._homolosine_transformer = Transformer.from_crs("EPSG:4326", src.crs, always_xy=True)
+                if hx is None or hy is None:
+                    hx, hy = self._homolosine_transformer.transform(lon, lat)
                 pt = (hx, hy)
             else:
                 pt = (lon, lat)
@@ -758,27 +827,36 @@ class LocationProfiler:
         for ds in self._dem_cache.values():
             try:
                 ds.close()
-            except Exception:
+            except (rasterio.RasterioIOError, OSError):
                 pass
         self._dem_cache.clear()
 
         for ds in self._soil_cache.values():
             try:
                 ds.close()
-            except Exception:
+            except (rasterio.RasterioIOError, OSError):
                 pass
         self._soil_cache.clear()
+        self._homolosine_transformer = None
 
         for ds in self._worldcover_cache.values():
             try:
                 ds.close()
-            except Exception:
+            except (rasterio.RasterioIOError, OSError):
                 pass
         self._worldcover_cache.clear()
 
 
 # Global reusable profiler instance for simple function calls
 _GLOBAL_PROFILER: Optional[LocationProfiler] = None
+
+
+def get_location_profiler() -> LocationProfiler:
+    """Return the application-wide cached LocationProfiler singleton."""
+    global _GLOBAL_PROFILER
+    if _GLOBAL_PROFILER is None:
+        _GLOBAL_PROFILER = LocationProfiler()
+    return _GLOBAL_PROFILER
 
 
 def profile_location(
@@ -792,10 +870,7 @@ def profile_location(
     has_retaining_wall: bool = False,
 ) -> Dict[str, Any]:
     """Top-level functional entry point for location profiling and static susceptibility inference."""
-    global _GLOBAL_PROFILER
-    if _GLOBAL_PROFILER is None:
-        _GLOBAL_PROFILER = LocationProfiler()
-    return _GLOBAL_PROFILER.profile_location(
+    return get_location_profiler().profile_location(
         lat=lat,
         lon=lon,
         road_cut_present=road_cut_present,

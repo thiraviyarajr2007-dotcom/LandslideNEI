@@ -18,8 +18,45 @@ import time
 from pathlib import Path
 
 # Ensure standard streams are not None in PyInstaller --windowed mode
+import msvcrt
+
 ORIG_STDOUT = sys.__stdout__
 ORIG_STDERR = sys.__stderr__
+
+if sys.platform == "win32":
+    # 1. First check if standard OS handle is redirected (e.g. subprocess pipe or file redirection)
+    try:
+        h_out = ctypes.windll.kernel32.GetStdHandle(-11)  # STD_OUTPUT_HANDLE
+        if h_out and h_out != -1 and h_out != 0:
+            fd_out = msvcrt.open_osfhandle(h_out, os.O_WRONLY | os.O_TEXT)
+            if fd_out >= 0:
+                sys.stdout = io.open(fd_out, "w", encoding="utf-8", buffering=1, closefd=False)
+                ORIG_STDOUT = sys.stdout
+    except Exception:
+        pass
+
+    try:
+        h_err = ctypes.windll.kernel32.GetStdHandle(-12)  # STD_ERROR_HANDLE
+        if h_err and h_err != -1 and h_err != 0:
+            fd_err = msvcrt.open_osfhandle(h_err, os.O_WRONLY | os.O_TEXT)
+            if fd_err >= 0:
+                sys.stderr = io.open(fd_err, "w", encoding="utf-8", buffering=1, closefd=False)
+                ORIG_STDERR = sys.stderr
+    except Exception:
+        pass
+
+    # 2. If launched from parent console without redirection, attach to parent console
+    if any(arg.startswith("--") for arg in sys.argv[1:]):
+        try:
+            if ctypes.windll.kernel32.AttachConsole(-1):
+                if sys.stdout is None or isinstance(sys.stdout, io.StringIO):
+                    sys.stdout = open("CONOUT$", "w", encoding="utf-8", buffering=1)
+                    ORIG_STDOUT = sys.stdout
+                if sys.stderr is None or isinstance(sys.stderr, io.StringIO):
+                    sys.stderr = open("CONOUT$", "w", encoding="utf-8", buffering=1)
+                    ORIG_STDERR = sys.stderr
+        except Exception:
+            pass
 
 if sys.stdout is None:
     sys.stdout = io.StringIO()
@@ -30,7 +67,9 @@ if sys.stderr is None:
 if getattr(sys, "frozen", False):
     exe_dir = Path(sys.executable).parent
     meipass = Path(getattr(sys, "_MEIPASS", exe_dir))
-    if (exe_dir / "model" / "static_lsm_pipeline.joblib").exists():
+    if (exe_dir / "_internal" / "model" / "static_lsm_pipeline.joblib").exists():
+        APP_ROOT = exe_dir / "_internal"
+    elif (exe_dir / "model" / "static_lsm_pipeline.joblib").exists():
         APP_ROOT = exe_dir
     elif (meipass / "model" / "static_lsm_pipeline.joblib").exists():
         APP_ROOT = meipass
@@ -361,23 +400,43 @@ def main() -> int:
                 elev_stats = mesh_data.get("elevation_stats", {})
                 susc = pred_data.get("static_susceptibility", {})
                 rain = pred_data.get("rainfall", {})
+                trig = pred_data.get("rainfall_trigger", {})
                 risk = pred_data.get("risk", {})
 
                 elev_ok = elev_stats.get("min_m") is not None and "synthetic" not in mesh_data.get("dem_source", "").lower()
-                susc_ok = susc.get("score") is not None and susc.get("category") in ["LOW", "MODERATE", "HIGH", "VERY HIGH", "CRITICAL"]
-                rain_ok = rain.get("source") in ["CWC", "OPEN_METEO_REALTIME", "OPEN_METEO_API"]
+                susc_ok = susc.get("score") is not None and susc.get("category") in ["LOW", "MODERATE", "HIGH", "VERY HIGH", "VERY_HIGH", "CRITICAL"]
+
+                # Enforce CWC 50km distance rule:
+                # If distance > 50km, operational status must NOT be marked as valid local CWC rainfall
+                dist_val = rain.get("distance_km")
+                st_name = rain.get("nearest_station") or rain.get("station") or "CWC Station"
+                if dist_val is not None and dist_val > 50.0:
+                    rain_status = "NO_RELIABLE_LOCAL_DATA"
+                    rain_disp = f"NO_RELIABLE_LOCAL_DATA (Nearest: {st_name} {dist_val:.1f}km)"
+                    rain_ok = (rain.get("source") == "NO_LOCAL_DATA" or rain.get("status") == "NO_RELIABLE_LOCAL_STATION")
+                elif dist_val is not None:
+                    rain_status = rain.get("operational_status", "OPERATIONAL")
+                    rain_disp = f"{rain.get('source', 'CWC')} ({st_name} {dist_val:.1f}km)"
+                    rain_ok = rain.get("source") in ["CWC", "OPEN_METEO_REALTIME", "OPEN_METEO_API"]
+                else:
+                    rain_status = "NO_DATA"
+                    rain_disp = "NO_DATA"
+                    rain_ok = True
+
                 risk_ok = risk.get("level") in ["LOW", "WATCH", "HIGH", "CRITICAL"] and 0.0 <= risk.get("operational_fusion_score", -1) <= 1.0
 
                 loc_pass = elev_ok and susc_ok and rain_ok and risk_ok
                 if not loc_pass:
                     all_passed = False
 
-                st_dist = f"{rain.get('distance_km'):.1f}km" if rain.get('distance_km') is not None else "N/A"
                 res_line = (
-                    f"LOC: {name:32s} | DEM: {elev_stats.get('min_m'):.0f}m-{elev_stats.get('max_m'):.0f}m | "
-                    f"RF Susc: {susc.get('category'):9s} ({susc.get('score'):.3f}) | "
-                    f"Rain: {rain.get('source'):12s} ({st_dist}) | "
-                    f"Risk: {risk.get('level'):8s} ({risk.get('operational_fusion_score'):.3f}) | "
+                    f"LOC: {name:30s} | Coord: ({lat:7.4f}°N, {lon:7.4f}°E) | "
+                    f"Features: {susc.get('quality_status', 'VALID')} | "
+                    f"DEM: {elev_stats.get('min_m'):.0f}m-{elev_stats.get('max_m'):.0f}m | "
+                    f"RF Susc: {susc.get('category'):9s} ({susc.get('score'):.4f}) | "
+                    f"Rain: {rain_disp} | "
+                    f"Trigger: {trig.get('trigger_level', 'NO_DATA'):7s} | "
+                    f"Risk: {risk.get('level'):8s} ({risk.get('operational_fusion_score'):.4f}) | "
                     f"Time: {elapsed:5.1f}ms | {'PASS' if loc_pass else 'FAIL'}"
                 )
                 results.append(res_line)
@@ -430,6 +489,12 @@ def main() -> int:
             f"Final Operational Readiness:     {'ALL 8 NER STATES FULLY OPERATIONAL' if (all_passed and bad_guard_ok and hist_ok) else 'WORKFLOW VERIFICATION FAILED'}\n"
             f"================================================================================\n"
         )
+        log_startup(summary)
+        try:
+            with open("operational_workflow_report.txt", "w", encoding="utf-8") as rf:
+                rf.write(summary)
+        except Exception:
+            pass
         if ORIG_STDOUT is not None:
             try:
                 ORIG_STDOUT.write(summary)

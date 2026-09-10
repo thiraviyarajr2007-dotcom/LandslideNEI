@@ -20,7 +20,7 @@ from pathlib import Path
 import pytest
 import requests
 
-PROJECT_ROOT = Path("C:/SIH Landslide")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEBSITE_DIR = PROJECT_ROOT / "website"
 
 

@@ -1,0 +1,121 @@
+[
+  {
+    "case_id": 1,
+    "name": "Valid coordinates (Kohima)",
+    "http_status": 200,
+    "passed": true,
+    "details": "Risk=WATCH"
+  },
+  {
+    "case_id": 2,
+    "name": "Coordinates outside NER",
+    "http_status": 400,
+    "passed": true,
+    "details": "Code=OUTSIDE_SUPPORTED_DOMAIN: Coordinates (28.6139, 77.2090) lie outside the sup"
+  },
+  {
+    "case_id": 3,
+    "name": "Invalid latitude (lat > 90)",
+    "http_status": 422,
+    "passed": true,
+    "details": "Rejected by Pydantic: Validation error: Input should be less than or equal to 90"
+  },
+  {
+    "case_id": 4,
+    "name": "Invalid longitude (lon > 180)",
+    "http_status": 422,
+    "passed": true,
+    "details": "Rejected by Pydantic: Validation error: Input should be less than or equal to 180"
+  },
+  {
+    "case_id": 5,
+    "name": "Missing parameters (no lat)",
+    "http_status": 422,
+    "passed": true,
+    "details": "Field required: Validation error: Field required"
+  },
+  {
+    "case_id": 6,
+    "name": "Null values (lat=None)",
+    "http_status": 422,
+    "passed": true,
+    "details": "Rejected cleanly: Validation error: Input should be a valid number"
+  },
+  {
+    "case_id": 7,
+    "name": "Extreme coordinates (-89.9, -179.9)",
+    "http_status": 400,
+    "passed": true,
+    "details": "Domain check rejected: OUTSIDE_SUPPORTED_DOMAIN"
+  },
+  {
+    "case_id": 8,
+    "name": "No CWC station within 50 km",
+    "http_status": 200,
+    "passed": true,
+    "details": "Dist=111.45km > 50km cutoff, status=NO_RELIABLE_LOCAL_STATION"
+  },
+  {
+    "case_id": 9,
+    "name": "Stale CWC data (>6h old)",
+    "http_status": 200,
+    "passed": true,
+    "details": "Quality=STALE, freshness_status=STALE, age=26601.89h"
+  },
+  {
+    "case_id": 10,
+    "name": "Missing rainfall window is None",
+    "http_status": 200,
+    "passed": true,
+    "details": "rf_1h=None (None != 0.0)"
+  },
+  {
+    "case_id": 11,
+    "name": "IMD unavailable simulation",
+    "http_status": 200,
+    "passed": true,
+    "details": "Handled safely without IMD macro context"
+  },
+  {
+    "case_id": 12,
+    "name": "CWC unavailable simulation",
+    "http_status": 200,
+    "passed": true,
+    "details": "Trigger=NO_DATA with safe static fallback"
+  },
+  {
+    "case_id": 13,
+    "name": "Soil raster unavailable simulation",
+    "http_status": 200,
+    "passed": true,
+    "details": "Imputed robustly by scikit-learn pipeline"
+  },
+  {
+    "case_id": 14,
+    "name": "DEM raster unavailable simulation",
+    "http_status": 200,
+    "passed": true,
+    "details": "Processed gracefully without server crash"
+  },
+  {
+    "case_id": 15,
+    "name": "Malformed JSON request",
+    "http_status": 422,
+    "passed": true,
+    "details": "Handled with HTTP 422"
+  },
+  {
+    "case_id": 16,
+    "name": "Upstream API timeout handling",
+    "http_status": 200,
+    "passed": true,
+    "details": "Handled with fallback_engaged=True"
+  },
+  {
+    "case_id": 17,
+    "name": "Upstream HTTP 500 failure",
+    "http_status": 200,
+    "passed": true,
+    "details": "Handled with fallback_engaged=True"
+  }
+]

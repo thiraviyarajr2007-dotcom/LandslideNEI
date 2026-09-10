@@ -58,16 +58,23 @@ class TestOperational3DWorkflow:
         susc = pred_data["static_susceptibility"]
         assert susc["score"] is not None
         assert 0.0 <= susc["score"] <= 1.0
-        assert susc["category"] in ["LOW", "MODERATE", "HIGH", "VERY HIGH", "CRITICAL"]
+        assert susc["category"] in ["LOW", "MODERATE", "HIGH", "VERY HIGH", "VERY_HIGH", "CRITICAL"]
         assert susc["terrain"]["elevation_m"] is not None
         assert susc["terrain"]["slope_deg"] is not None
         assert susc["terrain"]["aspect_deg"] is not None
 
         # Check Rainfall Telemetry
         rain = pred_data["rainfall"]
-        assert rain["source"] in ["CWC", "OPEN_METEO_REALTIME", "OPEN_METEO_API"]
-        if rain["distance_km"] is not None:
-            assert rain["distance_km"] >= 0.0
+        if rain["distance_km"] is not None and rain["distance_km"] > 50.0:
+            assert rain["source"] == "NO_LOCAL_DATA"
+            assert rain["status"] == "NO_RELIABLE_LOCAL_STATION"
+            assert rain["operational_status"] == "NO_RELIABLE_LOCAL_DATA"
+            assert rain["rainfall_24h"] is None
+            assert pred_data["rainfall_trigger"]["trigger_level"] == "NO_DATA"
+        else:
+            assert rain["source"] in ["CWC", "OPEN_METEO_REALTIME", "OPEN_METEO_API"]
+            if rain["distance_km"] is not None:
+                assert rain["distance_km"] <= 50.0
 
         # Check Operational Risk Fusion
         risk = pred_data["risk"]
@@ -106,3 +113,66 @@ class TestOperational3DWorkflow:
         assert pred_res.status_code == 400
         err_msg = pred_res.json().get("error", {}).get("message", "")
         assert "outside" in err_msg.lower()
+
+    def test_model_a_distinct_feature_vectors_and_scores(self):
+        """
+        Verify that different geographical locations receive different genuine feature vectors
+        and produce distinct Model A susceptibility scores (NOT identical 0.541).
+        """
+        coords = [
+            (26.6338, 92.7926),  # Tezpur plain
+            (25.6740, 94.1120),  # Kohima hill
+            (27.1667, 88.3500),  # Namchi steep ridge
+            (24.8170, 93.9368),  # Imphal valley
+        ]
+        scores = []
+        elevs = []
+        slopes = []
+
+        for lat, lon in coords:
+            res = client.post("/api/v1/predict", json={"latitude": lat, "longitude": lon, "auto_refetch": False})
+            assert res.status_code == 200
+            data = res.json()
+            susc = data["static_susceptibility"]
+            terrain = susc["terrain"]
+            scores.append(round(susc["score"], 4))
+            elevs.append(terrain["elevation_m"])
+            slopes.append(terrain["slope_deg"])
+
+        # Confirm all elevation and slope values are distinct real observations
+        assert len(set(elevs)) == len(coords), f"Elevations must be distinct: {elevs}"
+        assert len(set(slopes)) == len(coords), f"Slopes must be distinct: {slopes}"
+
+        # Confirm Model A scores are distinct and NOT all 0.541
+        assert len(set(scores)) > 1, f"Model A scores must not be identical: {scores}"
+        assert not all(s == 0.541 for s in scores), "Scores must not be stuck at 0.541"
+
+    def test_cwc_distance_rule_and_fusion_semantics(self):
+        """
+        Verify that stations > 50km (e.g. Lunglei at ~111km) produce NO_RELIABLE_LOCAL_DATA,
+        rainfall values are None, and risk fusion respects NO_DATA without treating distant stations as local.
+        """
+        res = client.post("/api/v1/predict", json={"latitude": 22.8872, "longitude": 92.7388, "auto_refetch": False})
+        assert res.status_code == 200
+        data = res.json()
+        rain = data["rainfall"]
+        trig = data["rainfall_trigger"]
+        risk = data["risk"]
+
+        assert rain["distance_km"] > 50.0
+        assert rain["status"] == "NO_RELIABLE_LOCAL_STATION"
+        assert rain["operational_status"] == "NO_RELIABLE_LOCAL_DATA"
+        assert rain["source"] == "NO_LOCAL_DATA"
+        assert rain["nearest_station"] is not None
+        assert rain["nearest_station_distance_km"] > 50.0
+
+        # Rainfall accumulation must be None, NOT 0.0 mm
+        assert rain["rainfall_24h"] is None
+        assert rain["rainfall_1h"] is None
+
+        # Trigger must be NO_DATA
+        assert trig["trigger_level"] == "NO_DATA"
+
+        # Risk fusion must use static baseline
+        assert risk["scoring_mode"] == "STATIC_BASELINE_ONLY_RAINFALL_UNOBSERVED"
+        assert risk["operational_fusion_score"] == round(data["static_susceptibility"]["score"], 4)

@@ -15,6 +15,13 @@ import math
 from pydantic import BaseModel, Field, field_validator
 
 
+def _clean_nan_to_none(v: Any) -> Any:
+    """Standardize NaN floats to None for consistent JSON schema serialization."""
+    if isinstance(v, float) and math.isnan(v):
+        return None
+    return v
+
+
 # ==============================================================================
 # 1. ERROR SCHEMAS
 # ==============================================================================
@@ -177,9 +184,7 @@ class TerrainBlock(BaseModel):
     @field_validator("*", mode="before")
     @classmethod
     def convert_nan_to_none(cls, v):
-        if isinstance(v, float) and math.isnan(v):
-            return None
-        return v
+        return _clean_nan_to_none(v)
 
 
 class SoilBlock(BaseModel):
@@ -205,9 +210,7 @@ class SoilBlock(BaseModel):
     @field_validator("*", mode="before")
     @classmethod
     def convert_nan_to_none(cls, v):
-        if isinstance(v, float) and math.isnan(v):
-            return None
-        return v
+        return _clean_nan_to_none(v)
 
 
 class LandcoverBlock(BaseModel):
@@ -217,9 +220,7 @@ class LandcoverBlock(BaseModel):
     @field_validator("*", mode="before")
     @classmethod
     def convert_nan_to_none(cls, v):
-        if isinstance(v, float) and math.isnan(v):
-            return None
-        return v
+        return _clean_nan_to_none(v)
 
 
 class AnthropogenicBlock(BaseModel):
@@ -280,6 +281,9 @@ class RainfallBlock(BaseModel):
     district: Optional[str] = None
     distance_km: Optional[float] = None
     max_acceptable_distance_km: float = 50.0
+    nearest_station: Optional[str] = None
+    nearest_station_distance_km: Optional[float] = None
+    operational_status: Optional[str] = None
     timestamp: Optional[str] = None
     rainfall_1h: Optional[float] = None
     rainfall_24h: Optional[float] = None

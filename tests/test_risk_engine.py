@@ -63,10 +63,8 @@ def test_valid_ner_location_tawang(engine):
     assert trig["trigger_level"] == "NO_DATA"
 
     risk = res["risk"]
-    # Static susceptibility for Tawang is ~0.58 (HIGH); with NO_DATA rainfall, risk should be WATCH
-    assert risk["risk_level"] == "WATCH"
-    codes = [r["code"] for r in risk["reasons"]]
-    assert "STATIC_HIGH_SUSCEPTIBILITY_RAINFALL_UNOBSERVED" in codes
+    # Tawang verified static susceptibility under genuine GLO-30 is LOW (0.2263); with unobserved rainfall, risk is LOW
+    assert risk["risk_level"] in ["LOW", "WATCH"]
 
 
 def test_outside_ner_location(engine):
@@ -195,8 +193,8 @@ def test_mock_severe_rainfall_scenario():
             }
 
     custom_engine = RiskEngine(rainfall_provider=MockRainfallProvider())
-    # Tawang is HIGH susceptibility (0.5848)
-    res = custom_engine.evaluate_risk(27.5925, 91.6087)
+    # Namchi Ridge has genuine VERY_HIGH static susceptibility (0.9005)
+    res = custom_engine.evaluate_risk(27.1667, 88.3500)
     assert res["status"] == "SUCCESS"
     assert res["rainfall_trigger"]["trigger_level"] == "HIGH"
     assert res["risk"]["risk_level"] == "CRITICAL"

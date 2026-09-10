@@ -15,7 +15,9 @@ Architecture:
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import json
+import logging
 import math
 import os
 import sys
@@ -23,6 +25,8 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+logger = logging.getLogger("api.main")
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
@@ -94,6 +98,18 @@ def _load_api_config() -> Dict[str, Any]:
 API_CONFIG = _load_api_config()
 API_VERSION = API_CONFIG.get("api_version", "1.0.0")
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Pre-warm core inference engines to eliminate first-request cold start latency
+    try:
+        get_risk_engine()
+        get_terrain_service()
+    except Exception as exc:
+        logger.warning("Error pre-warming inference engines: %s", exc)
+    yield
+
+
 app = FastAPI(
     title=API_CONFIG.get("title", "LandslideNEI Operational Landslide Risk Prediction API"),
     description=API_CONFIG.get("description", "Unified Operational Landslide Prediction API"),
@@ -101,6 +117,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 # CORS Policy: Safe configuration via config/api.json or environment variable
@@ -512,6 +529,7 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             has_retaining_wall=bool(payload.has_retaining_wall),
         )
     except Exception as exc:
+        logger.error("Risk evaluation failed unexpectedly at (%s, %s): %s", payload.latitude, payload.longitude, exc, exc_info=True)
         raise APIError(
             code="INFERENCE_ERROR",
             message=f"Risk evaluation failed unexpectedly: {exc}",
@@ -577,6 +595,9 @@ def predict_risk(payload: PredictRequest) -> PredictResponse:
             district=rf.get("district"),
             distance_km=rf.get("distance_km"),
             max_acceptable_distance_km=rf.get("max_acceptable_distance_km", 50.0),
+            nearest_station=rf.get("nearest_station", rf.get("station")),
+            nearest_station_distance_km=rf.get("nearest_station_distance_km", rf.get("distance_km")),
+            operational_status=rf.get("operational_status", "OPERATIONAL" if rf.get("status") == "OK" else rf.get("status")),
             timestamp=rf.get("timestamp"),
             rainfall_1h=rf.get("rainfall_1h"),
             rainfall_24h=rf.get("rainfall_24h"),
@@ -673,6 +694,7 @@ def profile_location_endpoint(payload: ProfileRequest) -> ProfileResponse:
             has_retaining_wall=bool(payload.has_retaining_wall),
         )
     except Exception as exc:
+        logger.error("Location profiling failed unexpectedly at (%s, %s): %s", payload.latitude, payload.longitude, exc, exc_info=True)
         raise APIError(
             code="INFERENCE_ERROR",
             message=f"Location profiling failed unexpectedly: {exc}",

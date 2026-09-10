@@ -440,7 +440,7 @@ class RainfallProvider:
         # 3. Final default fallback if network offline and no district record found
         return {
             "status": "NO_RELIABLE_LOCAL_STATION",
-            "source": "CWC",
+            "source": "NO_LOCAL_DATA",
             "is_realtime": False,
             "realtime_attempts_failed": max_attempts,
             "fallback_engaged": True,
@@ -450,6 +450,9 @@ class RainfallProvider:
             "district": nearest_st["district"],
             "distance_km": dist_km_rounded,
             "max_acceptable_distance_km": eff_max_dist,
+            "nearest_station": nearest_st["station"],
+            "nearest_station_distance_km": dist_km_rounded,
+            "operational_status": "NO_RELIABLE_LOCAL_DATA",
             "timestamp": None,
             "rainfall_1h": None,
             "rainfall_24h": None,
@@ -510,13 +513,16 @@ class RainfallProvider:
                 )
             return {
                 "status": "NO_RELIABLE_LOCAL_STATION",
-                "source": "CWC",
+                "source": "NO_LOCAL_DATA",
                 "station": nearest_st["station"],
                 "station_key": st_key,
                 "state": nearest_st["state"],
                 "district": nearest_st["district"],
                 "distance_km": dist_km_rounded,
                 "max_acceptable_distance_km": eff_max_dist,
+                "nearest_station": nearest_st["station"],
+                "nearest_station_distance_km": dist_km_rounded,
+                "operational_status": "NO_RELIABLE_LOCAL_DATA",
                 "timestamp": None,
                 "rainfall_1h": None,
                 "rainfall_24h": None,
@@ -529,9 +535,9 @@ class RainfallProvider:
                 "quality_notes": (
                     f"Nearest telemetry station ({nearest_st['station']}) is {dist_km_rounded} km away, "
                     f"exceeding the maximum acceptable operational distance limit of {eff_max_dist} km. "
-                    "Rainfall unobserved at local scale. IMD district/state observations are retained as an "
-                    "available macro operational source, but the current exact-location provider uses CWC "
-                    "station observations because no unvalidated station-to-IMD spatial mapping is assumed."
+                    "Rainfall unobserved at local scale. Operational rainfall marked NO_RELIABLE_LOCAL_DATA. "
+                    "IMD district/state observations are retained as an available macro operational source, "
+                    "and no unvalidated station-to-IMD spatial mapping is assumed."
                 ),
                 "freshness": {
                     "observation_timestamp": None,
@@ -723,6 +729,9 @@ class RainfallProvider:
             "district": obs["district"],
             "distance_km": dist_km_rounded,
             "max_acceptable_distance_km": eff_max_dist,
+            "nearest_station": obs["station"],
+            "nearest_station_distance_km": dist_km_rounded,
+            "operational_status": "OPERATIONAL" if status == "OK" else status,
             "timestamp": str(obs["timestamp"]),
             "rainfall_1h": r_1h,
             "rainfall_24h": r_24h,

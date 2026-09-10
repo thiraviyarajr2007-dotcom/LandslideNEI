@@ -18,7 +18,7 @@ from fastapi.testclient import TestClient
 
 from api.main import app
 
-PROJECT_ROOT = Path("C:/SIH Landslide")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 @pytest.fixture(scope="module")

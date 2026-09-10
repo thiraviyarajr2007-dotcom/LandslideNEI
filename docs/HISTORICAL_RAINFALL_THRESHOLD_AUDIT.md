@@ -89,11 +89,10 @@ Current operational thresholds in `config/risk_thresholds.json`:
    - **40.0%** of all documented 2021 landslide events occurred under rainfall that actively breaches either the WATCH or HIGH threshold.
    - This validates that the existing baseline thresholds ($50\text{ mm}$ and $100\text{ mm}$) are in the realistic physical operating range for monsoon slope triggering in Northeast India.
 
-2. **Analysis of Events Below Threshold (60.0%):**
-   - The remaining 45 events with $R_{24h} < 50\text{ mm}$ consist predominantly of:
-     - **Rock falls on over-steepened road cut slopes** (e.g. NH 13, BCT Road) where slope angles exceed $45^\circ$ and failure is driven by geotechnical instability rather than acute hydrologic loading.
-     - **Multi-day cumulative antecedent saturation (7-day to 30-day API)** where modest daily rain triggered failure on pre-saturated regolith.
-     - **Micro-scale convective cells / localized cloudbursts** that were smoothed out in 0.1° satellite grid aggregations.
+2. **Observation of Events Below Threshold (60.0%):**
+   - The dataset indicates that 45 events (60.0%) were accompanied by $< 50\text{ mm}$ of GPM 24-hour rainfall.
+   - The distribution indicates that many documented events were not accompanied by $\ge 50\text{ mm}$ of GPM 24-hour rainfall. Further investigation is required to distinguish antecedent rainfall, terrain/anthropogenic factors, and satellite rainfall uncertainty.
+   - In particular, satellite-derived GPM IMERG 0.1° spatial aggregations may smooth out localized orographic precipitation, and slope stability may be influenced by localized toe cuts or multi-week antecedent moisture saturation. Event-specific geotechnical and high-resolution ground telemetry records are required before asserting causal failure mechanisms.
 
 3. **Recommendation on Threshold Calibration:**
    - **Do NOT globally lower the 24h threshold below 50 mm.** Lowering the regional threshold would drastically increase false alarms across low-slope and urban areas during ordinary monsoon days.

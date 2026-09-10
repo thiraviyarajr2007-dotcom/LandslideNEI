@@ -1,0 +1,41 @@
+{
+  "perf": [
+    {
+      "endpoint": "GET /health",
+      "cold_ms": 9.34,
+      "warm_min_ms": 8.49,
+      "avg_ms": 9.38,
+      "p95_ms": 10.41
+    },
+    {
+      "endpoint": "GET /api/v1/terrain/metadata",
+      "cold_ms": 13.21,
+      "warm_min_ms": 11.18,
+      "avg_ms": 12.61,
+      "p95_ms": 14.66
+    },
+    {
+      "endpoint": "GET /api/v1/layers/historical-landslides",
+      "cold_ms": 35.02,
+      "warm_min_ms": 13.74,
+      "avg_ms": 15.83,
+      "p95_ms": 31.06
+    },
+    {
+      "endpoint": "POST /api/v1/profile",
+      "cold_ms": 111.32,
+      "warm_min_ms": 103.78,
+      "avg_ms": 119.73,
+      "p95_ms": 145.41
+    },
+    {
+      "endpoint": "POST /api/v1/predict (Baseline)",
+      "cold_ms": 117.09,
+      "warm_min_ms": 100.76,
+      "avg_ms": 107.27,
+      "p95_ms": 116.9
+    }
+  ],
+  "concurrency_ok": true,
+  "deterministic": true
+}
